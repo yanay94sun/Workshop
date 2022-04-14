@@ -1,11 +1,14 @@
 from Code.Backend.Service import Shopcart_info
 from Code.Backend.Service.Contact_info import Contact_info
+from Code.Backend.Service.DiscountPolicy import DiscountPolicy
 from Code.Backend.Service.Package_info import Package_info
 from Code.Backend.Service.Payment_info import Payment_info
+from Code.Backend.Service.Permissions import Permission
 from Code.Backend.Service.Personal_info import Personal_info
 from Code.Backend.Service.Personal_purchase_history import Personal_purchase_history
 from Code.Backend.Service.Product_info import Product_info
 from Code.Backend.Service.Product_search_filters import Product_search_filters
+from Code.Backend.Service.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
 from Code.Backend.Service.Store_info import Store_info
 
@@ -299,5 +302,193 @@ class Service:
         :return:
         """
         pass
+
+    def change_purchase_policy(self, user_id: str, store_id: str, purchase_policy: PurchasePolicy):
+        """
+        II.4.3.1
+        :param user_id:
+        :param store_id:
+        :param purchase_policy:
+        :return:
+        """
+        pass
+
+    def change_discount_policy(self, user_id: str, store_id: str, discount_policy: DiscountPolicy):
+        """
+        II.4.3.2
+        :param user_id:
+        :param store_id:
+        :param discount_policy:
+        :return:
+        """
+        pass
+
+    def add_store_owner(self, user_id: str, store_id: str, new_owner_id: str):
+        """
+        II.4.4
+        :param user_id:
+        :param store_id:
+        :param new_owner_id:
+        :return:
+        """
+        pass
+
+    def remove_store_owner(self, user_id: str, store_id: str, owner_id: str):
+        """
+        II.4.5
+        :param user_id:
+        :param store_id:
+        :param owner_id:
+        :return:
+        """
+        pass
+
+    def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
+        """
+        II.4.6
+        :param user_id:
+        :param store_id:
+        :param new_manager_id:
+        :return:
+        """
+        pass
+
+    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Permission):
+        """
+        II.4.7
+        :param user_id:
+        :param store_id:
+        :param manager_id:
+        :param new_permission:
+        :return:
+        """
+        pass
+
+    def remove_store_manager(self, user_id: str, store_id: str, manager_id: str):
+        """
+        II.4.8
+        :param user_id:
+        :param store_id:
+        :param manager_id:
+        :return:
+        """
+        pass
+
+    def close_store(self, user_id: str, store_id: str):
+        """
+        II.4.9
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+    def reopen_store(self, user_id: str, store_id: str):
+        """
+        II.4.10
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+    def get_store_roles(self, user_id: str, store_id: str):
+        """
+        II.4.11
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+    def get_users_messages(self, user_id: str, store_id: str):
+        """
+        II.4.12.1
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+    def reply_users_messages(self, user_id: str, store_id: str, user_contact_info: Contact_info, owner_contact_info: Contact_info):
+        """
+        II.4.12.2
+        :param user_id:
+        :param store_id:
+        :param user_contact_info:
+        :param owner_contact_info:
+        :return:
+        """
+        pass
+
+    def get_store_purchase_history(self, user_id: str, store_id: str):
+        """
+        II.4.13
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+    def close_store_permanently(self, user_id: str, store_id: str):
+        """
+        II.6.1
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+    def remove_member(self, user_id: str, member_id: str):
+        """
+        II.6.2
+        :param user_id:
+        :param member_id:
+        :return:
+        """
+        pass
+
+    def get_all_users_messages_by_admin(self, user_id: str):
+        """
+        II.6.3.1
+        :param user_id:
+        :return:
+        """
+        pass
+
+    def reply_users_messages_by_admin(self, user_id: str, store_id: str, user_contact_info: Contact_info, admin_contact_info: Contact_info):
+        """
+        II.6.3.2
+        :param user_id:
+        :param store_id:
+        :param user_contact_info:
+        :param admin_contact_info:
+        :return:
+        """
+        pass
+
+    def get_stores_purchase_history_by_admin(self, user_id: str, store_id=None):
+        """
+        II.6.4
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+    def get_system_statistic_by_admin(self, user_id: str):
+        """
+        II.6.5
+        :param user_id:
+        :return:
+        """
+        pass
+
+
+
+
+
+
+
 
 
