@@ -1,13 +1,13 @@
-from Service import Shopcart_info
-from Service.Contact_info import Contact_info
-from Service.Package_info import Package_info
-from Service.Payment_info import Payment_info
-from Service.Personal_info import Personal_info
-from Service.Personal_purchase_history import Personal_purchase_history
-from Service.Product_search_filters import Product_search_filters
-from Service.Product_info import Product_info
-from Service.Response import Response
-from Service.Store_info import Store_info
+from Code.Backend.Service import Shopcart_info
+from Code.Backend.Service.Contact_info import Contact_info
+from Code.Backend.Service.Package_info import Package_info
+from Code.Backend.Service.Payment_info import Payment_info
+from Code.Backend.Service.Personal_info import Personal_info
+from Code.Backend.Service.Personal_purchase_history import Personal_purchase_history
+from Code.Backend.Service.Product_info import Product_info
+from Code.Backend.Service.Product_search_filters import Product_search_filters
+from Code.Backend.Service.Response import Response
+from Code.Backend.Service.Store_info import Store_info
 
 
 class Service:
