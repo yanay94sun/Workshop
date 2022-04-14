@@ -265,3 +265,39 @@ class Service:
         """
         pass
 
+    # def add_products_to_inventory(self, user_id: str, store_id: str, products: dict):
+    #     """
+    #     II.4.1
+    #
+    #     :param user_id:
+    #     :param store_id:
+    #     :param products: {product_info: Product_info, quantity:int}
+    #     :return:
+    #     """
+    #     pass
+    #
+    # def remove_products_to_inventory(self, user_id: str, store_id: str, products: dict):
+    #
+    def manage_inventory(self, user_id: str, store_id: str, products: dict):
+        """
+        II.4.1
+        TODO: maybe to split this into 3 funcs???
+        add, remove and edit the inventory
+        :param user_id:
+        :param store_id:
+        :param products: {product_info: Product_info, quantity:int}
+        :return:
+        """
+        pass
+
+    def edit_store_policy(self, user_id: str, store_id: str):
+        """
+        II.4.2
+        *NOT*  need to implement to this version
+        :param user_id:
+        :param store_id:
+        :return:
+        """
+        pass
+
+
