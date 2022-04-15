@@ -1,3 +1,5 @@
+from typing import Dict
+
 from Code.Backend.Domain.Market import Market
 from Code.Backend.Domain.StoreController import StoreController
 from Code.Backend.Domain.UserController import UserController
@@ -263,7 +265,7 @@ class Service:
     def upgrade_member_security(self, user_id: str):
         """
         II.3.9
-        TODO more arguments might be necessary
+        TODO more arguments might be necessary + give a controller responsibility
         :param user_id:
         :return:
         """
@@ -282,10 +284,10 @@ class Service:
     #
     # def remove_products_to_inventory(self, user_id: str, store_id: str, products: dict):
     #
-    def manage_inventory(self, user_id: str, store_id: str, products: dict):
+    def manage_inventory(self, user_id: str, store_id: str, products: Dict[Product_info, int]):
         """
         II.4.1
-        TODO: maybe to split this into 3 funcs???
+        TODO: maybe to split this into 3 funcs??? + decide whose responsible
         add, remove and edit the inventory
         :param user_id:
         :param store_id:
@@ -323,6 +325,8 @@ class Service:
         :return:
         """
         pass
+
+    """ Nitzan: put responsibilities the next methods in Store Controller, until II.4.12.2"""
 
     def add_store_owner(self, user_id: str, store_id: str, new_owner_id: str):
         """
@@ -431,6 +435,8 @@ class Service:
         :return:
         """
         pass
+
+    """ Nitzan: put responsibilities of the following methods in Market """
 
     def close_store_permanently(self, user_id: str, store_id: str):
         """
