@@ -1,21 +1,24 @@
-from Code.Backend.Service import Shopcart_info
-from Code.Backend.Service.Contact_info import Contact_info
-from Code.Backend.Service.DiscountPolicy import DiscountPolicy
-from Code.Backend.Service.Package_info import Package_info
-from Code.Backend.Service.Payment_info import Payment_info
-from Code.Backend.Service.Permissions import Permission
-from Code.Backend.Service.Personal_info import Personal_info
-from Code.Backend.Service.Personal_purchase_history import Personal_purchase_history
-from Code.Backend.Service.Product_info import Product_info
-from Code.Backend.Service.Product_search_filters import Product_search_filters
-from Code.Backend.Service.PurchasePolicy import PurchasePolicy
+from Code.Backend.Domain.MarketController import MarketController
+from Code.Backend.Domain.UserController import UserController
+from Code.Backend.Service.Objects import Shopcart_info
+from Code.Backend.Service.Objects.Contact_info import Contact_info
+from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Service.Objects.Package_info import Package_info
+from Code.Backend.Service.Objects.Payment_info import Payment_info
+from Code.Backend.Service.Objects.Permissions import Permission
+from Code.Backend.Service.Objects.Personal_info import Personal_info
+from Code.Backend.Service.Objects.Personal_purchase_history import Personal_purchase_history
+from Code.Backend.Service.Objects.Product_info import Product_info
+from Code.Backend.Service.Objects.Product_search_filters import Product_search_filters
+from Code.Backend.Service.Objects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
-from Code.Backend.Service.Store_info import Store_info
+from Code.Backend.Service.Objects.Store_info import Store_info
 
 
 class Service:
     def __init__(self):
-        pass
+        self.uc = UserController()
+        self.mc = MarketController()
 
     """Functional requirements"""
 
@@ -47,12 +50,19 @@ class Service:
     General guest actions
     """
 
-    def enter_as_guest(self, guest_id: str):
+    def enter_as_guest(self):
         """
         II.1.1
         :return:
         """
-        pass
+        response = Response(self.uc.create_gust())
+        # write to log
+        return response.value
+
+
+
+
+
 
     def guest_exit(self, guest_id: str):
         """
