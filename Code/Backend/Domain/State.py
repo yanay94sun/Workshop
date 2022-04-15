@@ -1,10 +1,5 @@
-from Code.Backend.Domain.Visitor import Visitor
+class State:
 
-
-class State():
-    """
-
-    """
     def __init__(self):
         pass
 
