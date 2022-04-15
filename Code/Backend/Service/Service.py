@@ -150,7 +150,6 @@ class Service:
         """
         pass
 
-
     """Member's purchase actions"""
 
     def logout(self, user_id: str):
@@ -172,20 +171,25 @@ class Service:
         """
         pass
 
-    def review_product(self, user_id: str, review: str):
+    def review_product(self, user_id: str, product_info, review: str):
         """
         II.3.3
+        Nitzan: put the responsibility in the user
+
         :param user_id:
+        :param product_info
         :param review:
         :return:
         """
         pass
 
-    def grade_product(self, user_id: str, product_id: str, grade):
+    def grade_product(self, user_id: str, product_info: str, grade):
         """
-        II.3.4
+        Nitzan: put the responsibility in the user
+
+        II.3.4.1
         :param user_id:
-        :param product_id:
+        :param product_info:
         :param grade:
         :return:
         """
@@ -193,7 +197,8 @@ class Service:
 
     def grade_store(self, user_id: str, store_id: str, grade):
         """
-        II.3.4
+        TODO
+        II.3.4.2
         :param user_id:
         :param store_id:
         :param grade:
@@ -203,6 +208,7 @@ class Service:
 
     def contact_store(self, user_id: str, store_id: str, contact_info: Contact_info):
         """
+        Nitzan: put the responsibility in the store
         II.3.5
 
         :param user_id:
@@ -214,6 +220,7 @@ class Service:
 
     def complaint(self, user_id: str, comp: Contact_info):
         """
+        Nitzan: put the responsibility in the market
         II.3.6
 
         :param user_id:
@@ -224,6 +231,7 @@ class Service:
 
     def get_personal_purchase_history(self, user_id: str) -> Personal_purchase_history:
         """
+        Nitzan: put the responsibility in the user
         II.3.7
 
         :param user_id:
@@ -233,6 +241,7 @@ class Service:
 
     def get_personal_info(self, user_id: str) -> Personal_info:
         """
+        Nitzan: put the responsibility in the user
         II.3.8
 
         :param user_id:
@@ -242,6 +251,7 @@ class Service:
 
     def edit_personal_info(self, user_id: str, new_personal_info: Personal_info):
         """
+        Nitzan: put the responsibility in the user
         II.3.8
 
         :param user_id:
@@ -401,7 +411,8 @@ class Service:
         """
         pass
 
-    def reply_users_messages(self, user_id: str, store_id: str, user_contact_info: Contact_info, owner_contact_info: Contact_info):
+    def reply_users_messages(self, user_id: str, store_id: str, user_contact_info: Contact_info,
+                             owner_contact_info: Contact_info):
         """
         II.4.12.2
         :param user_id:
@@ -447,7 +458,8 @@ class Service:
         """
         pass
 
-    def reply_users_messages_by_admin(self, user_id: str, store_id: str, user_contact_info: Contact_info, admin_contact_info: Contact_info):
+    def reply_users_messages_by_admin(self, user_id: str, store_id: str, user_contact_info: Contact_info,
+                                      admin_contact_info: Contact_info):
         """
         II.6.3.2
         :param user_id:
@@ -474,12 +486,3 @@ class Service:
         :return:
         """
         pass
-
-
-
-
-
-
-
-
-

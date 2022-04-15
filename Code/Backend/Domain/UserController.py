@@ -45,3 +45,18 @@ class UserController:
 
     def logout(self, user_id: str):
         pass
+
+    def review_product(self, user_id: str, product_info, review: str):
+        pass
+
+    def grade_product(self, user_id: str, product_info: str, grade):
+        pass
+
+    def get_personal_purchase_history(self, user_id: str):
+        pass
+
+    def get_personal_info(self, user_id: str):
+        pass
+
+    def edit_personal_info(self, user_id: str, new_personal_info):
+        pass

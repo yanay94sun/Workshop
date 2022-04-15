@@ -17,7 +17,6 @@ class StoreController():
     def open_store(self, user_id: str):
         pass
 
-
-
-
+    def contact_store(self, store_id: str, contact_info):
+        pass
 

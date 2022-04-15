@@ -10,3 +10,6 @@ class Market():
 
     def purchase_shop_cart(self, user_id: str,shopping_cat: ShoppingCart):
         pass
+
+    def complaint(self, comp):
+        pass
