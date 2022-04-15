@@ -1,4 +1,5 @@
-from Code.Backend.Domain.MarketController import MarketController
+from Code.Backend.Domain.Market import Market
+from Code.Backend.Domain.StoreController import StoreController
 from Code.Backend.Domain.UserController import UserController
 from Code.Backend.Service.Objects import Shopcart_info
 from Code.Backend.Service.Objects.Contact_info import Contact_info
@@ -18,7 +19,8 @@ from Code.Backend.Service.Objects.Store_info import Store_info
 class Service:
     def __init__(self):
         self.uc = UserController()
-        self.mc = MarketController()
+        self.market = Market()
+        self.sc = StoreController()
 
     """Functional requirements"""
 
@@ -50,31 +52,18 @@ class Service:
     General guest actions
     """
 
-    def enter_as_guest(self):
+    def enter_as_guest(self) -> str:
         """
         II.1.1
         :return:
         """
-        response = Response(self.uc.create_gust())
+        response = Response(self.uc.create_guest())
         # write to log
         return response.value
 
-
-
-
-
-
-    def guest_exit(self, guest_id: str):
+    def exit(self, user_id: str):
         """
-        II.1.2.1
-        :param guest_id:
-        :return:
-        """
-        pass
-
-    def member_exit(self, user_id: str):
-        """
-        II.1.2.2
+        II.1.2
         :param user_id:
         :return:
         """
@@ -113,16 +102,6 @@ class Service:
         """
         pass
 
-    def get_product_info(self, user_id: str, product_id) -> Product_info:
-        """
-        II.2.1
-
-        :param user_id:
-        :param product_id:
-        :return:
-        """
-        pass
-
     def search_product(self, user_id: str, product_filters: Product_search_filters):
         """
         II.2.2
@@ -132,6 +111,7 @@ class Service:
         :param product_filters: An object contains filtering criteria, like price range, product's grade...
         :return:
         """
+
         pass
 
     def add_product_to_shop_cart(self, user_id: str, product_info: Product_info):
@@ -169,6 +149,7 @@ class Service:
         :return:
         """
         pass
+
 
     """Member's purchase actions"""
 
