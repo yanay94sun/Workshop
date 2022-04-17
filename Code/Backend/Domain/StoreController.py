@@ -55,3 +55,10 @@ class StoreController():
 
     def get_store_purchase_history(self, user_id: str, store_id: str):
         pass
+
+    def get_product(self, product_id, quantity):
+        """
+        checks if the product is available, and returns its reference.
+        returns None if not available
+        """
+        pass

@@ -12,6 +12,9 @@ class UserController:
         self.users: Dict[str, Visitor] = {}
         self.id_counter = 0
 
+    def init(self):
+        pass
+
     def create_guest(self):
         id = self.generate_id()
         user = Visitor(id)
@@ -60,3 +63,5 @@ class UserController:
 
     def edit_personal_info(self, user_id: str, new_personal_info):
         pass
+
+

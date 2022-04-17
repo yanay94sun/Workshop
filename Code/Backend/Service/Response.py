@@ -6,12 +6,9 @@ class Response:
         """
 
         """
-        if not response:
+        if response:
             self.value = response.value
-            self.msg = response.value
+            self.msg = response.msg
         else:
             self.value = value
             self.msg = msg
-
-    def error_occurred(self):
-        return self.msg is not None

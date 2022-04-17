@@ -1,0 +1,2 @@
+class DiscountPolicy:
+    pass
