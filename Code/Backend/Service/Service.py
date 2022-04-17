@@ -1,5 +1,6 @@
-from typing import Dict
+from typing import Dict, List
 
+from Code.Backend.Domain.DM_product_info import DM_product_info
 from Code.Backend.Domain.Market import Market
 from Code.Backend.Domain.StoreController import StoreController
 from Code.Backend.Domain.UserController import UserController
@@ -20,37 +21,43 @@ from Code.Backend.Service.Objects.Store_info import Store_info
 
 class Service:
     def __init__(self):
-        self.uc = UserController()
-        self.market = Market()
-        self.sc = StoreController()
-
+        self.user_controller = None
+        self.market = None
+        self.store_controller = None
 
     """Functional requirements"""
 
-    def initial_system(self, admin_id: str = None,
-                       admin_pwd: str = None):
+    def initial_system(self, admin_id: str = None, admin_pwd: str = None,
+                       payment_service: int = 0, supply_service: int = 0):
         """
         I.1
-        -   contact to the related services, by init the fields in the market
-        -   crate the main admin, if not exist
+        -   contacts to the related services, by init the fields in the market from a fixed list of services
+        -   creates the main admin, if not exist
         :return: None
         """
+        self.market = Market(admin_id, admin_pwd, payment_service, supply_service)
+        self.user_controller = UserController()
+        self.store_controller = StoreController()
         pass
 
     def contact_payment_service(self, payment_info: Payment_info) -> Response:
         """
         I.3
-        :param payment_info:
+        a payment transaction with the current payment service, with the given payment information.
+        :param payment_info: the data the payment service needs to successfully manage the payment.
         :return: Response object
         """
+        return Response(self.market.contact_payment_service(payment_info))
         pass
 
     def contact_supply_service(self, package_info: Package_info) -> Response:
         """
         I.4
-        :param package_info:
+        a request for a delivery from the supply service.
+        :param package_info: the data the current supply service needs to successfully process the request.
         :return:
         """
+        return Response(self.market.contact_supply_service(package_info))
         pass
 
     """
@@ -58,85 +65,107 @@ class Service:
     General guest actions
     """
 
-    def enter_as_guest(self) -> str:
+    def enter_as_guest(self) -> Response:
         """
         II.1.1
+        generates a temp id and creates a Visitor object with a default guest state and a shopping cart.
         :return:
         """
-        response = Response(self.uc.create_guest())
+        return Response(self.user_controller.create_guest())
         # write to log
-        return response.value
 
     def exit(self, user_id: str):
         """
         II.1.2
+        when a guest is exit, all its data is dismissed including its shopping cart.
         :param user_id:
         :return:
         """
+        return Response(self.user_controller.exit(user_id))
         pass
 
     def register(self, guest_id: str, user_info):
         """
         II.1.3
-
+        register a user to the market, creates a member state.
         :param guest_id:
-        :param user_info:
+        :param user_info: all info needed for registration.
         :return:
         """
+        return Response(self.user_controller.register(guest_id, user_info))
         pass
 
     def login(self, guest_id: str, username: str, password: str):
         """
         II.1.4
-
+        changes state to logged in
         :param guest_id:
         :param username:
         :param password:
         :return:
         """
+        return Response(self.user_controller.login(guest_id, username, password))
         pass
 
     """Guest's Purchase actions"""
 
-    def get_store_info(self, user_id: str, store_id: str) -> Store_info:
+    def get_store_info(self, user_id: str, store_id: str) -> Response:
         """
-        II.2.1
-
+        II.2.1.1
+        when a user request for a specific store info.
         :param user_id:
         :param store_id:
-        :return:
+        :return: Store's info which contains:
+        store's name, store's owners, rank, products
         """
+        return Response(self.store_controller.get_store_info(store_id))
+
+    def get_stores_info(self, user_id: str) -> Response:
+        """
+        II.2.1.2
+        when a user request for all stores info.
+        :param user_id:
+        :return: List of store info
+        """
+        return Response(self.store_controller.get_stores_info())
         pass
 
     def search_product(self, user_id: str, product_filters: Product_search_filters):
         """
         II.2.2
+        TODO add arguments
         Search a product by given product name, category or key words.
         Filtering results by given feature filters
         :param user_id:
         :param product_filters: An object contains filtering criteria, like price range, product's grade...
         :return:
         """
-
+        return Response(self.store_controller.search_product())
         pass
 
-    def add_product_to_shop_cart(self, user_id: str, product_info: Product_info):
+    def add_product_to_shop_cart(self, user_id: str, store_id, product_id, quantity):
         """
         II.2.3
-
+        Checks if the product is available in the store, and adds the given product to the user's shop cart.
         :param user_id:
-        :param product_info:
+        :param store_id:
+        :param product_id:
+        :param quantity:
         :return:
         """
+        product_info = self.store_controller.get_product(store_id, product_id, quantity)
+        # check if not None
+        return Response(self.user_controller.add_product_to_shop_cart(user_id, product_info, quantity))
         pass
 
-    def get_shop_cart(self, user_id: str) -> Shopcart_info:
+    def get_shop_cart(self, user_id: str) -> Response:
         """
         II.2.4
-
+        return he information of the user shopping cart.
         :param user_id:
-        :return:
+        :return: Shopping cart object
         """
+        return Response(self.user_controller.get_shop_cart(user_id))
 
     def remove_product_from_shop_cart(self, user_id: str, product_id: str):
         """
@@ -146,14 +175,17 @@ class Service:
         :param product_id:
         :return:
         """
+        return Response(self.user_controller.remove_product_from_shop_cart(user_id, product_id))
 
     def purchase_shop_cart(self, user_id: str):
         """
         II.2.5
-
+        gets user's shopping cart and applies discount policies on each basket, then decrease the quantity of the
+        product
         :param user_id:
         :return:
         """
+
         pass
 
     """Member's purchase actions"""
@@ -442,6 +474,7 @@ class Service:
 
     """ Nitzan: put responsibilities of the following methods in Market """
     """Admin Section"""
+
     def close_store_permanently(self, user_id: str, store_id: str):
         """
         II.6.1
@@ -496,5 +529,3 @@ class Service:
         :return:
         """
         pass
-
-    

@@ -3,7 +3,10 @@ from Code.Backend.Domain.ShoppingCart import ShoppingCart
 
 class Market:
 
-    def __init__(self):
+    def __init__(self, admin_id, admin_pwd, payment_service, supply_service):
+        pass
+
+    def init(self, admin_id, admin_pwd, payment_service, supply_service):
         pass
 
     def purchase_shop_cart(self, user_id: str,shopping_cat: ShoppingCart):
@@ -65,3 +68,4 @@ class Market:
         :return:
         """
         pass
+
