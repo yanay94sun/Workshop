@@ -3,4 +3,6 @@ class Store:
         """
 
         """
+        self.quantities = {} # {product_id, quantities}
+        self.discount_policy =
         pass

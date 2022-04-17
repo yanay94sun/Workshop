@@ -181,7 +181,8 @@ class Service:
         """
         II.2.5
         gets user's shopping cart and applies discount policies on each basket, then decrease the quantity of the
-        product
+        product in the store
+
         :param user_id:
         :return:
         """
