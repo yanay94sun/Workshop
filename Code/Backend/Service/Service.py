@@ -24,12 +24,16 @@ class Service:
         self.market = Market()
         self.sc = StoreController()
 
+
     """Functional requirements"""
 
-    def initial_system(self):
+    def initial_system(self, admin_id: str = None,
+                       admin_pwd: str = None):
         """
         I.1
-        :return:
+        -   contact to the related services, by init the fields in the market
+        -   crate the main admin, if not exist
+        :return: None
         """
         pass
 
@@ -437,7 +441,7 @@ class Service:
         pass
 
     """ Nitzan: put responsibilities of the following methods in Market """
-
+    """Admin Section"""
     def close_store_permanently(self, user_id: str, store_id: str):
         """
         II.6.1
@@ -492,3 +496,5 @@ class Service:
         :return:
         """
         pass
+
+    
