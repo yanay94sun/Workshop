@@ -12,9 +12,12 @@ class Store:
         """
         self.__products: Dict[str, Product] = {}  # {product_id, product object}
         self.__quantities: Dict[str, int] = {}  # {product_id, quantities}
-        self.discount_policy = DiscountPolicy()
-        self.store_info = StoreInfo(founder_id, store_name)
-        self.roles: Dict[str, Permissions] = {founder_id: Permissions(True)}  # {user_id, permissions object}
+        self.__discount_policy = DiscountPolicy()
+        self.__store_info = StoreInfo(founder_id, store_name)
+        self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
+
+    def get_store_info(self):
+        return self.__store_info
 
     def get_all_products(self) -> list[Product]:
         return list(self.__products.values())
@@ -35,7 +38,7 @@ class Store:
                 return self.__products[product_id]
 
     def has_access(self, user_id, action):
-        return self.roles[user_id].check_permission(action)
+        return self.__roles[user_id].check_permission(action)
 
     def update_quantities(self, product_id, quantity):
         self.__quantities[product_id] += quantity
@@ -44,7 +47,7 @@ class Store:
         self.__products[product_id] = Product(product_id)
         self.__quantities[product_id] = quantity
 
-    def edit_product(self, product_id, name=None, description=None, rating = None):
+    def edit_product(self, product_id, name=None, description=None, rating=None):
         product = self.__products[product_id]
         if name is not None:
             product.change_name(name)
@@ -53,5 +56,17 @@ class Store:
         if rating is not None:
             product.change_rating(rating)
 
-    def add_owner(self, user_id):
-        pass
+    def add_owner(self, user_id: str, new_user_id: str):
+        if new_user_id in self.__roles.keys():
+            return False
+        self.__roles[new_user_id] = Permissions(True, user_id)
+        return True
+
+    def add_manager(self, user_id: str, new_manager_id: str):
+        if new_manager_id in self.__roles.keys():
+            return False
+        self.__roles[new_manager_id] = Permissions(False, user_id)
+        return True
+
+    def change_permissions(self,user_id,action_number,new_val):
+        self.__roles[user_id].set_permission(action_number,new_val)

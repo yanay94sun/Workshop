@@ -15,3 +15,12 @@ class Product:
 
     def change_rating(self,new_rating):
         self.__rating = new_rating
+
+    def get_name(self):
+        return self.__name
+
+    def get_description(self):
+        return self.__description
+
+    def get_rating(self):
+        pass
