@@ -9,6 +9,12 @@ class Market:
     def init(self, admin_id, admin_pwd, payment_service, supply_service):
         pass
 
+    def contact_payment_service(self, payment_info):
+        pass
+
+    def contact_supply_service(self, package_info):
+        pass
+
     def purchase_shop_cart(self, user_id: str,shopping_cat: ShoppingCart):
         pass
 

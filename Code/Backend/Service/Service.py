@@ -21,9 +21,9 @@ from Code.Backend.Service.Objects.Store_info import Store_info
 
 class Service:
     def __init__(self):
-        self.user_controller = None
-        self.market = None
-        self.store_controller = None
+        self.user_controller: UserController = None
+        self.market: Market = None
+        self.store_controller: StoreController = None
 
     """Functional requirements"""
 
@@ -33,6 +33,10 @@ class Service:
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
         -   creates the main admin, if not exist
+        :param admin_id: if not None, one of the system's admins
+        :param admin_pwd: if admin id is not None, is the password of the corresponds admin id
+        :param payment_service: an Enum to configure the payment service
+        :param supply_service: an Enum to configure the supply service
         :return: None
         """
         self.market = Market(admin_id, admin_pwd, payment_service, supply_service)
@@ -47,7 +51,12 @@ class Service:
         :param payment_info: the data the payment service needs to successfully manage the payment.
         :return: Response object
         """
-        return Response(self.market.contact_payment_service(payment_info))
+        return Response(self.market.contact_payment_service(self.__service_payment_info_to_domain(payment_info)))
+
+    def __service_payment_info_to_domain(self, payment_info):
+        """
+        converts ...
+        """
         pass
 
     def contact_supply_service(self, package_info: Package_info) -> Response:
@@ -57,7 +66,12 @@ class Service:
         :param package_info: the data the current supply service needs to successfully process the request.
         :return:
         """
-        return Response(self.market.contact_supply_service(package_info))
+        return Response(self.market.contact_supply_service(self.__service_supply_info_to_domain(package_info)))
+
+    def __service_supply_info_to_domain(self, supply_info):
+        """
+
+        """
         pass
 
     """
@@ -120,14 +134,15 @@ class Service:
         """
         return Response(self.store_controller.get_store_info(store_id))
 
-    def get_stores_info(self, user_id: str) -> Response:
+    def get_stores_info(self, user_id: str, store_id) -> Response:
         """
         II.2.1.2
         when a user request for all stores info.
         :param user_id:
+        :param: store_id
         :return: List of store info
         """
-        return Response(self.store_controller.get_stores_info())
+        return Response(self.store_controller.get_store_info(store_id))
         pass
 
     def search_product(self, user_id: str, product_filters: Product_search_filters):
@@ -147,6 +162,7 @@ class Service:
         """
         II.2.3
         Checks if the product is available in the store, and adds the given product to the user's shop cart.
+        supports only instant purchase
         :param user_id:
         :param store_id:
         :param product_id:
@@ -182,7 +198,7 @@ class Service:
         II.2.5
         gets user's shopping cart and applies discount policies on each basket, then decrease the quantity of the
         product in the store
-
+        supports only instant purchase
         :param user_id:
         :return:
         """
@@ -198,16 +214,19 @@ class Service:
         :param user_id:
         :return:
         """
-        pass
+        return Response(self.user_controller.logout(user_id))
 
-    def open_store(self, user_id: str):
+    def open_store(self, user_id: str, store_name: str):
         """
         II.3.2
-        TODO should receive more arguments
         A registered member may open a store and be the founder and a manager.
         :param user_id:
+        :param store_name: the store's name
         :return:
         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.store_controller.open_store(user_id, store_name))
         pass
 
     def review_product(self, user_id: str, product_info, review: str):
@@ -308,28 +327,53 @@ class Service:
         """
         pass
 
-    # def add_products_to_inventory(self, user_id: str, store_id: str, products: dict):
-    #     """
-    #     II.4.1
-    #
-    #     :param user_id:
-    #     :param store_id:
-    #     :param products: {product_info: Product_info, quantity:int}
-    #     :return:
-    #     """
-    #     pass
-    #
-    # def remove_products_to_inventory(self, user_id: str, store_id: str, products: dict):
-    #
-    def manage_inventory(self, user_id: str, store_id: str, products: Dict[Product_info, int]):
+    def add_products_to_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
         """
-        II.4.1
-        TODO: maybe to split this into 3 funcs??? + decide whose responsible
-        add, remove and edit the inventory
+        II.4.1.1
+        adds the given product's quantity to the store's inventory.
+        if the product id does not exists, it adds a new default product info.
+        (to edit to product info, user should call edit)
         :param user_id:
         :param store_id:
-        :param products: {product_info: Product_info, quantity:int}
+        :param product_id:
+        :param quantity:
         :return:
+        """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.store_controller.add_products_to_inventory(user_id, store_id, product_id, quantity))
+
+    def remove_products_from_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
+        """
+        II.4.1.2
+
+        :param user_id:
+        :param store_id:
+        :param product_id
+        :param quantity:
+        :return:
+        """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.store_controller.remove_products_from_inventory(user_id, store_id, product_id, quantity))
+        pass
+
+    def edit_product_info(self, user_id: str, store_id: str, product_id: str, new_product_info):
+        """
+        II.4.1.3
+
+        :param user_id:
+        :param store_id:
+        :param product_id:
+        :param new_product_info:
+        :return:
+        """
+        return Response(self.store_controller.edit_product_info(user_id, store_id, product_id,
+                                                                self.__service_product_info_to_domain(new_product_info)))
+
+    def __service_product_info_to_domain(self, product_info):
+        """
+        converts service product info into domain product info
         """
         pass
 
@@ -367,13 +411,18 @@ class Service:
 
     def add_store_owner(self, user_id: str, store_id: str, new_owner_id: str):
         """
+        TODO: follow specification
         II.4.4
         :param user_id:
         :param store_id:
         :param new_owner_id:
         :return:
         """
-        pass
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        if not self.user_controller.is_member(new_owner_id):
+            return Response(msg="New owner is not a member")
+        return Response(self.store_controller.add_store_owner(user_id, store_id, new_owner_id))
 
     def remove_store_owner(self, user_id: str, store_id: str, owner_id: str):
         """
@@ -388,15 +437,22 @@ class Service:
     def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
         """
         II.4.6
+        assign the new desired manager as a store manager with default permissions.
         :param user_id:
         :param store_id:
         :param new_manager_id:
         :return:
         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        if not self.user_controller.is_member(new_manager_id):
+            return Response(msg="New owner is not a member")
+        return Response(self.store_controller.add_store_manager(user_id, store_id, new_manager_id))
         pass
 
     def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Permission):
         """
+        replaces the permissions of the manager with manager_id with the new permissions.
         II.4.7
         :param user_id:
         :param store_id:
@@ -404,6 +460,12 @@ class Service:
         :param new_permission:
         :return:
         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.store_controller.change_manager_permission(
+            user_id, store_id, manager_id, self.__service_permissions_to_domain(new_permission)))
+
+    def __service_permissions_to_domain(self, permissions):
         pass
 
     def remove_store_manager(self, user_id: str, store_id: str, manager_id: str):
@@ -418,11 +480,15 @@ class Service:
 
     def close_store(self, user_id: str, store_id: str):
         """
+        close the store - makes it inactive
         II.4.9
         :param user_id:
         :param store_id:
         :return:
         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.store_controller.close_store(user_id, store_id))
         pass
 
     def reopen_store(self, user_id: str, store_id: str):
@@ -436,11 +502,15 @@ class Service:
 
     def get_store_roles(self, user_id: str, store_id: str):
         """
+        returns list of manager and owners with their permissions
         II.4.11
         :param user_id:
         :param store_id:
         :return:
         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.store_controller.get_store_roles(user_id, store_id))
         pass
 
     def get_users_messages(self, user_id: str, store_id: str):
@@ -466,11 +536,15 @@ class Service:
 
     def get_store_purchase_history(self, user_id: str, store_id: str):
         """
+        returns the store's purchase history
         II.4.13
         :param user_id:
         :param store_id:
         :return:
         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.store_controller.get_store_purchase_history(user_id, store_id))
         pass
 
     """ Nitzan: put responsibilities of the following methods in Market """
@@ -521,6 +595,9 @@ class Service:
         :param store_id:
         :return:
         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return Response(self.market.get_stores_purchase_history_by_admin(user_id, store_id))
         pass
 
     def get_system_statistic_by_admin(self, user_id: str):

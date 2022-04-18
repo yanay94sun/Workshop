@@ -37,6 +37,9 @@ class UserController:
     def is_logged_in(self, user_id: str):
         pass
 
+    def is_member(self, user_id):
+        pass
+
     def add_product_to_shop_cart(self, user_id: str, product_info):
         pass
 
