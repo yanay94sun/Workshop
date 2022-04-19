@@ -98,7 +98,7 @@ class Service:
         return Response(self.user_controller.exit(user_id))
         pass
 
-    def register(self, guest_id: str, user_info):
+    def register(self, guest_id: str, user_info: Dict):
         """
         II.1.3
         register a user to the market, creates a member state.

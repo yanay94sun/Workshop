@@ -1,28 +1,49 @@
 from Code.Backend.Domain.GuestState import GuestState
 from Code.Backend.Domain.MemberState import MemberState
-from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.State import State
+from Code.Backend.Domain.MFResponse import Response
 
 
 class Visitor:
-    def __init__(self, id: str):
-        """
-
-        """
-        self.__id = id
-        self.__shopping_cart = ShoppingCart()
-        self.__role = GuestState()
-        self.__logged_in = False
-
-    def transition_to(self, state: State):
-        self.__role = state
+    """
+    this class represents a user of the system
+    """
+    def __init__(self, uid: str):
+        self.__id = uid
+        self.__status = GuestState()
 
     def exit(self):
-        self.__role.exit()
+        self.__status.exit()
 
-    def login(self,member_state : MemberState):
-        self.__logged_in = True
-        self.transition_to(member_state)
+    def login(self, member_state: MemberState, password: str):
+        if not member_state.password_confirmed(password):
+            return Response(msg="invalid password")
+        self.__status = member_state
+        return Response()
 
     def is_logged_in(self):
-        return self.__logged_in
+        return self.__status.is_logged_in()
+
+    def logout(self):
+        if not self.is_logged_in():
+            return Response(msg="member is not logged in")
+        self.__status = GuestState()
+        return Response()
+
+    def register(self, member_info) -> Response:
+        """
+        return the new state so the UC could save it
+        """
+        if self.is_logged_in():
+            return Response(msg="the user is already a member")
+        self.__status = MemberState(self.__status.get_shopping_cart(), member_info)
+        return Response(value=self.__status)
+
+    def add_product_to_shopping_cart(self, product_info):
+        return self.__status.add_product_to_shopping_cart(product_info)
+
+    def get_shopping_cart(self):
+        self.__status.get_shopping_cart()
+
+    def remove_product_from_shopping_cart(self, product_id):
+        self.__status.get_shopping_cart().remove_product(product_id)
