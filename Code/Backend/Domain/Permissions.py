@@ -13,8 +13,8 @@ class Permissions:
         return self.__permissions[action_number.value]
 
     def set_permission(self, action_number, new_val):
-        if action_number in self.__permissions.keys():
-            self.__permissions[action_number] = new_val
+        if action_number.value in self.__permissions.keys():
+            self.__permissions[action_number.value] = new_val
 
     def get_appointee_id(self):
         return self.__appointee_id
