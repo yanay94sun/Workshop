@@ -61,22 +61,22 @@ class UserController:
 
     def add_product_to_shop_cart(self, user_id: str, product_info):  # todo: shouldn't be shopping basket?
         if user_id not in self.__users:
-            return Response("user doesn't exist")
+            return Response.from_error("user doesn't exist")
         return self.__users[user_id].add_product_to_shopping_cart(product_info)
 
     def get_shop_cart(self, user_id: str):
         if user_id not in self.__users:
-            return Response("user doesn't exist")
+            return Response.from_error("user doesn't exist")
         return self.__users[user_id].get_shopping_cart()
 
     def remove_product_from_shop_cart(self, user_id: str, product_id: str): # todo: shouldn't be shopping basket?
         if user_id not in self.__users:
-            return Response("user doesn't exist")
+            return Response.from_error("user doesn't exist")
         return self.__users[user_id].remove_product_from_shopping_cart(product_id)
 
     def logout(self, user_id: str):
         if user_id not in self.__users:
-            return Response("user doesn't exist")
+            return Response.from_error("user doesn't exist")
         return self.__users[user_id].logout()
 
     def review_product(self, user_id: str, product_info, review: str):
