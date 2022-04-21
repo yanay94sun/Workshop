@@ -19,6 +19,7 @@ class StoreControllerTests(unittest.TestCase):
         self.assertTrue(response.msg is not None)
         # ID exists
         response = sc.get_store_info("1")
+        print(response.value)
         self.assertTrue(response.value is not None)
 
     def test_2_get_stores_info(self):

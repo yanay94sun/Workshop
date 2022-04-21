@@ -12,7 +12,7 @@ from Code.Backend.Service.Objects.Product_search_filters import Product_search_f
 
 def search_filter(res, filterType, filterValue=None):
     # TODO think about implementation
-    # 1 = price range should get filterValue as ?
+    # 1 = price range should get filterValue as {min:x, max:y}
     if filterType == 1:
         return list(filter(lambda product: product))
 
@@ -132,7 +132,6 @@ class StoreController:
                 return Response(msg="Attempt to remove more Items then the existing quantity")
             else:
                 store.update_quantities(product_id, -quantity)
-                store.add_purchase(product.get_name(), quantity * product.get_price(), quantity)
                 return Response(value="Removed " + str(quantity) + " items of " + product.get_name())
 
         except ValueError as e:
@@ -196,7 +195,7 @@ class StoreController:
             if not store.has_access(user_id, Actions.CHANGE_MANAGER_PERMISSION):
                 return Response(msg="User does not have access to this action")
 
-            store.change_permissions(manager_id, new_permission, val)  # TODO think about what value is given
+            store.change_permissions(manager_id, new_permission, val)
             return Response(value="Permissions successfully changed")
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -262,6 +261,14 @@ class StoreController:
         except ValueError:  # as e:
             return None  # Response(msg=e.args[0])
 
+    def purchase_market(self, product_id, store_id, quantity, price):
+        ADMIN_ID = "123"  # TODO add default admin for system
+        if self.remove_products_from_inventory(ADMIN_ID,store_id,product_id,quantity).msg is None:
+            try:
+                store = self.__get_store(store_id)
+                store.add_purchase(product_id, price, quantity)
+            except ValueError as e:
+                return Response(msg=e.args)
     # ---------------------------------------------------------------------
 
     def __get_store(self, store_id):
