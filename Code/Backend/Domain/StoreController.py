@@ -267,6 +267,7 @@ class StoreController:
             try:
                 store = self.__get_store(store_id)
                 store.add_purchase(product_id, price, quantity)
+                return Response(value="Successes")
             except ValueError as e:
                 return Response(msg=e.args)
     # ---------------------------------------------------------------------

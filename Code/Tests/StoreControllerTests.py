@@ -106,10 +106,16 @@ class StoreControllerTests(unittest.TestCase):
         self.assertTrue(response.value[USER_ID].get_is_owner())
 
     def test_a_12_get_store_purchase_history(self):
+        response = sc.purchase_market(PRODUCT_ID,STORE_ID,3,30)
+
+        self.assertTrue(response.value == "Successes")
+
         response = sc.get_store_purchase_history(USER_ID,STORE_ID)
         self.assertTrue(response.value is not None)
         # check if there is a purchase with 3 items
         self.assertTrue(response.value[0].quantity == 3)
+        self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 3) is not None)
+        self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 4) is None)
 
     def test_a_13_close_store(self):
         response = sc.close_store(USER_ID, STORE_ID)
