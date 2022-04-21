@@ -1,0 +1,12 @@
+from enum import Enum
+
+
+class Actions(Enum):
+    INVENTORY_ACTION = 1
+    ADD_STORE_OWNER = 2
+    ADD_STORE_MANAGER = 3
+    CHANGE_MANAGER_PERMISSION = 4
+    CLOSE_STORE = 5
+    GET_STORE_ROLES = 6
+    GET_STORE_PURCHASE_HISTORY = 7
+
