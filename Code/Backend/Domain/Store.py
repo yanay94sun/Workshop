@@ -43,7 +43,9 @@ class Store:
                 return self.__products[product_id]
 
     def has_access(self, user_id, action):
-        return self.__roles[user_id].check_permission(action)
+        if user_id in self.__roles.keys():
+            return self.__roles[user_id].check_permission(action)
+        return False
 
     def update_quantities(self, product_id, quantity):
         self.__quantities[product_id] += quantity
