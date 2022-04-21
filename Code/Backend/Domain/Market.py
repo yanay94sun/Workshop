@@ -47,7 +47,7 @@ class Market:
         #     return Response(value=val)
         # return Response(msg="Cannot make connection with Payment service, Please try again later")
         pass
-    
+
     def close_store_permanently(self, user_id: str, store_id: str):
         """
         II.6.1
