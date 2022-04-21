@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from Code.Backend.Domain.DM_product_info import DM_product_info
+from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
 from Code.Backend.Domain.Market import Market
 from Code.Backend.Domain.StoreController import StoreController
 from Code.Backend.Domain.UserController import UserController
@@ -57,7 +58,7 @@ class Service:
         """
         converts ...
         """
-        pass
+        return DomainPaymentInfo(payment_info)
 
     def contact_supply_service(self, package_info: Package_info) -> Response:
         """
