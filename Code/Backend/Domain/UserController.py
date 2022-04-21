@@ -10,7 +10,7 @@ class UserController:
         """
 
         """
-        self.__users: Dict[str, Visitor] = {}  # username: user
+        self.__users: Dict[str, Visitor] = {}  # ip or other user identifier: user todo
         self.__members: Dict[str, MemberState] = {}  # username: member
         self.__id_counter = 0
 
@@ -18,12 +18,12 @@ class UserController:
         pass
 
     def create_guest(self):
-        new_id = self.generate_id()
+        new_id = self.__generate_id()
         user = Visitor(new_id)
         self.__users[new_id] = user
         return Response(value=new_id)
 
-    def generate_id(self):
+    def __generate_id(self):
         self.__id_counter += 1
         return str(self.__id_counter)
 
@@ -35,7 +35,7 @@ class UserController:
     def register(self, user_id: str, member_info: Dict):
         key = member_info["username"]
         if key in self.__members:
-            return Response("username already exists")
+            return Response.from_error("username already exists")
         new_status = self.__users[user_id].register(member_info)
         if new_status.error_occurred():
             return new_status
@@ -52,12 +52,11 @@ class UserController:
 
     def is_logged_in(self, user_id: str):
         if user_id not in self.__users:
-            return Response(msg="user")
-
-    def is_member(self, user_id):
-        if user_id not in self.__users:
-            return Response("user doesn't exist")
+            return Response(msg="user isn't logged in")
         return self.__users[user_id].is_logged_in()
+
+    def is_member(self, member_id):
+        return Response(member_id in self.__members)
 
     def add_product_to_shop_cart(self, user_id: str, product_info):  # todo: shouldn't be shopping basket?
         if user_id not in self.__users:

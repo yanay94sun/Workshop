@@ -17,7 +17,7 @@ class Visitor:
 
     def login(self, member_state: MemberState, password: str):
         if not member_state.password_confirmed(password):
-            return Response(msg="invalid password")
+            return Response.from_error("invalid password")
         self.__status = member_state
         return Response()
 
@@ -35,7 +35,7 @@ class Visitor:
         return the new state so the UC could save it
         """
         if self.is_logged_in():
-            return Response(msg="the user is already a member")
+            return Response.from_error("the user is already a member")
         self.__status = MemberState(self.__status.get_shopping_cart(), member_info)
         return Response(value=self.__status)
 
