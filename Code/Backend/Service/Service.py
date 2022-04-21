@@ -99,7 +99,7 @@ class Service:
         return Response(self.user_controller.exit(user_id))
         pass
 
-    def register(self, guest_id: str, user_info):
+    def register(self, guest_id: str, user_info: Dict):
         """
         II.1.3
         register a user to the market, creates a member state.
@@ -159,7 +159,7 @@ class Service:
         return Response(self.store_controller.search_product())
         pass
 
-    def add_product_to_shop_cart(self, user_id: str, store_id, product_id, quantity):
+    def add_product_to_shop_cart(self, user_id: str, store_id, product_id, quantity):  # TODO Asaf
         """
         II.2.3
         Checks if the product is available in the store, and adds the given product to the user's shop cart.
@@ -184,7 +184,7 @@ class Service:
         """
         return Response(self.user_controller.get_shop_cart(user_id))
 
-    def remove_product_from_shop_cart(self, user_id: str, product_id: str):
+    def remove_product_from_shop_cart(self, user_id: str, product_id: str):  # TODO Basket!
         """
         II.2.4
 
@@ -441,7 +441,7 @@ class Service:
         assign the new desired manager as a store manager with default permissions.
         :param user_id:
         :param store_id:
-        :param new_manager_id:
+        :param new_manager_id: should be the new manager's username
         :return:
         """
         if not self.user_controller.is_logged_in(user_id):

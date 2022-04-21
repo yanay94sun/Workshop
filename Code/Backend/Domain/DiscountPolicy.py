@@ -3,6 +3,8 @@ class DiscountPolicy:
         """
         holds 3 lists of discount types
         """
-        pass
+        self.visible_discounts = []
+        self.visible_discounts = []
+        self .conditional_discounts = []
 
 
