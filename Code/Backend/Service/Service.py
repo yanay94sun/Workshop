@@ -1,5 +1,9 @@
 from typing import Dict, List
 import logging
+
+from Code.Backend.Domain.DomainPackageInfo import DomainSupplyInfo
+from Code.Backend.Service.Objects.PackageInfo import SupplyInfo
+
 logging.basicConfig(filename="SystemLog.log")
 
 from Code.Backend.Domain.DM_product_info import DM_product_info
@@ -69,20 +73,20 @@ class Service:
         """
         return DomainPaymentInfo(payment_info)
 
-    def contact_supply_service(self, package_info: Package_info) -> Response:
+    def contact_supply_service(self, supply_info: SupplyInfo) -> Response:
         """
         I.4
         a request for a delivery from the supply service.
         :param package_info: the data the current supply service needs to successfully process the request.
         :return:
         """
-        return Response(self.market.contact_supply_service(self.__service_supply_info_to_domain(package_info)))
+        return Response(self.market.contact_supply_service(self.__service_supply_info_to_domain(supply_info)))
 
     def __service_supply_info_to_domain(self, supply_info):
         """
 
         """
-        pass
+        return DomainSupplyInfo(supply_info)
 
     """
     Users requirements

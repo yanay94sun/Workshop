@@ -1,4 +1,6 @@
 from Code.Backend.Domain.PaymentServiceAdapter import PaymentServiceAdapter
+from Code.Backend.Domain.SupplyServiceAdapter import SupplyServiceAdapter
+
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.MFResponse import Response
 
@@ -16,6 +18,7 @@ class Market:
         self.__payment_service = None
         self.__supply_service = None
         self.__payment_service_adapter = None
+        self.__supply_service_adapter = None
 
     def init(self, admin_id, admin_pwd, payment_service, supply_service):
         self.__admin_id = admin_id
@@ -23,6 +26,7 @@ class Market:
         self.__payment_service = payment_service.value
         self.__supply_service = supply_service.value
         self.__payment_service_adapter = PaymentServiceAdapter()
+        self.__supply_service_adapter = SupplyServiceAdapter()
 
         payment_service = self.connect_payment_service(payment_service)
         if payment_service.error_occurred():
@@ -36,8 +40,8 @@ class Market:
     def contact_payment_service(self, domain_payment_info ):
         return self.__payment_service_adapter.pay(domain_payment_info)
 
-    def contact_supply_service(self, package_info):
-        pass
+    def contact_supply_service(self, supply_info):
+        return self.__supply_service_adapter.pay(supply_info)
 
     def purchase_shop_cart(self, user_id: str, shopping_cat: ShoppingCart):
         pass
@@ -49,11 +53,7 @@ class Market:
         return self.__payment_service_adapter.connect_payment_service(payment_service)
 
     def connect_supply_service(self, supply_service):
-        # val = supply_service.make_connection()
-        # if val is not None:
-        #     return Response(value=val)
-        # return Response(msg="Cannot make connection with Payment service, Please try again later")
-        pass
+        return self.__supply_service_adapter.conect_supply_service(supply_service)
 
     def close_store_permanently(self, user_id: str, store_id: str):
         """
@@ -92,14 +92,16 @@ class Market:
         """
         pass
 
-    def get_stores_purchase_history_by_admin(self, user_id: str, store_id=None):
-        """
-        II.6.4
-        :param user_id:
-        :param store_id:
-        :return:
-        """
-        pass
+    # Moved and split into User controller and Shop Controller
+
+    # def get_stores_purchase_history_by_admin(self, user_id: str, store_id=None):
+    #     """
+    #     II.6.4
+    #     :param user_id:
+    #     :param store_id:
+    #     :return:
+    #     """
+    #     pass
 
     def get_system_statistic_by_admin(self, user_id: str):
         """
