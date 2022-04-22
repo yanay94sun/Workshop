@@ -1,3 +1,4 @@
+import unittest
 from unittest import TestCase
 
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
@@ -33,3 +34,7 @@ class TestMarket(TestCase):
 
     def test_connect_supply_service(self):
         self.assertTrue(not self.market.connect_supply_service(self.supply_service).error_occurred())
+
+
+if __name__ == '__main__':
+    unittest.main()d
