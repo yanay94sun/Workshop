@@ -23,17 +23,17 @@ class Market:
     def init(self, admin_id, admin_pwd, payment_service, supply_service):
         self.__admin_id = admin_id
         self.__admin_pwd = admin_pwd
-        self.__payment_service = payment_service.value
-        self.__supply_service = supply_service.value
+        self.__payment_service = payment_service
+        self.__supply_service = supply_service
         self.__payment_service_adapter = PaymentServiceAdapter()
         self.__supply_service_adapter = SupplyServiceAdapter()
 
-        payment_service = self.connect_payment_service(payment_service)
-        if payment_service.error_occurred():
-            return payment_service
-        supply_service = self.connect_supply_service(supply_service)
-        if supply_service.error_occurred():
-            return supply_service
+        payment_service_res = self.connect_payment_service(payment_service)
+        if payment_service_res.error_occurred():
+            return payment_service_res
+        supply_service_res = self.connect_supply_service(supply_service)
+        if supply_service_res.error_occurred():
+            return supply_service_res
 
         return Response(self)
 
