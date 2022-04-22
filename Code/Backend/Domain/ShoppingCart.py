@@ -14,17 +14,17 @@ class ShoppingCart:
         self.shopping_baskets: Dict[str, ShoppingBasket] = {} # store_id : basket
 
     def add_product(self, ppr: ProductPurchaseRequest):
-        if ppr.store_ID in self.shopping_baskets:
-            self.shopping_baskets[ppr.store_ID].add_to_basket(ppr.product_ID, ppr.quantity)
+        if ppr.store_id in self.shopping_baskets:
+            self.shopping_baskets[ppr.store_id].add_to_basket(ppr.product_id, ppr.quantity)
         else:
-            self.shopping_baskets[ppr.store_ID] = ShoppingBasket(ppr.store_ID)
+            self.shopping_baskets[ppr.store_id] = ShoppingBasket(ppr.store_id)
 
 
     def remove_product(self, ppr: ProductPurchaseRequest):
-        if ppr.store_ID not in self.shopping_baskets:
+        if ppr.store_id not in self.shopping_baskets:
             return Response.from_error("no basket of given user and store")
-        return self.shopping_baskets[ppr.store_ID]\
-            .remove_from_basket(self, product_id=ppr.product_ID, quantity=ppr.quantity)
+        return self.shopping_baskets[ppr.store_id]\
+            .remove_from_basket(self, product_id=ppr.product_id, quantity=ppr.quantity)
 
     def iter_products(self):
         #  generator
