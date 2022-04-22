@@ -252,7 +252,7 @@ class StoreController:
     def get_product(self, store_id, product_id, quantity):
         """
         checks if the product is available, and returns its reference.
-        returns None if not available
+        throw exception if not available or not exists.
         """
         store = self.__get_store(store_id)
         try:
@@ -267,8 +267,12 @@ class StoreController:
             try:
                 store = self.__get_store(store_id)
                 store.add_purchase(product_id, price, quantity)
+                return Response(value="Successes")
             except ValueError as e:
                 return Response(msg=e.args)
+
+    def product_in_stock(self,product_purchase_request):
+        pass
     # ---------------------------------------------------------------------
 
     def __get_store(self, store_id):
