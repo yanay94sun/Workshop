@@ -5,26 +5,33 @@ from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Service.Objects.PaymentService import PaymentService
 
 
-# static method for creating Market object
-def init(self, admin_id, admin_pwd, payment_service, supply_service):
-    payment_service = self.connect_payment_service(payment_service)
-    if payment_service.error_occurred():
-        return payment_service
-    supply_service = self.connect_supply_service(supply_service)
-    if supply_service.error_occurred():
-        return supply_service
 
-    return Response(value=Market(admin_id, admin_pwd, payment_service, supply_service))
 
 
 class Market:
 
-    def __init__(self, admin_id, admin_pwd, payment_service, supply_service):
+    def __init__(self):
+        self.__admin_id = None
+        self.__admin_pwd = None
+        self.__payment_service = None
+        self.__supply_service = None
+        self.__payment_service_adapter = None
+
+    def init(self, admin_id, admin_pwd, payment_service, supply_service):
         self.__admin_id = admin_id
         self.__admin_pwd = admin_pwd
         self.__payment_service = payment_service.value
         self.__supply_service = supply_service.value
         self.__payment_service_adapter = PaymentServiceAdapter()
+
+        payment_service = self.connect_payment_service(payment_service)
+        if payment_service.error_occurred():
+            return payment_service
+        supply_service = self.connect_supply_service(supply_service)
+        if supply_service.error_occurred():
+            return supply_service
+
+        return Response(self)
 
     def contact_payment_service(self, domain_payment_info ):
         return self.__payment_service_adapter.pay(domain_payment_info)
@@ -38,8 +45,8 @@ class Market:
     def complaint(self, comp):
         pass
 
-    def connect_payment_service(self):
-        return self.__payment_service_adapter.connect_payment_service(self.__payment_service)
+    def connect_payment_service(self, payment_service):
+        return self.__payment_service_adapter.connect_payment_service(payment_service)
 
     def connect_supply_service(self, supply_service):
         # val = supply_service.make_connection()

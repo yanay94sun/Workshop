@@ -1,4 +1,6 @@
 from typing import Dict, List
+import logging
+logging.basicConfig(filename="SystemLog.log")
 
 from Code.Backend.Domain.DM_product_info import DM_product_info
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
@@ -8,7 +10,7 @@ from Code.Backend.Domain.UserController import UserController
 from Code.Backend.Service.Objects import Shopcart_info
 from Code.Backend.Service.Objects.Contact_info import Contact_info
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
-from Code.Backend.Service.Objects.Package_info import Package_info
+from Code.Backend.Service.Objects.Supply_info import Package_info
 from Code.Backend.Service.Objects.Payment_info import Payment_info
 from Code.Backend.Service.Objects.Permissions import Permission
 from Code.Backend.Service.Objects.Personal_info import Personal_info
@@ -40,10 +42,17 @@ class Service:
         :param supply_service: an Enum to configure the supply service
         :return: None
         """
-        self.market = Market(admin_id, admin_pwd, payment_service, supply_service)
+        self.market = Market().init(admin_id, admin_pwd, payment_service, supply_service).value
+        if self.market.error_occurred():
+            logging.critical(msg=self.market.msg)
+
         self.user_controller = UserController()
         self.store_controller = StoreController()
-        pass
+
+        if self.market is not None and self.user_controller is not None and self.store_controller is not None:
+            logging.info("The system initialized successfully")
+        else:
+            logging.critical("Can't initial system")
 
     def contact_payment_service(self, payment_info: Payment_info) -> Response:
         """
