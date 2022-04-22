@@ -5,6 +5,6 @@ class ProductPurchaseRequest:
                  quantity):
         """
         """
-        self.product_ID = product_id
-        self.store_ID = store_id
+        self.product_id = product_id
+        self.store_id = store_id
         self.quantity = quantity
