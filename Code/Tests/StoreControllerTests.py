@@ -1,8 +1,8 @@
 import unittest
 
 from Code.Backend.Domain.Actions import Actions
-from Code.Backend.Domain.ProductInfo import ProductInfo
-from Code.Backend.Domain.StoreController import StoreController
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Domain.Controllers.StoreController import StoreController
 
 sc = StoreController()
 USER_ID = '123'
@@ -60,10 +60,10 @@ class StoreControllerTests(unittest.TestCase):
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 7) is None)
 
     def test_6_edit_product_info(self):
-        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, ProductInfo(name="Apple"))
+        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, ProductPurchaseRequest(name="Apple"))
         self.assertTrue(response.value == "Product was edited")
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 0).get_name() == "Apple")
-        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, ProductInfo(category="Fruits"))
+        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, ProductPurchaseRequest(category="Fruits"))
         self.assertTrue(response.value == "Product was edited")
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 0).get_category() == "Fruits")
 

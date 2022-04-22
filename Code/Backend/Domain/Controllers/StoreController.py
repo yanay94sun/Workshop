@@ -2,12 +2,8 @@ from typing import Dict
 
 from Code.Backend.Domain.Actions import Actions
 from Code.Backend.Domain.MFResponse import Response
-from Code.Backend.Domain.MemberState import MemberState
-from Code.Backend.Domain.Product import Product
-from Code.Backend.Domain.ProductInfo import ProductInfo
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.Store import Store
-from Code.Backend.Domain.Visitor import Visitor
-from Code.Backend.Service.Objects.Product_search_filters import Product_search_filters
 
 
 def search_filter(res, filterType, filterValue=None):
@@ -137,7 +133,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def edit_product_info(self, user_id, store_id, product_id, product_info: ProductInfo):
+    def edit_product_info(self, user_id, store_id, product_id, product_info: ProductPurchaseRequest):
         try:
             store = self.__get_store(store_id)
 
@@ -260,6 +256,13 @@ class StoreController:
             return res
         except ValueError:  # as e:
             return None  # Response(msg=e.args[0])
+
+    def create_product_purchase_request(self, store_id, product_id, quantity):
+        product = self.get_product(store_id, product_id, quantity)
+        if product:
+            return Response(ProductPurchaseRequest(store_id, product_id, quantity))
+        return Response.from_error("Got None from get_product")
+
 
     def purchase_market(self, product_id, store_id, quantity, price):
         ADMIN_ID = "123"  # TODO add default admin for system

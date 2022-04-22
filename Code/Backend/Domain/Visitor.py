@@ -1,3 +1,4 @@
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.GuestState import GuestState
 from Code.Backend.Domain.MemberState import MemberState
 from Code.Backend.Domain.State import State
@@ -43,7 +44,7 @@ class Visitor:
         return self.__status.add_product_to_shopping_cart(product_info)
 
     def get_shopping_cart(self):
-        self.__status.get_shopping_cart()
+        return self.__status.get_shopping_cart()
 
-    def remove_product_from_shopping_cart(self, product_id):
-        self.__status.get_shopping_cart().remove_product(product_id)
+    def remove_product_from_shopping_cart(self, ppr: ProductPurchaseRequest):
+        return self.__status.get_shopping_cart().remove_product(ppr)
