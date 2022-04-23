@@ -5,6 +5,7 @@ from Code.Backend.Domain.DiscountPolicyObjects.MinPriceForDiscount import MinPri
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.Controllers.StoreController import StoreController
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
+from Code.Backend.Domain.StoreOfficials.StoreOwner import StoreOwner
 
 sc = StoreController()
 USER_ID = '123'
@@ -109,7 +110,7 @@ class StoreControllerTests(unittest.TestCase):
         response = sc.get_store_roles(USER_ID, STORE_ID)
         self.assertTrue(response.value is not None)
         # check if user with id 123 is an owner
-        self.assertTrue(response.value[USER_ID].get_is_owner())
+        self.assertTrue(isinstance(response.value[USER_ID], StoreOwner))
 
     def test_a_12_get_store_purchase_history(self):
         pass
