@@ -1,6 +1,6 @@
 from typing import Dict
 
-from Code.Backend.Domain import MemberState
+from Code.Backend.Domain.VisitorStates import MemberState
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.Visitor import Visitor
