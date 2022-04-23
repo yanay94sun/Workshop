@@ -1,22 +1,33 @@
 import threading
 from typing import Dict
+from typing import Dict, List
+import logging
+
+from Code.Backend.Domain.DomainPackageInfo import DomainSupplyInfo
+from Code.Backend.Service.Objects.PackageInfo import SupplyInfo
+
+logging.basicConfig(filename="SystemLog.log")
 
 from Code.Backend.Domain.Controllers.Market import Market
 from Code.Backend.Domain.Controllers.StoreController import StoreController
 from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Domain.DM_product_info import DM_product_info
+from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
+from Code.Backend.Service.Objects import Shopcart_info
 from Code.Backend.Service.Objects.Contact_info import Contact_info
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
-from Code.Backend.Service.Objects.Package_info import Package_info
+from Code.Backend.Service.Objects.Supply_info import Package_info
 from Code.Backend.Service.Objects.Payment_info import Payment_info
 from Code.Backend.Service.Objects.Permissions import Permission
 from Code.Backend.Service.Objects.Personal_info import Personal_info
 from Code.Backend.Service.Objects.Personal_purchase_history import Personal_purchase_history
+from Code.Backend.Service.Objects.Product_info import Product_info
 from Code.Backend.Service.Objects.Product_search_filters import Product_search_filters
 from Code.Backend.Service.Objects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
+from Code.Backend.Service.Objects.Store_info import Store_info
 
-ADMIN_ID = "-1"
 
 class Service:
     def __init__(self):
@@ -39,10 +50,17 @@ class Service:
         :param supply_service: an Enum to configure the supply service
         :return: None
         """
-        self.market = Market(admin_id, admin_pwd, payment_service, supply_service)
+        self.market = Market().init(admin_id, admin_pwd, payment_service, supply_service).value
+        if self.market.error_occurred():
+            logging.critical(msg=self.market.msg)
+
         self.user_controller = UserController()
         self.store_controller = StoreController()
-        pass
+
+        if self.market is not None and self.user_controller is not None and self.store_controller is not None:
+            logging.info("The system initialized successfully")
+        else:
+            logging.critical("Can't initial system")
 
     def contact_payment_service(self, payment_info: Payment_info) -> Response:
         """
@@ -57,7 +75,7 @@ class Service:
         """
         converts ...
         """
-        pass
+        return DomainPaymentInfo(payment_info)
 
     def contact_supply_service(self, package_info: Package_info) -> Response:
         """
@@ -68,11 +86,11 @@ class Service:
         """
         return Response(self.market.contact_supply_service(self.__service_supply_info_to_domain(package_info)))
 
-    def __service_supply_info_to_domain(self, supply_info):
+    def __service_supply_info_to_domain(self, package_info):
         """
 
         """
-        pass
+        return DomainSupplyInfo(package_info)
 
     """
     Users requirements
@@ -158,7 +176,7 @@ class Service:
         return Response(self.store_controller.search_product())
         pass
 
-    def add_product_to_shop_cart(self, user_id: str, store_id, product_id, quantity):
+    def add_product_to_shoppping_cart(self, user_id: str, store_id, product_id, quantity):
         """
         II.2.3
         Checks if the product is available in the store, and adds the given product to the user's shop cart.
