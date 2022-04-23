@@ -239,6 +239,7 @@ class StoreController:
             store = self.__get_store(store_id)
 
             # check if user has access to this action
+            #todo check if its admin also
             if not store.has_access(user_id, Actions.GET_STORE_PURCHASE_HISTORY):
                 return Response(msg="User does not have access to this action")
 
