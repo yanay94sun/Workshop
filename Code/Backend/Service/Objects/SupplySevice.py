@@ -12,7 +12,7 @@ class SupplyService:
             return False
         return True
 
-    def make_connection(self, market):
+    def make_connection(self):
         # mock, just for example
         if 1 > 0:
             return self
