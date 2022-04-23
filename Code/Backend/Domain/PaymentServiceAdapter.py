@@ -9,6 +9,7 @@ class PaymentServiceAdapter:
         if self.__payment_service is not None:
             # TODO add csv and expiration date support
             is_success = self.__payment_service.pay(domain_payment_info.credit_card,
+                                                    domain_payment_info.cvv,
                                                     domain_payment_info.amount_to_pay)
             if is_success:
                 return Response(value=is_success)

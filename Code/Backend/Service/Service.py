@@ -3,7 +3,8 @@ from typing import Dict
 from typing import Dict, List
 import logging
 
-from Code.Backend.Domain import DomainPackageInfo
+from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
+from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 
 logging.basicConfig(filename="SystemLog.log")
 
@@ -81,7 +82,7 @@ class Service:
         """
         return DomainPaymentInfo(payment_info)
 
-    def contact_supply_service(self, package_info: Package_info) -> Response:
+    def contact_supply_service(self, package_info: PackageInfo) -> Response:
         """
         I.4
         a request for a delivery from the supply service.
@@ -94,7 +95,7 @@ class Service:
         """
 
         """
-        return DomainSupplyInfo(package_info)
+        return DomainPackageInfo(package_info)
 
     """
     Users requirements
