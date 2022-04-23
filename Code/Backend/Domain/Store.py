@@ -5,6 +5,9 @@ from Code.Backend.Domain.Permissions import Permissions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
 from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
+from Code.Backend.Domain.StoreOfficials.StoreManager import StoreManager
+from Code.Backend.Domain.StoreOfficials.StoreOfficial import StoreOfficial
+from Code.Backend.Domain.StoreOfficials.StoreOwner import StoreOwner
 from Code.Backend.Domain.StroeInfo import StoreInfo
 
 
@@ -17,7 +20,8 @@ class Store:
         self.__discount_policy = DiscountPolicy()
         self.__purchase_policy = PurchasePolicy()
         self.__store_info = StoreInfo(founder_id, store_name, store_id)
-        self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
+        self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreOwner(None, founder_id)}
+        # self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
         self.__purchase_history: List[Purchase] = []
 
     def get_store_info(self):
@@ -45,8 +49,8 @@ class Store:
                 return self.__products[product_id]
 
     def has_access(self, user_id, action):
-        if user_id in self.__roles.keys():
-            return self.__roles[user_id].check_permission(action)
+        if user_id in self.__officials.keys():
+            return self.__officials[user_id].check_permission(action)
         return False
 
     def update_quantities(self, product_id, quantity):
@@ -70,22 +74,25 @@ class Store:
             product.change_category(category)
 
     def add_owner(self, user_id: str, new_user_id: str):
-        if new_user_id in self.__roles.keys():
+        if new_user_id in self.__officials.keys():
             return False
-        self.__roles[new_user_id] = Permissions(True, user_id)
+        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id])
         return True
 
     def add_manager(self, user_id: str, new_manager_id: str):
-        if new_manager_id in self.__roles.keys():
+        if new_manager_id in self.__officials.keys():
             return False
-        self.__roles[new_manager_id] = Permissions(False, user_id)
+        new_permission = Permissions(self.__officials[user_id])
+        self.__officials[new_manager_id] = StoreManager(new_manager_id,
+                                                        self.__officials[user_id],
+                                                        new_permission)
         return True
 
     def change_permissions(self, user_id, action_number, new_val):
-        self.__roles[user_id].set_permission(action_number, new_val)
+        self.__officials[user_id].set_permission(action_number, new_val)
 
-    def get_rolls(self):
-        return self.__roles
+    def get_officials(self):
+        return self.__officials
 
     def add_purchase(self, product_name, deal_price, quantity):
         self.__purchase_history.append(Purchase(product_name, deal_price, quantity))
