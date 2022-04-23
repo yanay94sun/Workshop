@@ -3,4 +3,5 @@ class PurchasePolicy:
         """
         needs to add 4 types of Purchase Policy objects
         """
+
         pass

@@ -213,8 +213,9 @@ class Service:
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)
-
-        self.store_controller.update_purchase_history(user_id, all_products)
+      #  purchase_history = Purchase()
+      #  self.user_controller.update_purchase_history(purchase_history)
+       # self.store_controller.update_purchase_history(purchase_history)
         return Response()
 
 

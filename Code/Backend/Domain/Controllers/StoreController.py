@@ -263,10 +263,9 @@ class StoreController:
             return Response(ProductPurchaseRequest(store_id, product_id, quantity))
         return Response.from_error("Got None from get_product")
 
-
     def purchase_market(self, product_id, store_id, quantity, price):
         ADMIN_ID = "123"  # TODO add default admin for system
-        if self.remove_products_from_inventory(ADMIN_ID,store_id,product_id,quantity).msg is None:
+        if self.remove_products_from_inventory(ADMIN_ID, store_id, product_id, quantity).msg is None:
             try:
                 store = self.__get_store(store_id)
                 store.add_purchase(product_id, price, quantity)
@@ -274,8 +273,18 @@ class StoreController:
             except ValueError as e:
                 return Response(msg=e.args)
 
-    def product_in_stock(self,product_purchase_request):
-        pass
+    def get_basket_price(self, basket, invisible_codes=None):
+        try:
+            store = self.__get_store(basket.store_id)
+            products_list_ids = [p.product_id for p in basket.get_proudcts()]
+            product_list = list(map(lambda x: store.get_product(x, 0), products_list_ids))
+            quantity_dic = {p.product_id: p.quantity for p in basket.get_proudcts()}
+            price = store.get_discount_policy().calculate_basket(product_list, basket.user_state, quantity_dic,
+                                                                 invisible_codes)
+            return Response(value=price)
+        except ValueError as e:
+            return Response(msg=e.args)
+
     # ---------------------------------------------------------------------
 
     def __get_store(self, store_id):
