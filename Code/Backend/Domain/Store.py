@@ -1,9 +1,10 @@
-from typing import Dict
+from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicy import DiscountPolicy
 from Code.Backend.Domain.Permissions import Permissions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
+from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
 from Code.Backend.Domain.StroeInfo import StoreInfo
 
 
@@ -14,14 +15,15 @@ class Store:
         self.__products: Dict[str, Product] = {}  # {product_id, product object}
         self.__quantities: Dict[str, int] = {}  # {product_id, quantities}
         self.__discount_policy = DiscountPolicy()
+        self.__purchase_policy = PurchasePolicy()
         self.__store_info = StoreInfo(founder_id, store_name, store_id)
         self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
-        self.__purchase_history: list[Purchase] = []
+        self.__purchase_history: List[Purchase] = []
 
     def get_store_info(self):
         return self.__store_info
 
-    def get_all_products(self) -> list[Product]:
+    def get_all_products(self) -> List[Product]:
         if self.__products is not None:
             return list(self.__products.values())
         else:
@@ -31,7 +33,7 @@ class Store:
         """
         returns products if exists and has enough quantity
         else, return None.
-        throws ValueError if product does not exists
+        throws ValueError if product does not exist
         """
         if product_id not in self.__products.keys():
             raise ValueError("product does not exist")
@@ -90,5 +92,10 @@ class Store:
 
     def get_purchase_history(self):
         return self.__purchase_history
+
+    def get_discount_policy(self):
+        return self.__discount_policy
+
+
 
 

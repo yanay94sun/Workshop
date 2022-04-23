@@ -3,6 +3,7 @@ from typing import Dict
 from Code.Backend.Domain.Actions import Actions
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
 
 
@@ -133,7 +134,8 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def edit_product_info(self, user_id, store_id, product_id, product_info: ProductPurchaseRequest):
+    def edit_product_info(self, user_id, store_id, product_id, name=None, description=None, rating=None
+                          , price=None, category=None):
         try:
             store = self.__get_store(store_id)
 
@@ -146,8 +148,8 @@ class StoreController:
             if product is None:
                 return Response(msg="Product does not exists")
             else:
-                store.edit_product(product_id, product_info.name, product_info.description, product_info.rating
-                                   , product_info.price, product_info.category)
+                store.edit_product(product_id, name, description, rating
+                                   , price, category)
                 return Response(value="Product was edited")
 
         except ValueError as e:
@@ -258,24 +260,37 @@ class StoreController:
             return None  # Response(msg=e.args[0])
 
     def create_product_purchase_request(self, store_id, product_id, quantity):
-        product = self.get_product(store_id, product_id, quantity)
-        if product:
-            return Response(ProductPurchaseRequest(store_id, product_id, quantity))
-        return Response.from_error("Got None from get_product")
+        try:
+            product = self.get_product(store_id, product_id, quantity)
+            if product:
+                return Response(ProductPurchaseRequest(store_id, product_id, quantity))
+            return Response.from_error("Got None from get_product")
+        except ValueError as e:
+            return Response(msg=e.args[0])
 
+    # TODO change store id
+    def get_basket_price(self, store_id, basket: ShoppingBasket, invisible_codes=None):
+        try:
+            store = self.__get_store(store_id)
+            quantity_dic = basket.get_products_and_quantities()
+            products_list_ids = list(quantity_dic.keys())
+            product_list = list(map(lambda x: store.get_product(x, 0), products_list_ids))
+            # TODO should send basket.user_state instead of None
+            price = store.get_discount_policy().calculate_basket(product_list, None, quantity_dic,
+                                                                 invisible_codes)
+            return Response(value=price)
+        except ValueError as e:
+            return Response(msg=e.args[0])
 
-    def purchase_market(self, product_id, store_id, quantity, price):
-        ADMIN_ID = "123"  # TODO add default admin for system
-        if self.remove_products_from_inventory(ADMIN_ID,store_id,product_id,quantity).msg is None:
-            try:
-                store = self.__get_store(store_id)
-                store.add_purchase(product_id, price, quantity)
-                return Response(value="Successes")
-            except ValueError as e:
-                return Response(msg=e.args)
+    def add_visible_discount(self, store_id, list_of_products_ids, discount_price, end_date, rules=[]):
+        try:
+            store = self.__get_store(store_id)
+            store.get_discount_policy().add_visible_discount(list_of_products_ids,
+                                                             discount_price, end_date, rules)
+            return Response(value="Added Discount")
+        except ValueError as e:
+            return Response(msg=e.args[0])
 
-    def product_in_stock(self,product_purchase_request):
-        pass
     # ---------------------------------------------------------------------
 
     def __get_store(self, store_id):

@@ -39,3 +39,6 @@ class Product:
 
     def get_category(self):
         return self.__category
+
+    def get_ID(self):
+        return self.__ID
