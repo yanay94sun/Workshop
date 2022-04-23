@@ -1,5 +1,5 @@
 from functools import reduce
-from typing import Dict
+from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicyObjects.VisibleDiscount import VisibleDiscount
 from Code.Backend.Domain.Product import Product
@@ -19,9 +19,9 @@ class DiscountPolicy:
     def change_doubled_discounts(self, new_val):
         self.__doubled_discounts = new_val
 
-    def calculate_basket(self, products: list[Product], user_status, quantity_dic, invisible_codes):
+    def calculate_basket(self, products: List[Product], user_status, quantity_dic, invisible_codes):
         # need to check if user is authorized.
-        products_discounts: Dict[str, list[float]] = {prdct.get_ID(): [] for prdct in
+        products_discounts: Dict[str, List[float]] = {prdct.get_ID(): [] for prdct in
                                                       products}
         for discount in self.__discounts:
             discount.calculate_price(quantity_dic, products, [products_discounts], invisible_codes)
