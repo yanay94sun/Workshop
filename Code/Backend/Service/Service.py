@@ -67,6 +67,12 @@ class Service:
         """
         return Response(self.market.contact_payment_service(self.__service_payment_info_to_domain(payment_info)))
 
+    def change_payment_service(self, payment_service):
+        return self.market.connect_payment_service(payment_service)
+
+    def change_supply_service(self, supply_service):
+        return self.market.connect_supply_service(supply_service)
+
     def __service_payment_info_to_domain(self, payment_info):
         """
         converts ...

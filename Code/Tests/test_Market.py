@@ -37,4 +37,4 @@ class TestMarket(TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()d
+    unittest.main()
