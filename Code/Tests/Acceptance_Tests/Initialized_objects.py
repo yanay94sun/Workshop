@@ -1,9 +1,11 @@
 import datetime
+
+from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.Payment_info import Payment_info
-from Code.Backend.Service.Objects.Package_info import Package_info
 
 customer_id_nitzan = "205952971"
 nitzan = "Nitzan"
+lary = "Lary"
 credit_card = "1234123412341234"
 today = datetime.date.today()
 
@@ -24,7 +26,7 @@ good_payment_info = Payment_info(
     nitzan,
     credit_card,
     next_year,
-    123,
+    # 123,
     100
 )
 
@@ -33,7 +35,7 @@ bad_expiration_payment_info = Payment_info(
     nitzan,
     credit_card,
     last_year,
-    123,
+    # 123,
     100
 )
 
@@ -42,15 +44,15 @@ bad_amount_payment_info = Payment_info(
     nitzan,
     credit_card,
     last_year,
-    123,
+    # 123,
     -100
 )
 
-good_package_info = Package_info(
+good_package_info = PackageInfo(
 
 )
 
-bad_package_info = Package_info(
+bad_package_info = PackageInfo(
 
 )
 
