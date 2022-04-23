@@ -15,5 +15,5 @@ class State:
         pass
 
     def add_product_to_shopping_cart(self, product_info):
-        self._shopping_cart.add_product(product_info)
+        return self._shopping_cart.add_product(product_info)
 
