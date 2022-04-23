@@ -3,8 +3,8 @@ from Code.Backend.Domain.DiscountPolicyObjects.Discount import Discount
 
 class InvisibleDiscount(Discount,):
 
-    def __init__(self, discount, invisible_code, end_date):
-        super().__init__(discount, end_date)
+    def __init__(self, discount, end_date, invisible_code, rules=[], products_ids=[]):
+        super().__init__(discount, end_date, rules, products_ids)
         self.invisible_code = invisible_code
 
     def calculate_price(self, quantity_dict, products, dic_to_update, invisible_code):

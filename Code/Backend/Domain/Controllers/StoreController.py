@@ -3,6 +3,7 @@ from typing import Dict
 from Code.Backend.Domain.Actions import Actions
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
 
 
@@ -265,19 +266,30 @@ class StoreController:
                 return Response(ProductPurchaseRequest(store_id, product_id, quantity))
             return Response.from_error("Got None from get_product")
         except ValueError as e:
-            return Response(msg=e.args)
+            return Response(msg=e.args[0])
 
-    def get_basket_price(self, basket, invisible_codes=None):
+    # TODO change store id
+    def get_basket_price(self, store_id, basket: ShoppingBasket, invisible_codes=None):
         try:
-            store = self.__get_store(basket.store_id)
-            products_list_ids = [p.product_id for p in basket.get_proudcts()]
+            store = self.__get_store(store_id)
+            quantity_dic = basket.get_products_and_quantities()
+            products_list_ids = list(quantity_dic.keys())
             product_list = list(map(lambda x: store.get_product(x, 0), products_list_ids))
-            quantity_dic = {p.product_id: p.quantity for p in basket.get_proudcts()}
-            price = store.get_discount_policy().calculate_basket(product_list, basket.user_state, quantity_dic,
+            # TODO should send basket.user_state instead of None
+            price = store.get_discount_policy().calculate_basket(product_list, None, quantity_dic,
                                                                  invisible_codes)
             return Response(value=price)
         except ValueError as e:
-            return Response(msg=e.args)
+            return Response(msg=e.args[0])
+
+    def add_visible_discount(self, store_id, list_of_products_ids, discount_price, end_date, rules=[]):
+        try:
+            store = self.__get_store(store_id)
+            store.get_discount_policy().add_visible_discount(list_of_products_ids,
+                                                             discount_price, end_date, rules)
+            return Response(value="Added Discount")
+        except ValueError as e:
+            return Response(msg=e.args[0])
 
     # ---------------------------------------------------------------------
 
