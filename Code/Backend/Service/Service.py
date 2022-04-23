@@ -3,8 +3,7 @@ from typing import Dict
 from typing import Dict, List
 import logging
 
-from Code.Backend.Domain.DomainPackageInfo import DomainSupplyInfo
-from Code.Backend.Service.Objects.PackageInfo import SupplyInfo
+from Code.Backend.Domain import DomainPackageInfo
 
 logging.basicConfig(filename="SystemLog.log")
 
@@ -17,7 +16,6 @@ from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
 from Code.Backend.Service.Objects import Shopcart_info
 from Code.Backend.Service.Objects.Contact_info import Contact_info
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
-from Code.Backend.Service.Objects.Supply_info import Package_info
 from Code.Backend.Service.Objects.Payment_info import Payment_info
 from Code.Backend.Service.Objects.Permissions import Permission
 from Code.Backend.Service.Objects.Personal_info import Personal_info
