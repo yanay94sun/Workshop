@@ -6,6 +6,7 @@ from Code.Tests.Acceptance_Tests.Initialized_objects import *
 manager_id = None
 service = Service()
 service.initial_system()
+guest_id = service.enter_as_guest().value
 
 
 def is_error(response):
@@ -14,7 +15,6 @@ def is_error(response):
 
 class AcceptanceTests(unittest.TestCase):
     def setUp(self):
-        self.guest_id = service.enter_as_guest().value
         self.store_id = None
 
     def test_contact_payment_service(self):
@@ -54,9 +54,9 @@ class AcceptanceTests(unittest.TestCase):
         II.1.3
 
         """
-        response = service.register(self.guest_id, good_register_info)
+        response = service.register(guest_id, good_register_info)
         self.assertTrue(not is_error(response), "Should not be an error")
-        response = service.register(self.guest_id, good_register_info)
+        response = service.register(guest_id, good_register_info)
         self.assertTrue(is_error(response), "Can not register with a registered id")
 
     def test_login(self):
@@ -68,13 +68,13 @@ class AcceptanceTests(unittest.TestCase):
         password = good_register_info["password"]
         wrong_password = password + 'a'
         # wrong password check
-        response = service.login(self.guest_id, username, wrong_password)
+        response = service.login(guest_id, username, wrong_password)
         self.assertTrue(is_error(response))
         # good login
-        response = service.login(self.guest_id, username, password)
+        response = service.login(guest_id, username, password)
         self.assertTrue(not is_error(response))
         # already logged in
-        response = service.login(self.guest_id, username, password)
+        response = service.login(guest_id, username, password)
         self.assertTrue(is_error(response), "Already logged in")
 
     def test_open_store(self):
@@ -83,14 +83,14 @@ class AcceptanceTests(unittest.TestCase):
 
         """
         # check first there are no open stores yet
-        response = service.get_stores_info(self.guest_id)
+        response = service.get_stores_info(guest_id)
         self.assertTrue(is_error(response))  # error if no stores, TODO maybe change this logic?
 
-        response = service.open_store(self.guest_id, store_name)
+        response = service.open_store(guest_id, store_name)
         self.assertTrue(not is_error(response))
         self.assertTrue(response.value is not None, "Should return store's id")
         self.store_id = response.value
-        response = service.open_store(self.guest_id, "my_store")
+        response = service.open_store(guest_id, "my_store")
         self.assertTrue(is_error(response), "store already exists")
 
     def test_add_products_to_inventory(self):
@@ -101,16 +101,16 @@ class AcceptanceTests(unittest.TestCase):
         # assert the store is empty first
         self.__check_products_of_store(expected_products=[])
         # add a product
-        response = service.add_products_to_inventory(self.guest_id, self.store_id, product1_id, 1)
+        response = service.add_products_to_inventory(guest_id, self.store_id, product1_id, 1)
         self.assertTrue(not is_error(response))
         self.__check_products_of_store(expected_products=["default name"])
 
     def __check_products_of_store(self, expected_products):
-        response = service.get_store_info(self.guest_id, self.store_id)
+        response = service.get_store_info(guest_id, self.store_id)
         self.assertTrue(not is_error(response))
         self.assertTrue(response.value is not None)
         store_info = response.value
-        self.assertTrue(store_info["founder_id"] == self.guest_id)
+        self.assertTrue(store_info["founder_id"] == guest_id)
         self.assertTrue(store_info["store_name"] == store_name)
         self.assertTrue(store_info["ID"] == self.store_id)
         self.assertTrue(store_info["products"] == expected_products)
@@ -120,7 +120,7 @@ class AcceptanceTests(unittest.TestCase):
         II.4.1.3
         TODO
         """
-        # response = service.edit_product_info(self.guest_id, self.store_id, product1_id, )
+        # response = service.edit_product_info(guest_id, self.store_id, product1_id, )
 
         pass
 
@@ -130,18 +130,18 @@ class AcceptanceTests(unittest.TestCase):
 
         """
         # add a new product
-        response = service.add_products_to_inventory(self.guest_id, self.store_id, product2_id, 1)
+        response = service.add_products_to_inventory(guest_id, self.store_id, product2_id, 1)
         self.assertTrue(not is_error(response))
         self.__check_products_of_store(expected_products=["default name"] * 2)
         # remove the product
-        response = service.remove_products_from_inventory(self.guest_id, self.store_id, product2_id, 1)
+        response = service.remove_products_from_inventory(guest_id, self.store_id, product2_id, 1)
         self.assertTrue(not is_error(response))
         self.__check_products_of_store(expected_products=["default name"])
         # same with more than 1 in quantity
-        response = service.add_products_to_inventory(self.guest_id, self.store_id, product2_id, 2)
+        response = service.add_products_to_inventory(guest_id, self.store_id, product2_id, 2)
         self.assertTrue(not is_error(response))
         self.__check_products_of_store(expected_products=["default name"] * 2)
-        response = service.remove_products_from_inventory(self.guest_id, self.store_id, product2_id, 1)
+        response = service.remove_products_from_inventory(guest_id, self.store_id, product2_id, 1)
         self.assertTrue(not is_error(response))
         self.__check_products_of_store(expected_products=["default name"] * 2)
 
@@ -166,16 +166,16 @@ class AcceptanceTests(unittest.TestCase):
         II.2.3
 
         """
-        response = service.add_product_to_shoppping_cart(self.guest_id, self.store_id, product1_id, 1)
+        response = service.add_product_to_shoppping_cart(guest_id, self.store_id, product1_id, 1)
         self.assertTrue(not is_error(response))
-        response = service.get_shopping_cart(self.guest_id)
+        response = service.get_shopping_cart(guest_id)
         self.assertTrue(not is_error(response))
         self.assertIsNotNone(response.value)
         cart = response.value
         basket = cart[self.store_id]
         self.assertTrue(basket[product1_id] == 1)
         # bad add
-        response = service.add_product_to_shoppping_cart(self.guest_id, self.store_id, product1_id, 2)
+        response = service.add_product_to_shoppping_cart(guest_id, self.store_id, product1_id, 2)
         self.assertTrue(is_error(response))
 
     def test_get_shop_cart(self):
@@ -190,11 +190,11 @@ class AcceptanceTests(unittest.TestCase):
 
         """
         # bad remove
-        response = service.remove_product_from_shopping_cart(self.guest_id,
+        response = service.remove_product_from_shopping_cart(guest_id,
                                                              ProductPurchaseRequest(self.store_id, product1_id, 2))
         self.assertTrue(is_error(response))
         # good remove
-        response = service.remove_product_from_shopping_cart(self.guest_id,
+        response = service.remove_product_from_shopping_cart(guest_id,
                                                              ProductPurchaseRequest(self.store_id, product1_id, 1))
         self.assertTrue(not is_error(response))
 
@@ -203,11 +203,11 @@ class AcceptanceTests(unittest.TestCase):
         II.2.5
         TODO: test product race condition, (test bad payment as well?)
         """
-        service.add_product_to_shoppping_cart(self.guest_id, self.store_id, product1_id, 1)
-        response = service.purchase_shopping_cart(self.guest_id, good_payment_info)
+        service.add_product_to_shoppping_cart(guest_id, self.store_id, product1_id, 1)
+        response = service.purchase_shopping_cart(guest_id, good_payment_info)
         self.assertTrue(not is_error(response))
         self.__check_products_of_store(expected_products=[])
-        response = service.get_shopping_cart(self.guest_id)
+        response = service.get_shopping_cart(guest_id)
         self.assertTrue(not is_error(response))
         self.assertIsNotNone(response.value)
         cart = response.value
@@ -222,9 +222,9 @@ class AcceptanceTests(unittest.TestCase):
 
         """
         # prepare shopping cart
-        response = service.add_products_to_inventory(self.guest_id, self.store_id, product1_id, 1)
+        response = service.add_products_to_inventory(guest_id, self.store_id, product1_id, 1)
         self.assertTrue(not is_error(response))
-        response = service.add_product_to_shoppping_cart(self.guest_id, self.store_id, product1_id, 1)
+        response = service.add_product_to_shoppping_cart(guest_id, self.store_id, product1_id, 1)
         self.assertTrue(not is_error(response))
         # TODO finish
         pass
@@ -330,19 +330,19 @@ class AcceptanceTests(unittest.TestCase):
         # prepare new member
         new_owner_id = self.register_new_guest()
         # check precondition
-        response = service.get_store_roles(self.guest_id, self.store_id)
+        response = service.get_store_roles(guest_id, self.store_id)
         self.assertTrue(not is_error(response), "Should not be an error")
         self.assertIsNotNone(response.value)
         officials = response.value
-        self.assertTrue(len(officials) == 1 and officials[self.guest_id])  # fooya!
+        self.assertTrue(len(officials) == 1 and officials[guest_id])  # fooya!
         # test
-        response = service.add_store_owner(self.guest_id, self.store_id, new_owner_id)
+        response = service.add_store_owner(guest_id, self.store_id, new_owner_id)
         self.assertTrue(not is_error(response), "Should not be an error")
-        response = service.get_store_roles(self.guest_id, self.store_id)
+        response = service.get_store_roles(guest_id, self.store_id)
         self.assertTrue(not is_error(response), "Should not be an error")
         self.assertIsNotNone(response.value)
         officials = response.value
-        self.assertTrue(len(officials) == 2 and officials[self.guest_id] and officials[new_owner_id])  # bad! really bad
+        self.assertTrue(len(officials) == 2 and officials[guest_id] and officials[new_owner_id])  # bad! really bad
         pass
 
     def register_new_guest(self):
@@ -368,13 +368,13 @@ class AcceptanceTests(unittest.TestCase):
         """
         global manager_id
         manager_id = self.register_new_guest()
-        response = service.add_store_manager(self.guest_id, self.store_id, manager_id)
+        response = service.add_store_manager(guest_id, self.store_id, manager_id)
         self.assertTrue(not is_error(response), "Should not be an error")
-        response = service.get_store_roles(self.guest_id, self.store_id)
+        response = service.get_store_roles(guest_id, self.store_id)
         self.assertTrue(not is_error(response), "Should not be an error")
         self.assertIsNotNone(response.value)
         officials = response.value
-        self.assertTrue(len(officials) == 3 and officials[self.guest_id] and officials[manager_id])  # Shema Israel
+        self.assertTrue(len(officials) == 3 and officials[guest_id] and officials[manager_id])  # Shema Israel
 
     def test_change_manager_permission(self):
         """
@@ -430,7 +430,7 @@ class AcceptanceTests(unittest.TestCase):
         II.4.13
 
         """
-        response = service.get_store_purchase_history(self.guest_id, self.store_id)
+        response = service.get_store_purchase_history(guest_id, self.store_id)
         self.assertTrue(not is_error(response))
         self.assertIsNotNone(response.value)
         purchase_history = response.value
