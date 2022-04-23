@@ -636,6 +636,7 @@ class Service:
         :param store_id:
         :return:
         """
+        #todo check if user_id is admin user
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         return Response(self.market.get_stores_purchase_history_by_admin(user_id, store_id))
