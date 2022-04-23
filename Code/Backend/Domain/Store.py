@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicy import DiscountPolicy
 from Code.Backend.Domain.Permissions import Permissions
@@ -18,12 +18,12 @@ class Store:
         self.__purchase_policy = PurchasePolicy()
         self.__store_info = StoreInfo(founder_id, store_name, store_id)
         self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
-        self.__purchase_history: list[Purchase] = []
+        self.__purchase_history: List[Purchase] = []
 
     def get_store_info(self):
         return self.__store_info
 
-    def get_all_products(self) -> list[Product]:
+    def get_all_products(self) -> List[Product]:
         if self.__products is not None:
             return list(self.__products.values())
         else:

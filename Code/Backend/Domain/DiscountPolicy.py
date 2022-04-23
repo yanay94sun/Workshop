@@ -2,9 +2,7 @@ from functools import reduce
 from typing import Dict
 
 from Code.Backend.Domain.DiscountPolicyObjects.VisibleDiscount import VisibleDiscount
-from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.Product import Product
-from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 
 
 class DiscountPolicy:

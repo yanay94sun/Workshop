@@ -133,7 +133,8 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def edit_product_info(self, user_id, store_id, product_id, product_info: ProductPurchaseRequest):
+    def edit_product_info(self, user_id, store_id, product_id, name=None, description=None, rating=None
+                          , price=None, category=None):
         try:
             store = self.__get_store(store_id)
 
@@ -146,8 +147,8 @@ class StoreController:
             if product is None:
                 return Response(msg="Product does not exists")
             else:
-                store.edit_product(product_id, product_info.name, product_info.description, product_info.rating
-                                   , product_info.price, product_info.category)
+                store.edit_product(product_id, name, description, rating
+                                   , price, category)
                 return Response(value="Product was edited")
 
         except ValueError as e:
@@ -258,20 +259,13 @@ class StoreController:
             return None  # Response(msg=e.args[0])
 
     def create_product_purchase_request(self, store_id, product_id, quantity):
-        product = self.get_product(store_id, product_id, quantity)
-        if product:
-            return Response(ProductPurchaseRequest(store_id, product_id, quantity))
-        return Response.from_error("Got None from get_product")
-
-    def purchase_market(self, product_id, store_id, quantity, price):
-        ADMIN_ID = "123"  # TODO add default admin for system
-        if self.remove_products_from_inventory(ADMIN_ID, store_id, product_id, quantity).msg is None:
-            try:
-                store = self.__get_store(store_id)
-                store.add_purchase(product_id, price, quantity)
-                return Response(value="Successes")
-            except ValueError as e:
-                return Response(msg=e.args)
+        try:
+            product = self.get_product(store_id, product_id, quantity)
+            if product:
+                return Response(ProductPurchaseRequest(store_id, product_id, quantity))
+            return Response.from_error("Got None from get_product")
+        except ValueError as e:
+            return Response(msg=e.args)
 
     def get_basket_price(self, basket, invisible_codes=None):
         try:
