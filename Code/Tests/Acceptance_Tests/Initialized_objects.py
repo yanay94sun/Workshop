@@ -8,7 +8,9 @@ nitzan = "Nitzan"
 lary = "Lary"
 credit_card = "1234123412341234"
 store_name = "my_store"
-product_id = "product_id"
+product1_id = "product1_id"
+product1_name = "product1"
+product2_id = "product2_id"
 today = datetime.date.today()
 
 # tomorrow
