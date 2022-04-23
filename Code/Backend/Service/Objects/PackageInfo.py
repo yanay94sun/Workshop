@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from Code.Backend.Domain.Product import Product
 from collections.abc import Sequence
@@ -6,7 +6,7 @@ from collections.abc import Sequence
 
 class PackageInfo:
     def __init__(self, costumer_name, costumer_last_name, costumer_address,
-                 store_id, products_ids_and_quantity: dict[str, int]):
+                 store_id, products_ids_and_quantity: Dict[str, int]):
         self.costumer_name = costumer_name
         self.costume_last_name = costumer_last_name
         self.costumer_address = costumer_address

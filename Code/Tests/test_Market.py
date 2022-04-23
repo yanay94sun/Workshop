@@ -2,7 +2,7 @@ import unittest
 from unittest import TestCase
 
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
-from Code.Backend.Domain.Market import Market
+from Code.Backend.Domain.Controllers.Market import Market
 from Code.Backend.Domain.PaymentServiceAdapter import PaymentServiceAdapter
 from Code.Backend.Domain.SupplyServiceAdapter import SupplyServiceAdapter
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
