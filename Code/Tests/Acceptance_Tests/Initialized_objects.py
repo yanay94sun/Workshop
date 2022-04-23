@@ -66,3 +66,4 @@ good_register_info = dict(
         "password": "nitzan"
     }
 )
+

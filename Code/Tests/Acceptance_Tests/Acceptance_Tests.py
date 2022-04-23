@@ -3,6 +3,7 @@ import unittest
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Service.Service import Service
 from Code.Tests.Acceptance_Tests.Initialized_objects import *
+manager_id = None
 service = Service()
 service.initial_system()
 
@@ -326,7 +327,32 @@ class AcceptanceTests(unittest.TestCase):
         II.4.4
 
         """
+        # prepare new member
+        new_owner_id = self.register_new_guest()
+        # check precondition
+        response = service.get_store_roles(self.guest_id, self.store_id)
+        self.assertTrue(not is_error(response), "Should not be an error")
+        self.assertIsNotNone(response.value)
+        officials = response.value
+        self.assertTrue(len(officials) == 1 and officials[self.guest_id])  # fooya!
+        # test
+        response = service.add_store_owner(self.guest_id, self.store_id, new_owner_id)
+        self.assertTrue(not is_error(response), "Should not be an error")
+        response = service.get_store_roles(self.guest_id, self.store_id)
+        self.assertTrue(not is_error(response), "Should not be an error")
+        self.assertIsNotNone(response.value)
+        officials = response.value
+        self.assertTrue(len(officials) == 2 and officials[self.guest_id] and officials[new_owner_id])  # bad! really bad
         pass
+
+    def register_new_guest(self):
+        response = service.enter_as_guest()
+        self.assertTrue(not is_error(response), "Should not be an error")
+        self.assertIsNotNone(response.value)
+        new_owner_id = response.value
+        response = service.register(new_owner_id, {"username": "new_owner", "password": "123"})
+        self.assertTrue(not is_error(response), "Should not be an error")
+        return new_owner_id
 
     # def test_remove_store_owner(self):
         #     """
@@ -340,12 +366,20 @@ class AcceptanceTests(unittest.TestCase):
         II.4.6
 
         """
-        pass
+        global manager_id
+        manager_id = self.register_new_guest()
+        response = service.add_store_manager(self.guest_id, self.store_id, manager_id)
+        self.assertTrue(not is_error(response), "Should not be an error")
+        response = service.get_store_roles(self.guest_id, self.store_id)
+        self.assertTrue(not is_error(response), "Should not be an error")
+        self.assertIsNotNone(response.value)
+        officials = response.value
+        self.assertTrue(len(officials) == 3 and officials[self.guest_id] and officials[manager_id])  # Shema Israel
 
     def test_change_manager_permission(self):
         """
         II.4.7
-
+        TODO
         """
         pass
 
@@ -373,7 +407,7 @@ class AcceptanceTests(unittest.TestCase):
     def test_get_store_roles(self):
         """
         II.4.11
-
+        Tested in 'test_add_store_owner'
         """
         pass
 
@@ -396,7 +430,13 @@ class AcceptanceTests(unittest.TestCase):
         II.4.13
 
         """
-        pass
+        response = service.get_store_purchase_history(self.guest_id, self.store_id)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        purchase_history = response.value
+        self.assertTrue(len(purchase_history) == 1)
+        purchase = purchase_history[0]
+        self.assertTrue(purchase.product_name == product1_name and purchase.quantity == 1)
 
     # def test_close_store_permanently(self):
     #     """
@@ -429,7 +469,7 @@ class AcceptanceTests(unittest.TestCase):
     def test_get_stores_purchase_history_by_admin(self):
         """
         II.6.4
-
+        TODO
         """
         pass
 
