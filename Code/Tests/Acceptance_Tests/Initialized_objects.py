@@ -7,6 +7,8 @@ customer_id_nitzan = "205952971"
 nitzan = "Nitzan"
 lary = "Lary"
 credit_card = "1234123412341234"
+store_name = "my_store"
+product_id = "product_id"
 today = datetime.date.today()
 
 # tomorrow
