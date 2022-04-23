@@ -14,9 +14,11 @@ class Visitor:
         self.__status = GuestState()
 
     def exit(self):
-        self.__status.exit()
+        return self.__status.exit()
 
     def login(self, member_state: MemberState, password: str):
+        if self.is_logged_in():
+            return Response.from_error("user is already logged in")
         if not member_state.password_confirmed(password):
             return Response.from_error("invalid password")
         self.__status = member_state

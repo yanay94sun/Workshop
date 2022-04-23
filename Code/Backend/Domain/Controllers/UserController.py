@@ -31,7 +31,7 @@ class UserController:
     def exit(self, user_id: str):
         if user_id not in self.__users:
             return Response(msg="user does not exist")
-        return self.__users[user_id].exit()
+        return Response(self.__users[user_id].exit())
 
     def register(self, user_id: str, member_info: Dict):
         key = member_info["username"]
@@ -62,12 +62,12 @@ class UserController:
     def add_product_to_shop_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:
             return Response.from_error("user doesn't exist")
-        return self.__users[user_id].add_product_to_shopping_cart(ppr)
+        return Response(self.__users[user_id].add_product_to_shopping_cart(ppr))
 
-    def get_shopping_cart(self, user_id: str):
+    def get_shopping_cart(self, user_id: str) -> Response:
         if user_id not in self.__users:
             return Response.from_error("user doesn't exist")
-        return self.__users[user_id].get_shopping_cart()
+        return Response(self.__users[user_id].get_shopping_cart())
 
     def remove_product_from_shopping_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:

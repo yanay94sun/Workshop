@@ -1,4 +1,4 @@
-from plistlib import Dict
+# from plistlib import Dict
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.State import State
 
@@ -7,7 +7,7 @@ class MemberState(State):
     """
 
     """
-    def __init__(self, shopping_cart: ShoppingCart, member_info: Dict):
+    def __init__(self, shopping_cart: ShoppingCart, member_info):
         State.__init__(self, shopping_cart)
         self.__username = member_info["username"]
         self.__password = member_info["password"]
