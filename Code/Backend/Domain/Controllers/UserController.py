@@ -1,6 +1,7 @@
 from typing import Dict
 
 from Code.Backend.Domain import MemberState
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.Visitor import Visitor
 
@@ -30,7 +31,7 @@ class UserController:
     def exit(self, user_id: str):
         if user_id not in self.__users:
             return Response(msg="user does not exist")
-        return self.__users[user_id].exit()
+        return Response(self.__users[user_id].exit())
 
     def register(self, user_id: str, member_info: Dict):
         key = member_info["username"]
@@ -58,20 +59,20 @@ class UserController:
     def is_member(self, member_id):
         return Response(member_id in self.__members)
 
-    def add_product_to_shop_cart(self, user_id: str, product_info):  # todo: shouldn't be shopping basket?
+    def add_product_to_shop_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:
             return Response.from_error("user doesn't exist")
-        return self.__users[user_id].add_product_to_shopping_cart(product_info)
+        return Response(self.__users[user_id].add_product_to_shopping_cart(ppr))
 
-    def get_shop_cart(self, user_id: str):
+    def get_shopping_cart(self, user_id: str) -> Response:
         if user_id not in self.__users:
             return Response.from_error("user doesn't exist")
-        return self.__users[user_id].get_shopping_cart()
+        return Response(self.__users[user_id].get_shopping_cart())
 
-    def remove_product_from_shop_cart(self, user_id: str, product_id: str): # todo: shouldn't be shopping basket?
+    def remove_product_from_shopping_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:
             return Response.from_error("user doesn't exist")
-        return self.__users[user_id].remove_product_from_shopping_cart(product_id)
+        return self.__users[user_id].remove_product_from_shopping_cart(ppr)
 
     def logout(self, user_id: str):
         if user_id not in self.__users:

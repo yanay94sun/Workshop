@@ -1,20 +1,21 @@
+import threading
+from typing import Dict
 from typing import Dict, List
 import logging
 
-from Code.Backend.Domain.DomainPackageInfo import DomainSupplyInfo
-from Code.Backend.Service.Objects.PackageInfo import SupplyInfo
+from Code.Backend.Domain import DomainPackageInfo
 
 logging.basicConfig(filename="SystemLog.log")
 
+from Code.Backend.Domain.Controllers.Market import Market
+from Code.Backend.Domain.Controllers.StoreController import StoreController
+from Code.Backend.Domain.Controllers.UserController import UserController
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.DM_product_info import DM_product_info
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
-from Code.Backend.Domain.Market import Market
-from Code.Backend.Domain.StoreController import StoreController
-from Code.Backend.Domain.UserController import UserController
 from Code.Backend.Service.Objects import Shopcart_info
 from Code.Backend.Service.Objects.Contact_info import Contact_info
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
-from Code.Backend.Service.Objects.Supply_info import Package_info
 from Code.Backend.Service.Objects.Payment_info import Payment_info
 from Code.Backend.Service.Objects.Permissions import Permission
 from Code.Backend.Service.Objects.Personal_info import Personal_info
@@ -31,6 +32,7 @@ class Service:
         self.user_controller: UserController = None
         self.market: Market = None
         self.store_controller: StoreController = None
+        self.purchase_lock = threading.Condition()
 
     """Functional requirements"""
 
@@ -66,6 +68,12 @@ class Service:
         :return: Response object
         """
         return Response(self.market.contact_payment_service(self.__service_payment_info_to_domain(payment_info)))
+
+    def change_payment_service(self, payment_service):
+        return self.market.connect_payment_service(payment_service)
+
+    def change_supply_service(self, supply_service):
+        return self.market.connect_supply_service(supply_service)
 
     def __service_payment_info_to_domain(self, payment_info):
         """
@@ -172,7 +180,7 @@ class Service:
         return Response(self.store_controller.search_product())
         pass
 
-    def add_product_to_shop_cart(self, user_id: str, store_id, product_id, quantity):  # TODO Asaf
+    def add_product_to_shoppping_cart(self, user_id: str, store_id, product_id, quantity):
         """
         II.2.3
         Checks if the product is available in the store, and adds the given product to the user's shop cart.
@@ -183,31 +191,32 @@ class Service:
         :param quantity:
         :return:
         """
-        product_info = self.store_controller.get_product(store_id, product_id, quantity)
+        prod_pur_req_response = self.store_controller.create_product_purchase_request(store_id, product_id, quantity)
         # check if not None
-        return Response(self.user_controller.add_product_to_shop_cart(user_id, product_info, quantity))
-        pass
+        if not prod_pur_req_response.error_occurred():
+            return Response(self.user_controller.add_product_to_shop_cart(user_id, prod_pur_req_response.value))
+        return prod_pur_req_response
 
-    def get_shop_cart(self, user_id: str) -> Response:
+    def get_shopping_cart(self, user_id: str) -> Response:
         """
         II.2.4
         return he information of the user shopping cart.
         :param user_id:
         :return: Shopping cart object
         """
-        return Response(self.user_controller.get_shop_cart(user_id))
+        return Response(self.user_controller.get_shopping_cart(user_id))
 
-    def remove_product_from_shop_cart(self, user_id: str, product_id: str):  # TODO Basket!
+    def remove_product_from_shopping_cart(self, user_id: str, ppr: ProductPurchaseRequest):  # TODO Basket!
         """
         II.2.4
 
         :param user_id:
-        :param product_id:
+        :param ppr:
         :return:
         """
-        return Response(self.user_controller.remove_product_from_shop_cart(user_id, product_id))
+        return Response(self.user_controller.remove_product_from_shopping_cart(user_id, ppr))
 
-    def purchase_shop_cart(self, user_id: str):
+    def purchase_shopping_cart(self, user_id: str, payment_info):
         """
         II.2.5
         gets user's shopping cart and applies discount policies on each basket, then decrease the quantity of the
@@ -216,8 +225,21 @@ class Service:
         :param user_id:
         :return:
         """
+        with self.purchase_lock:
+            cart = self.user_controller.get_shopping_cart()
+            all_products = [p for p in cart.value.iter_products()]
 
-        pass
+            all_removed = self.store_controller.remove_all_products_for_purchasing(all_products)
+            if all_removed.error_occured():
+                return Response(all_removed)
+
+        # pay, if error occured revert
+        # revert: self.store_controller.revert_purchase_requests(all_products)
+
+        self.store_controller.update_purchase_history(user_id, all_products)
+        return Response()
+
+
 
     """Member's purchase actions"""
 
@@ -373,6 +395,8 @@ class Service:
         pass
 
     def edit_product_info(self, user_id: str, store_id: str, product_id: str, new_product_info):
+        # TODO: I've changed the ProductInfo into ProductPurchaseRequest, Asaf.
+        # todo: also, wtf is the point of editing this unused object? i think it should be editing product obj not info
         """
         II.4.1.3
 
@@ -381,6 +405,7 @@ class Service:
         :param product_id:
         :param new_product_info:
         :return:
+
         """
         return Response(self.store_controller.edit_product_info(user_id, store_id, product_id,
                                                                 self.__service_product_info_to_domain(new_product_info)))

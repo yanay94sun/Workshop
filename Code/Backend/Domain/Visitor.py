@@ -1,3 +1,4 @@
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.GuestState import GuestState
 from Code.Backend.Domain.MemberState import MemberState
 from Code.Backend.Domain.State import State
@@ -13,9 +14,11 @@ class Visitor:
         self.__status = GuestState()
 
     def exit(self):
-        self.__status.exit()
+        return self.__status.exit()
 
     def login(self, member_state: MemberState, password: str):
+        if self.is_logged_in():
+            return Response.from_error("user is already logged in")
         if not member_state.password_confirmed(password):
             return Response.from_error("invalid password")
         self.__status = member_state
@@ -43,7 +46,7 @@ class Visitor:
         return self.__status.add_product_to_shopping_cart(product_info)
 
     def get_shopping_cart(self):
-        self.__status.get_shopping_cart()
+        return self.__status.get_shopping_cart()
 
-    def remove_product_from_shopping_cart(self, product_id):
-        self.__status.get_shopping_cart().remove_product(product_id)
+    def remove_product_from_shopping_cart(self, ppr: ProductPurchaseRequest):
+        return self.__status.get_shopping_cart().remove_product(ppr)
