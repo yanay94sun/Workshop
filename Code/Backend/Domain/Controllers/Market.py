@@ -37,11 +37,11 @@ class Market:
 
         return Response(self)
 
-    def contact_payment_service(self, domain_payment_info ):
+    def contact_payment_service(self, domain_payment_info):
         return self.__payment_service_adapter.pay(domain_payment_info)
 
     def contact_supply_service(self, supply_info):
-        return self.__supply_service_adapter.pay(supply_info)
+        return self.__supply_service_adapter.supply(supply_info)
 
     def purchase_shop_cart(self, user_id: str, shopping_cat: ShoppingCart):
         pass
@@ -53,7 +53,7 @@ class Market:
         return self.__payment_service_adapter.connect_payment_service(payment_service)
 
     def connect_supply_service(self, supply_service):
-        return self.__supply_service_adapter.conect_supply_service(supply_service)
+        return self.__supply_service_adapter.connect_supply_service(supply_service)
 
     def close_store_permanently(self, user_id: str, store_id: str):
         """

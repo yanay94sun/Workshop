@@ -12,3 +12,6 @@ class Card:
 
     def get_cvv(self):
         return self.__cvv
+
+    def get_balance(self):
+        return self.__balance
