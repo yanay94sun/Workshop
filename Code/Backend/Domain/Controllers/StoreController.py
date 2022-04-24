@@ -224,7 +224,7 @@ class StoreController:
             if not store.has_access(user_id, Actions.GET_STORE_ROLES):
                 return Response(msg="User does not have access to this action")
 
-            return Response(value=store.get_rolls())
+            return Response(value=store.get_officials())
         except ValueError as e:
             return Response(msg=e.args[0])
 
@@ -239,6 +239,7 @@ class StoreController:
             store = self.__get_store(store_id)
 
             # check if user has access to this action
+            #todo check if its admin also
             if not store.has_access(user_id, Actions.GET_STORE_PURCHASE_HISTORY):
                 return Response(msg="User does not have access to this action")
 

@@ -1,7 +1,6 @@
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
-from Code.Backend.Domain.GuestState import GuestState
-from Code.Backend.Domain.MemberState import MemberState
-from Code.Backend.Domain.State import State
+from Code.Backend.Domain.VisitorStates.GuestState import GuestState
+from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 from Code.Backend.Domain.MFResponse import Response
 
 
