@@ -1,10 +1,11 @@
 # from plistlib import Dict
 from typing import Dict
 
-from Code.Backend.Domain import ShoppingBasket
+# from Code.Backend.Domain import ShoppingBasket
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.MFResponse import Response
 # from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
+from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 
 
 class ShoppingCart:

@@ -6,8 +6,6 @@ import logging
 from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 
-logging.basicConfig(filename="SystemLog.log")
-
 from Code.Backend.Domain.Controllers.Market import Market
 from Code.Backend.Domain.Controllers.StoreController import StoreController
 from Code.Backend.Domain.Controllers.UserController import UserController
@@ -27,6 +25,8 @@ from Code.Backend.Service.Objects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
 from Code.Backend.Service.Objects.Store_info import Store_info
 
+logging.basicConfig(filename="SystemLog.log")
+
 
 class Service:
     def __init__(self):
@@ -38,7 +38,7 @@ class Service:
     """Functional requirements"""
 
     def initial_system(self, admin_id: str = None, admin_pwd: str = None,
-                       payment_service: int = 0, supply_service: int = 0):
+                       payment_service=None, supply_service=None):
         """
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
@@ -49,10 +49,10 @@ class Service:
         :param supply_service: an Enum to configure the supply service
         :return: None
         """
-        self.market = Market().init(admin_id, admin_pwd, payment_service, supply_service).value
-        if self.market.error_occurred():
-            logging.critical(msg=self.market.msg)
-
+        market = Market().init(admin_id, admin_pwd, payment_service, supply_service)
+        if market.error_occurred():
+            logging.critical(msg=market.msg)
+        self.market = market.value
         self.user_controller = UserController()
         self.store_controller = StoreController()
 
@@ -95,7 +95,7 @@ class Service:
         """
 
         """
-        return DomainPackageInfo(package_info)
+        return DomainPackageInfo(package_info)  # FIXME! domain objects should not know service objects!
 
     """
     Users requirements
@@ -106,7 +106,7 @@ class Service:
         """
         II.1.1
         generates a temp id and creates a Visitor object with a default guest state and a shopping cart.
-        :return:
+        :return: guest id
         """
         return Response(self.user_controller.create_guest())
         # write to log
@@ -119,7 +119,6 @@ class Service:
         :return:
         """
         return Response(self.user_controller.exit(user_id))
-        pass
 
     def register(self, guest_id: str, user_info: Dict):
         """
@@ -130,7 +129,6 @@ class Service:
         :return:
         """
         return Response(self.user_controller.register(guest_id, user_info))
-        pass
 
     def login(self, guest_id: str, username: str, password: str):
         """
@@ -142,7 +140,6 @@ class Service:
         :return:
         """
         return Response(self.user_controller.login(guest_id, username, password))
-        pass
 
     """Guest's Purchase actions"""
 
@@ -157,7 +154,7 @@ class Service:
         """
         return Response(self.store_controller.get_store_info(store_id))
 
-    def get_stores_info(self, user_id: str, store_id) -> Response:
+    def get_stores_info(self, user_id: str) -> Response:
         """
         II.2.1.2
         when a user request for all stores info.
@@ -165,7 +162,7 @@ class Service:
         :param: store_id
         :return: List of store info
         """
-        return Response(self.store_controller.get_store_info(store_id))
+        return Response(self.store_controller.get_stores_info())
         pass
 
     def search_product(self, user_id: str, product_filters: Product_search_filters):
@@ -227,7 +224,7 @@ class Service:
         :return:
         """
         with self.purchase_lock:
-            cart = self.user_controller.get_shopping_cart()
+            cart = self.user_controller.get_shopping_cart(user_id)
             all_products = [p for p in cart.value.iter_products()]
 
             all_removed = self.store_controller.remove_all_products_for_purchasing(all_products)
@@ -236,12 +233,10 @@ class Service:
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)
-      #  purchase_history = Purchase()
-      #  self.user_controller.update_purchase_history(purchase_history)
-       # self.store_controller.update_purchase_history(purchase_history)
+        #  purchase_history = Purchase()
+        #  self.user_controller.update_purchase_history(purchase_history)
+        # self.store_controller.update_purchase_history(purchase_history)
         return Response()
-
-
 
     """Member's purchase actions"""
 
@@ -410,7 +405,8 @@ class Service:
 
         """
         return Response(self.store_controller.edit_product_info(user_id, store_id, product_id,
-                                                                self.__service_product_info_to_domain(new_product_info)))
+                                                                self.__service_product_info_to_domain(
+                                                                    new_product_info)))
 
     def __service_product_info_to_domain(self, product_info):
         """
@@ -636,7 +632,7 @@ class Service:
         :param store_id:
         :return:
         """
-        #todo check if user_id is admin user
+        # todo check if user_id is admin user
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         return Response(self.market.get_stores_purchase_history_by_admin(user_id, store_id))
