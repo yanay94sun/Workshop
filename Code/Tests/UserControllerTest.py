@@ -104,6 +104,24 @@ class UserControllerTests(unittest.TestCase):
         res = self.uc.logout(self.visitor1_id)
         self.assertTrue(res.error_occurred(), "succeeded logging out unregistered user")
 
+    def test_mockup(self):
+        ppr1 = ProductPurchaseRequest("s1", "p1", 1)
+        ppr2 = ProductPurchaseRequest("s2", "p2", 1)
+
+        self.uc.add_product_to_shop_cart(self.visitor1_id, ppr1)
+
+        print([p for p in self.uc.get_shopping_cart(self.visitor1_id).value.iter_products()])
+
+        self.uc.logout(self.visitor1_id)
+
+        print([p for p in self.uc.get_shopping_cart(self.visitor1_id).value.iter_products()])
+
+        self.uc.login(self.visitor1_id, "v1", "11")
+
+        # self.uc.add_product_to_shop_cart(self.visitor1_id, ppr2)
+
+        print([p for p in self.uc.get_shopping_cart(self.visitor1_id).value.iter_products()])
+
 
 if __name__ == '__main__':
     unittest.main()
