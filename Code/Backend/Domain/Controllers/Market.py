@@ -1,7 +1,7 @@
 from Code.Backend.Domain.PaymentServiceAdapter import PaymentServiceAdapter
 from Code.Backend.Domain.SupplyServiceAdapter import SupplyServiceAdapter
 
-from Code.Backend.Domain.ShoppingCart import ShoppingCart
+# from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.MFResponse import Response
 
 from Code.Backend.Service.Objects.PaymentService import PaymentService
@@ -43,8 +43,8 @@ class Market:
     def contact_supply_service(self, supply_info):
         return self.__supply_service_adapter.supply(supply_info)
 
-    def purchase_shop_cart(self, user_id: str, shopping_cat: ShoppingCart):
-        pass
+    # def purchase_shop_cart(self, user_id: str, shopping_cat: ShoppingCart):
+    #     pass
 
     def complaint(self, comp):
         pass
