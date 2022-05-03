@@ -105,5 +105,6 @@ class UserControllerTests(unittest.TestCase):
         self.assertTrue(res.error_occurred(), "succeeded logging out unregistered user")
 
 
+
 if __name__ == '__main__':
     unittest.main()
