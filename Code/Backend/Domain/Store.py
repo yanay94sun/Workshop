@@ -5,6 +5,7 @@ from Code.Backend.Domain.Permissions import Permissions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
 from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
+from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 from Code.Backend.Domain.StoreOfficials.StoreManager import StoreManager
 from Code.Backend.Domain.StoreOfficials.StoreOfficial import StoreOfficial
 from Code.Backend.Domain.StoreOfficials.StoreOwner import StoreOwner
@@ -20,7 +21,7 @@ class Store:
         self.__discount_policy = DiscountPolicy()
         self.__purchase_policy = PurchasePolicy()
         self.__store_info = StoreInfo(founder_id, store_name, store_id)
-        self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreOwner(None, founder_id)}
+        self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreFounder(None, founder_id)}
         # self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
         self.__purchase_history: List[Purchase] = []
 
