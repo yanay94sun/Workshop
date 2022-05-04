@@ -13,7 +13,7 @@ from Code.Backend.Service.Objects.PaymentService import PaymentService
 class Market:
 
     def __init__(self):
-        self.__admin_id = None
+        self.__admins_ids = None
         self.__admin_pwd = None
         self.__payment_service = None
         self.__supply_service = None
@@ -21,8 +21,8 @@ class Market:
         self.__supply_service_adapter = None
 
     def init(self, admin_id, admin_pwd, payment_service, supply_service):
-        self.__admin_id = admin_id
-        self.__admin_pwd = admin_pwd
+        self.__admins_ids = [admin_id]
+        self.__admin_pwd = [admin_pwd]
         self.__payment_service = payment_service
         self.__supply_service = supply_service
         self.__payment_service_adapter = PaymentServiceAdapter()
@@ -110,3 +110,6 @@ class Market:
         :return:
         """
         pass
+
+    def check_if_admin(self,user_id:str):
+        return user_id in self.__admins_ids

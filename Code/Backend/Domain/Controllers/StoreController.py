@@ -1,10 +1,10 @@
 from typing import Dict
 
-from Code.Backend.Domain.Actions import Actions
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
+from Code.Backend.Domain.StoreOfficials.Permissions import Actions, Permissions
 
 
 def search_filter(res, filterType, filterValue=None):
@@ -49,8 +49,8 @@ class StoreController:
             res.append(store_info_with_products)
         return Response(value=res)
 
-    def search_product(self, text, by_name=True, by_category=None, filter_type=None,
-                       filter_value=None):  # TODO think about filter_value
+    def search_product(self, text, by_name, by_category, filter_type,
+                       filter_value):  # TODO think about filter_value
         res = []
         for store in self.stores.values():
             tmp_store_products = store.get_all_products()
@@ -134,8 +134,8 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def edit_product_info(self, user_id, store_id, product_id, name=None, description=None, rating=None
-                          , price=None, category=None):
+    def edit_product_info(self, user_id, store_id, product_id, name, description, rating
+                          , price, category):
         try:
             store = self.__get_store(store_id)
 
@@ -185,7 +185,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission, val=True):
+    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Permissions):
         try:
             store = self.__get_store(store_id)
 
@@ -193,7 +193,7 @@ class StoreController:
             if not store.has_access(user_id, Actions.CHANGE_MANAGER_PERMISSION):
                 return Response(msg="User does not have access to this action")
 
-            store.change_permissions(manager_id, new_permission, val)
+            store.change_permissions(manager_id, new_permission)
             return Response(value="Permissions successfully changed")
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -234,13 +234,11 @@ class StoreController:
     def reply_users_messages(self, user_id: str, store_id: str, user_contact_info, owner_contact_info):
         pass
 
-    def get_store_purchase_history(self, user_id: str, store_id: str):
+    def get_store_purchase_history(self, user_id: str, store_id: str, is_admin=False):
         try:
             store = self.__get_store(store_id)
 
-            # check if user has access to this action
-            #todo check if its admin also
-            if not store.has_access(user_id, Actions.GET_STORE_PURCHASE_HISTORY):
+            if not store.has_access(user_id, Actions.GET_STORE_PURCHASE_HISTORY) or not is_admin:
                 return Response(msg="User does not have access to this action")
 
             return Response(value=store.get_purchase_history())
@@ -251,7 +249,7 @@ class StoreController:
     def get_product(self, store_id, product_id, quantity):
         """
         checks if the product is available, and returns its reference.
-        throw exception if not available or not exists.
+        return None if not available or not exists.
         """
         store = self.__get_store(store_id)
         try:

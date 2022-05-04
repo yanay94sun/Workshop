@@ -1,12 +1,10 @@
 import unittest
 
-from Code.Backend.Domain.Actions import Actions
 from Code.Backend.Domain.DiscountPolicyObjects.MinPriceForDiscount import MinPriceForDiscount
-from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.Controllers.StoreController import StoreController
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
+from Code.Backend.Domain.StoreOfficials.Permissions import Actions
 from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
-from Code.Backend.Domain.StoreOfficials.StoreOwner import StoreOwner
 
 sc = StoreController()
 USER_ID = '123'

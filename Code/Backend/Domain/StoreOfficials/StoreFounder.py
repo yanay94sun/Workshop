@@ -6,10 +6,8 @@ class StoreFounder(StoreOfficial):
         super().__init__(just_appointed, None)
         self.appointed = just_appointed
 
-
-
     def check_permission(self, action):
         return True
 
-    def set_permission(self, action_number, new_val):
+    def set_permission(self, new_permission):
         raise Exception("can't change founder's permissions")

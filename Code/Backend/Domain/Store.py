@@ -1,7 +1,7 @@
 from typing import Dict, List
 
-from Code.Backend.Domain.DiscountPolicy import DiscountPolicy
-from Code.Backend.Domain.Permissions import Permissions
+from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Domain.StoreOfficials.Permissions import Permissions, Actions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
 from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
@@ -77,22 +77,19 @@ class Store:
     def add_owner(self, user_id: str, new_user_id: str):
         if new_user_id in self.__officials.keys():
             return False
-        new_permission = Permissions(self.__officials[user_id])
-        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id]
-                                                   , new_permission)
+
+        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id])
         return True
 
     def add_manager(self, user_id: str, new_manager_id: str):
         if new_manager_id in self.__officials.keys():
             return False
-        new_permission = Permissions(self.__officials[user_id])
         self.__officials[new_manager_id] = StoreManager(new_manager_id,
-                                                        self.__officials[user_id],
-                                                        new_permission)
+                                                        self.__officials[user_id])
         return True
 
-    def change_permissions(self, user_id, action_number, new_val):
-        self.__officials[user_id].set_permission(action_number, new_val)
+    def change_permissions(self, user_id, new_permission):
+        self.__officials[user_id].set_permission(new_permission)
 
     def get_officials(self):
         return self.__officials
