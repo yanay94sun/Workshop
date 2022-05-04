@@ -77,7 +77,9 @@ class Store:
     def add_owner(self, user_id: str, new_user_id: str):
         if new_user_id in self.__officials.keys():
             return False
-        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id])
+        new_permission = Permissions(self.__officials[user_id])
+        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id]
+                                                   , new_permission)
         return True
 
     def add_manager(self, user_id: str, new_manager_id: str):
@@ -103,7 +105,3 @@ class Store:
 
     def get_discount_policy(self):
         return self.__discount_policy
-
-
-
-
