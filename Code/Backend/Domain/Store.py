@@ -21,7 +21,7 @@ class Store:
         self.__discount_policy = DiscountPolicy()
         self.__purchase_policy = PurchasePolicy()
         self.__store_info = StoreInfo(founder_id, store_name, store_id)
-        self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreFounder(None, founder_id)}
+        self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreFounder(founder_id)}
         # self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
         self.__purchase_history: List[Purchase] = []
 
