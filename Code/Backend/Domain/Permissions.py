@@ -1,6 +1,5 @@
-from Code.Backend.Domain.Actions import Actions
+from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 from Code.Backend.Domain.StoreOfficials.StoreOfficial import StoreOfficial
-from Code.Backend.Domain.StoreOfficials.StoreOwner import StoreOwner
 
 
 class Permissions:
@@ -9,7 +8,7 @@ class Permissions:
     #     self.__permissions = {1: True, 2: True, 3: True, 4: True, 5: True, 6: True, 7: True}
     #     self.__appointee_id = appointee_id
     def __init__(self, parent: StoreOfficial):
-        if isinstance(parent, StoreOwner):
+        if isinstance(parent, StoreFounder):
             self.__permissions = {i: True for i in range(7)}
         else:
             self.__permissions = {i: parent.check_permission(i) for i in range(7)}

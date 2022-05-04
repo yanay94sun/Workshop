@@ -5,6 +5,7 @@ from Code.Backend.Domain.Permissions import Permissions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
 from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
+from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 from Code.Backend.Domain.StoreOfficials.StoreManager import StoreManager
 from Code.Backend.Domain.StoreOfficials.StoreOfficial import StoreOfficial
 from Code.Backend.Domain.StoreOfficials.StoreOwner import StoreOwner
@@ -20,7 +21,7 @@ class Store:
         self.__discount_policy = DiscountPolicy()
         self.__purchase_policy = PurchasePolicy()
         self.__store_info = StoreInfo(founder_id, store_name, store_id)
-        self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreOwner(None, founder_id)}
+        self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreFounder(founder_id)}
         # self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
         self.__purchase_history: List[Purchase] = []
 
@@ -76,7 +77,9 @@ class Store:
     def add_owner(self, user_id: str, new_user_id: str):
         if new_user_id in self.__officials.keys():
             return False
-        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id])
+        new_permission = Permissions(self.__officials[user_id])
+        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id]
+                                                   , new_permission)
         return True
 
     def add_manager(self, user_id: str, new_manager_id: str):
@@ -102,7 +105,3 @@ class Store:
 
     def get_discount_policy(self):
         return self.__discount_policy
-
-
-
-
