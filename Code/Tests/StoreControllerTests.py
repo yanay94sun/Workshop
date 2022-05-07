@@ -3,7 +3,7 @@ import unittest
 from Code.Backend.Domain.DiscountPolicyObjects.MinPriceForDiscount import MinPriceForDiscount
 from Code.Backend.Domain.Controllers.StoreController import StoreController
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
-from Code.Backend.Domain.StoreOfficials.Permissions import Actions
+from Code.Backend.Domain.StoreOfficials.Permissions import Actions, Permissions
 from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 
 sc = StoreController()
@@ -61,25 +61,28 @@ class StoreControllerTests(unittest.TestCase):
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 7) is None)
 
     def test_6_edit_product_info(self):
-        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, name="Apple")
+        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, name="Apple", description=None, rating=None
+                                        , price=None, category=None)
         self.assertTrue(response.value == "Product was edited")
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 0).get_name() == "Apple")
 
-        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, category="Fruits")
+        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, name=None, category="Fruits", rating=None
+                                        , price=None, description=None)
         self.assertTrue(response.value == "Product was edited")
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 0).get_category() == "Fruits")
 
-        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, price=50)
+        response = sc.edit_product_info(USER_ID, STORE_ID, PRODUCT_ID, price=50, name=None, category=None, rating=None
+                                        , description=None)
         self.assertTrue(response.value == "Product was edited")
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 0).get_price() == 50)
 
     def test_7_search_product(self):
-        response = sc.search_product("Apple")
+        response = sc.search_product("Apple", by_name=True, by_category=None, filter_type=None, filter_value=None)
         self.assertTrue(response.value[0].get_name() == "Apple")
-        response = sc.search_product("Fruits", by_category=True)
+        response = sc.search_product("Fruits", by_name=True, by_category=True, filter_type=None, filter_value=None)
         self.assertTrue(response.value[0].get_category() == "Fruits")
         # products does not exists
-        response = sc.search_product("bla bla")
+        response = sc.search_product("bla bla", by_name=True, by_category=None, filter_type=None, filter_value=None)
         self.assertTrue(len(response.value) == 0)
 
     def test_8_add_store_owner(self):
@@ -99,7 +102,8 @@ class StoreControllerTests(unittest.TestCase):
         self.assertTrue(response.msg is not None)
 
     def test_a_10_change_manager_permission(self):
-        response = sc.change_manager_permission(USER_ID, STORE_ID, '222', Actions.INVENTORY_ACTION, val=False)
+        new_per = {1: False, 2: False, 3: False, 4: False, 5: False, 6: False, 7: False}
+        response = sc.change_manager_permission(USER_ID, STORE_ID, '222', new_per)
         self.assertTrue(response.value == "Permissions successfully changed")
         response = sc.add_products_to_inventory('222', STORE_ID, PRODUCT_ID, 3)
         # user should not be able to change inventory

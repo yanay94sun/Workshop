@@ -77,7 +77,7 @@ class Service:
         return response
 
     def __service_payment_info_to_domain(self, payment_info):
-        """
+        """ 
         converts ...
         """
         return DomainPaymentInfo(payment_info)

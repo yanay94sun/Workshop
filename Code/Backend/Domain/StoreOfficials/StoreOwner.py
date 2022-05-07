@@ -6,13 +6,13 @@ class StoreOwner(StoreOfficial):
     def __init__(self, just_appointed: str,  # member id
                  old_appointee: StoreOfficial,):
         super().__init__(just_appointed, old_appointee)
-        self.permissions = Permissions({Actions.INVENTORY_ACTION: True,
-                                        Actions.CHANGE_MANAGER_PERMISSION: True,
-                                        Actions.ADD_STORE_MANAGER: True,
-                                        Actions.ADD_STORE_OWNER: True,
-                                        Actions.GET_STORE_PURCHASE_HISTORY: True,
-                                        Actions.CLOSE_STORE: False,
-                                        Actions.GET_STORE_ROLES: True})
+        self.permissions = Permissions({Actions.INVENTORY_ACTION.value: True,
+                                        Actions.CHANGE_MANAGER_PERMISSION.value: True,
+                                        Actions.ADD_STORE_MANAGER.value: True,
+                                        Actions.ADD_STORE_OWNER.value: True,
+                                        Actions.GET_STORE_PURCHASE_HISTORY.value: True,
+                                        Actions.CLOSE_STORE.value: False,
+                                        Actions.GET_STORE_ROLES.value: True})
 
     def check_permission(self, action):
         return self.permissions.check_permission(action)

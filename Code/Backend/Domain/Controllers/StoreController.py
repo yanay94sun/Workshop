@@ -185,7 +185,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Permissions):
+    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Dict):
         try:
             store = self.__get_store(store_id)
 

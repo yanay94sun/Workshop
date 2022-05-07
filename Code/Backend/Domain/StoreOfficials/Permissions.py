@@ -10,11 +10,11 @@ class Permissions:
         self.__permissions = permission
 
     def check_permission(self, action_number):
+        print(self.__permissions)
         return self.__permissions[action_number.value]
 
-    def set_permission(self, action_number, new_val):
-        if action_number.value in self.__permissions.keys():
-            self.__permissions[action_number.value] = new_val
+    def set_permission(self, new_val):
+        self.__permissions = new_val
 
 
 class Actions(Enum):
