@@ -13,9 +13,6 @@ class DiscountPolicy:
         self.__authorized_for_discount = None  # TODO
         self.__doubled_discounts = True
 
-    def add_discount(self, list_of_products, discount_type, rule=None):
-        pass
-
     def change_doubled_discounts(self, new_val):
         self.__doubled_discounts = new_val
 
@@ -31,10 +28,11 @@ class DiscountPolicy:
             if products_discounts[p.get_ID()] is not []:
                 if self.__doubled_discounts:
                     price += (p.get_price() * quantity_dic[p.get_ID()]) \
-                             - (reduce((lambda x, y: x + y), products_discounts[p.get_ID()])) * p.get_price()
+                             - (reduce((lambda x, y: x + y), products_discounts[p.get_ID()]))\
+                             * p.get_price()* quantity_dic[p.get_ID()]
                 else:
                     price += (p.get_price() * quantity_dic[p.get_ID()]) \
-                             - (max(products_discounts[p.get_ID()])) * p.get_price()
+                             - (max(products_discounts[p.get_ID()])) * p.get_price()*quantity_dic[p.get_ID()]
             # if not discount
             else:
                 price += p.get_price() * quantity_dic[p.get_ID()]
@@ -47,3 +45,9 @@ class DiscountPolicy:
             if isinstance(discount, VisibleDiscount):
                 lst.append(discount)
         return lst
+
+    def add_visible_discount(self, list_of_products_ids, discount_price, end_date, rules):
+        if discount_price >= 1:
+            raise ValueError("cant get discount over 100%")
+        discount = VisibleDiscount(discount_price, end_date, rules=rules, products_ids=list_of_products_ids)
+        self.__discounts.append(discount)

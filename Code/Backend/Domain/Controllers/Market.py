@@ -1,7 +1,7 @@
 from Code.Backend.Domain.PaymentServiceAdapter import PaymentServiceAdapter
 from Code.Backend.Domain.SupplyServiceAdapter import SupplyServiceAdapter
 
-from Code.Backend.Domain.ShoppingCart import ShoppingCart
+# from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.MFResponse import Response
 
 from Code.Backend.Service.Objects.PaymentService import PaymentService
@@ -13,7 +13,7 @@ from Code.Backend.Service.Objects.PaymentService import PaymentService
 class Market:
 
     def __init__(self):
-        self.__admin_id = None
+        self.__admins_ids = None
         self.__admin_pwd = None
         self.__payment_service = None
         self.__supply_service = None
@@ -21,8 +21,8 @@ class Market:
         self.__supply_service_adapter = None
 
     def init(self, admin_id, admin_pwd, payment_service, supply_service):
-        self.__admin_id = admin_id
-        self.__admin_pwd = admin_pwd
+        self.__admins_ids = [admin_id]
+        self.__admin_pwd = [admin_pwd]
         self.__payment_service = payment_service
         self.__supply_service = supply_service
         self.__payment_service_adapter = PaymentServiceAdapter()
@@ -43,8 +43,8 @@ class Market:
     def contact_supply_service(self, supply_info):
         return self.__supply_service_adapter.supply(supply_info)
 
-    def purchase_shop_cart(self, user_id: str, shopping_cat: ShoppingCart):
-        pass
+    # def purchase_shop_cart(self, user_id: str, shopping_cat: ShoppingCart):
+    #     pass
 
     def complaint(self, comp):
         pass
@@ -110,3 +110,6 @@ class Market:
         :return:
         """
         pass
+
+    def check_if_admin(self,user_id:str):
+        return user_id in self.__admins_ids

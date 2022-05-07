@@ -4,8 +4,8 @@ from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 
 
 class ConditionalDiscount(Discount):
-    def __init__(self, dic_of_products_and_quantity, discount, end_date):
-        super().__init__(discount, end_date)
+    def __init__(self, discount, end_date, dic_of_products_and_quantity, rules=[], products_ids=[]):
+        super().__init__(discount, end_date, rules, products_ids)
         self.products_to_have_for_discount = dic_of_products_and_quantity
 
     def calculate_price(self, quantity_dict, products, dic_to_update, invisible_code):

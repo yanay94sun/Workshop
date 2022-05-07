@@ -1,0 +1,2 @@
+class PersonalInfo:
+    pass

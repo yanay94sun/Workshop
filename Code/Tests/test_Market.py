@@ -7,7 +7,7 @@ from Code.Backend.Domain.PaymentServiceAdapter import PaymentServiceAdapter
 from Code.Backend.Domain.SupplyServiceAdapter import SupplyServiceAdapter
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentService import PaymentService
-from Code.Backend.Service.Objects.Payment_info import Payment_info
+from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.SupplySevice import SupplyService
 
 
@@ -15,7 +15,7 @@ class TestMarket(TestCase):
     def setUp(self):
         self.payment_service = PaymentService()
         self.supply_service = SupplyService()
-        self.payment_info = DomainPaymentInfo(Payment_info(123456789, "yanay", 4580123456789123, 123, 200))
+        self.payment_info = DomainPaymentInfo(PaymentInfo(123456789, "yanay", 4580123456789123, 123, 200))
         self.package_info = PackageInfo("yanay", "shemesh", "beer sheva", "123", {"11": 10})
         self.market = Market().init("yanay","123", self.payment_service, self.supply_service).value
 

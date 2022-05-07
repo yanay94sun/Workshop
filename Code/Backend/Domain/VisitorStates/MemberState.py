@@ -1,6 +1,6 @@
 # from plistlib import Dict
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
-from Code.Backend.Domain.State import State
+from Code.Backend.Domain.VisitorStates.VisitorState import State
 
 
 class MemberState(State):

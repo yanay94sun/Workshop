@@ -1,4 +1,4 @@
-class Payment_info:
+class PaymentInfo:
     def __init__(self, customer_id, customer_name, credit_card, cvv, amount_to_pay):
         self.customer_id = customer_id
         self.customer_name = customer_name
