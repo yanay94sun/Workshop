@@ -30,7 +30,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
 
 # RUN IN COMMEND LINE FROM WorkshopProj dir terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
-# aa
 
 # contract with frontEnd, what we expect to get from the post request
 
