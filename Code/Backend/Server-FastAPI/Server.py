@@ -101,8 +101,6 @@ def get_store_info(store_id: str):
     return res.value
 
 
-
-
 """
 --------------------------------------
 Member's purchase actions
@@ -117,13 +115,13 @@ def logout(user_info: User_info):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return Response(status_code=status.HTTP_200_OK)
 
+
 @app.post("users/open_store")
 def open_store(user_id: str, store_name: str):
     res = service.open_store(user_id, store_name)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res
-
 
 
 """
@@ -165,7 +163,6 @@ def create_access_token(data: dict):
 
 
 def verify_access_token(token: str, user_exception):
-
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
 
