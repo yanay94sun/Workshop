@@ -1,6 +1,5 @@
 import unittest
 
-from Code.Backend.Domain.DiscountPolicyObjects.MinPriceForDiscount import MinPriceForDiscount
 from Code.Backend.Domain.Controllers.StoreController import StoreController
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.StoreOfficials.Permissions import Actions, Permissions
@@ -121,7 +120,7 @@ class StoreControllerTests(unittest.TestCase):
     def test_a_13_get_basket_price(self):
         basket = ShoppingBasket(STORE_ID)
         basket.add_to_basket(PRODUCT_ID, 3)
-        sc.add_visible_discount(STORE_ID, [PRODUCT_ID], 0.4, "24/5/2022", [MinPriceForDiscount(20)])
+        sc.add_visible_discount(STORE_ID, [PRODUCT_ID], 0.4, "24/5/2022")
         response = sc.get_basket_price(STORE_ID, basket)
         self.assertTrue(response.value == 90)
 

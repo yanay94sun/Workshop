@@ -17,7 +17,7 @@ class DiscountPolicy:
         self.__doubled_discounts = new_val
 
     def calculate_basket(self, products: List[Product], user_status, quantity_dic, invisible_codes):
-        # need to check if user is authorized.
+        # TODO need to check if user is authorized.
         products_discounts: Dict[str, List[float]] = {prdct.get_ID(): [] for prdct in
                                                       products}
         for discount in self.__discounts:

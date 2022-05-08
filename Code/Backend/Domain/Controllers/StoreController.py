@@ -267,7 +267,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    # TODO change store id
+    # TODO change store id should be in basket
     def get_basket_price(self, store_id, basket: ShoppingBasket, invisible_codes=None):
         try:
             store = self.__get_store(store_id)

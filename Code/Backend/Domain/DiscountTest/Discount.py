@@ -13,7 +13,6 @@ class Discount:
         self.products_ids = products_ids
         self.my_discount: float = discount
         self.end_date = end_date
-        # Todo add field for category and store
 
     def calculate_price(self, quantity_dict: Dict[str, int], products: List[Product], dic_to_update, invisible_code):
         pass
