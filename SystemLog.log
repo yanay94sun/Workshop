@@ -1,0 +1,937 @@
+INFO:uvicorn.error:Started server process [21856]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [5864]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Started server process [23664]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [23664]
+INFO:uvicorn.error:Started server process [15664]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [15664]
+INFO:uvicorn.error:Started server process [9316]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [7628]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [13888]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [10292]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [18252]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [19592]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [19832]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [1916]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [11668]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [10260]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [24536]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [10460]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [4452]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Started server process [10440]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [17540]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Started server process [276]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [22024]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [21864]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [16732]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [24320]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [9192]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 55, in login
+    hashed_password = utils.hash_pass(user_info.password)
+NameError: name 'utils' is not defined
+INFO:uvicorn.error:Started server process [21824]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Started server process [4360]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username doesn't exist
+INFO:uvicorn.error:Started server process [23404]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [7172]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [11152]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 81, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 81, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+CRITICAL:root:username already exists
+CRITICAL:root:user is already logged in
+CRITICAL:root:user is already logged in
+CRITICAL:root:guest id doesn't exist
+CRITICAL:root:user is already logged in
+CRITICAL:root:user is already logged in
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [11152]
+INFO:uvicorn.error:Started server process [13484]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 81, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 81, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+CRITICAL:root:user is already logged in
+INFO:uvicorn.error:Started server process [1544]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [14540]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username doesn't exist
+CRITICAL:root:Not logged in
+CRITICAL:root:user is already logged in
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [23920]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username doesn't exist
+CRITICAL:root:user is already logged in
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [13316]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username doesn't exist
+CRITICAL:root:username doesn't exist
+CRITICAL:root:username doesn't exist
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [1544]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 81, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 81, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+INFO:uvicorn.error:Started server process [18496]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [13004]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [20636]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [19936]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [13356]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [13624]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [17592]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [12260]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 64, in login
+    res = service.login(user_info.guest_id, user_info.username, hashed_password)
+  File ".\Code\Backend\Service\Service.py", line 150, in login
+    response = Response(self.facade.login(guest_id, username, password))
+  File ".\Code\Backend\Domain\Facade.py", line 113, in login
+    return self.user_controller.login(guest_id, username, password)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 51, in login
+    return self.__users[guest_id].login(self.__members[username], password)
+  File ".\Code\Backend\Domain\Visitor.py", line 21, in login
+    if not member_state.password_confirmed(password):
+  File ".\Code\Backend\Domain\VisitorStates\MemberState.py", line 32, in password_confirmed
+    return pwd_context.verify(plain_password, self.__password, salt="a" * 22)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\passlib\context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\passlib\utils\handlers.py", line 788, in verify
+    self = cls.from_string(hash, **context)
+TypeError: from_string() got an unexpected keyword argument 'salt'
+INFO:uvicorn.error:Started server process [20052]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [12444]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [2508]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [2508]
+INFO:uvicorn.error:Started server process [2776]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [11332]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [7348]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [24248]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [14540]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 78, in register
+    hash_password = hash_pass(user_info.password)
+NameError: name 'hash_pass' is not defined
+INFO:uvicorn.error:Started server process [10904]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [22304]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [4524]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user is already logged in
+CRITICAL:root:user is already logged in
+CRITICAL:root:user is already logged in
+CRITICAL:root:invalid password
+CRITICAL:root:username doesn't exist
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Started server process [7540]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [9828]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [10384]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [18832]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [13732]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [23956]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [22440]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [16636]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [22124]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [16140]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [7904]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [20468]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [4824]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [11332]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [10200]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [2200]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [2688]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [13792]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [23836]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [24000]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 86, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+INFO:uvicorn.error:Started server process [15616]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [15828]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [15828]
+INFO:uvicorn.error:Started server process [20208]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user is already logged in
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 75, in login
+    access_token = create_access_token(data={"user_id": user_info.guest_id})
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 158, in create_access_token
+    encoded_jwt = jwt.encode(__to_encode, SECRET_KEY, algorithm=[ALGORITHM])
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\jose\jwt.py", line 53, in encode
+    return jws.sign(claims, key, headers=headers, algorithm=algorithm)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\jose\jws.py", line 38, in sign
+    if algorithm not in ALGORITHMS.SUPPORTED:
+TypeError: unhashable type: 'list'
+INFO:uvicorn.error:Started server process [21448]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username doesn't exist
+CRITICAL:root:user is already logged in
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 75, in login
+    access_token = create_access_token(data={"user_id": user_info.guest_id})
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 158, in create_access_token
+    encoded_jwt = jwt.encode(__to_encode, SECRET_KEY, algorithm=[ALGORITHM])
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\jose\jwt.py", line 53, in encode
+    return jws.sign(claims, key, headers=headers, algorithm=algorithm)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\jose\jws.py", line 38, in sign
+    if algorithm not in ALGORITHMS.SUPPORTED:
+TypeError: unhashable type: 'list'
+INFO:uvicorn.error:Started server process [12144]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 86, in register
+    res = service.register(user_info.guest_id, user_info_dict)
+  File ".\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File ".\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File ".\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Started server process [24148]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
