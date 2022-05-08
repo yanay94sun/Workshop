@@ -34,6 +34,7 @@ app = FastAPI()
 # contract with frontEnd, what we expect to get from the post request
 
 # aaa
+# YA TAMBALLLL
 
 """
 main page aka root
