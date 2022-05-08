@@ -13,7 +13,7 @@ from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PersonalInfo import PersonalInfo
-from Code.Backend.Service.Objects.ProductSearchFilters import Product_search_filters
+# from Code.Backend.Service.Objects.ProductSearchFilters import Product_search_filters
 
 
 class Facade:

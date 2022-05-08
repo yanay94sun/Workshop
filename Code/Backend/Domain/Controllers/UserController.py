@@ -43,7 +43,6 @@ class UserController:
         self.__members[key] = new_status.value
         return Response()
 
-
     def login(self, guest_id: str, username: str, password: str):
         if username not in self.__members:
             return Response(msg="username doesn't exist")
@@ -93,5 +92,3 @@ class UserController:
 
     def edit_personal_info(self, user_id: str, new_personal_info):
         pass  # todo
-
-

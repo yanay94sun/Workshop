@@ -39,8 +39,7 @@ class Service:
     def __init__(self):
         self.facade = Facade()
 
-    def initial_system(self, admin_id: str = None, admin_pwd: str = None,
-                       payment_service=None, supply_service=None):
+    def initial_system(self, payment_service, supply_service, admin_id: str = None, admin_pwd: str = None):
         """
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
