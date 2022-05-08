@@ -1,0 +1,14 @@
+.div-register{
+    width: 350px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 10vh;
+    background-color: white;
+}
+
