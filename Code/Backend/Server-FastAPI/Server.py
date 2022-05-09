@@ -2,15 +2,12 @@ from fastapi import FastAPI, Response, status, HTTPException, Depends, Cookie
 from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
-from random import randrange
 from fastapi.middleware.cors import CORSMiddleware
 # from Code.Backend.FastAPI import utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
-
-# print(os.getcwd())
 from passlib.context import CryptContext
 
 from Code.Backend.Service.Objects.PaymentService import PaymentService
@@ -21,7 +18,19 @@ from Code.Backend.Service.Objects.User_info import User_info
 from Code.Backend.Service.Service import Service
 from Code.Backend import oauth2
 
-# from Code.Backend.FastAPI import utils
+"""
+                                     IMPORTANT!!!
+-----------------------------------------------------------------------------------------------------------------
+- please make sure that your current dirctory is WorkshopProj/
+
+- for install all packages needed please run in terminal: pip install -r requirements.txt
+
+- to run the server run in terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
+                        
+                        
+                        thank you,
+                        legolas94sun
+"""
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="guests/login")
 
@@ -45,15 +54,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# RUN IN COMMEND LINE FROM WorkshopProj dir terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
-
-# contract with frontEnd, what we expect to get from the post request
-
-# aaa
-# YA TAMBALLLL
-# ya zain
-# lech tizdayen
 
 """
 main page aka root
@@ -118,12 +118,14 @@ def get_store_info(store_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
+
 @app.get("/stores")
 def get_stores_info():
     res = service.get_stores_info()
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
+
 
 """
 --------------------------------------
