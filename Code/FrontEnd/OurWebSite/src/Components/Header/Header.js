@@ -1,8 +1,9 @@
 import React from "react";
 import { NavLink ,useLocation,useNavigate,useParams} from "react-router-dom"; 
-import {ReactComponent as Logo} from '../../Assets/ricardo.svg'
-import {ReactComponent as Home} from '../../Assets/home.svg'
-import {ReactComponent as Explore} from '../../Assets/explore.svg'
+import {ReactComponent as LogoIcon} from '../../Assets/ricardo.svg'
+import {ReactComponent as HomeIcon} from '../../Assets/home.svg'
+import {ReactComponent as ExploreIcon} from '../../Assets/explore.svg'
+// import {ReactComponent as CartIcon} from '../../Assets/shopping-cart.svg'
 import './Header.css';
 
 function withRouter(Component) {
@@ -31,11 +32,15 @@ function Header({isLogged}){
         <nav>
             <div className="div-header">
                 <div >
-                    <Logo onClick={() => navigate('/home')()} style={{cursor:'pointer'}} className="logo"/> 
+                    <LogoIcon onClick={() => navigate('/home')()} style={{cursor:'pointer'}} className="logo"/> 
                 </div>
                 <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                    <NavLink to ='/home/newHome' activeClassName='active'><Home className="div-svg"/></NavLink>
-                    <NavLink to ='/home/explore'activeClassName='active'><Explore className="div-svg"/></NavLink>
+                    <NavLink to ='/home/newHome' activeClassName='active'><HomeIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/explore'activeClassName='active'><ExploreIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/shopping-cart'activeClassName='active'>Cart </NavLink>
+                    <NavLink to ='/home/my-account'activeClassName='active'>My Account </NavLink>
+
+
                     <button className="button-header" onClick={handleClick} style={{ cursor:'pointer'}}>log out</button>
                 </div>
             </div>

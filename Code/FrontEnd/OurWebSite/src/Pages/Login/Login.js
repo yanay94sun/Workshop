@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { withRouter } from "../../Components/Navigate";
 import "../Login/Login.css";
@@ -12,8 +13,13 @@ class Login extends React.Component{
         const {name,value} = e.target
         this.setState({[name]:value})
     }
-    handleSubmit = (e) =>{
+    handleSubmit = async (e) =>{
+        // connecting to back
+        e.preventDefault();
+        const response = await axios.get('http://127.0.0.1:8000/')
+        console.log(response)
         e.preventDefault()
+        // connecting to back
         this.props.isLogin(true)
         this.props.navigate('/home')
     }

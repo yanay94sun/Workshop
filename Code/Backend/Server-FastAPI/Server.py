@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from pydantic.class_validators import Optional
 from random import randrange
 import os
+
 # from Code.Backend.FastAPI import utils
 
 from jose import JWTError, jwt
@@ -20,14 +21,31 @@ from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Objects.TokenData import TokenData
 from Code.Backend.Service.Objects.User_info import User_info
 from Code.Backend.Service.Service import Service
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # from Code.Backend.FastAPI import utils
 
 service = Service()
 service.initial_system(payment_service=PaymentService(), supply_service=SupplyService())
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-app = FastAPI()
 
 # RUN IN COMMEND LINE FROM WorkshopProj dir terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
 
@@ -60,8 +78,10 @@ General guest actions
 def enter_as_guest():
     response = service.enter_as_guest()
     if response.error_occurred():
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail="Something's wrong with the server, cant reach site")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Something's wrong with the server, cant reach site",
+        )
     return response
 
 
@@ -176,5 +196,6 @@ def verify_access_token(token: str, user_exception):
         raise user_exception
 
     return token_data
+
 
 # def get_current_user(token: str = Depends())
