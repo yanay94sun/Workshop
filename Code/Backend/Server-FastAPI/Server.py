@@ -111,7 +111,7 @@ def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
     return {"data": user_info_dict}
 
 
-@app.post("/users/get_store_info")
+@app.get("/stores/{store_id}", status_code=status.HTTP_204_NO_CONTENT)
 def get_store_info(store_id: str):
     res = service.get_store_info(store_id)
     if res.error_occurred():
@@ -139,7 +139,7 @@ def open_store(store_name: Store_name, user_id: Optional[str] = Cookie(None)):
     res = service.open_store(user_id, store_name.store_name)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
-    return Response(status_code=status.HTTP_200_OK)
+    return res.value
 
 
 """
