@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends
+from fastapi import FastAPI, Response, status, HTTPException, Depends, Cookie
 from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
@@ -57,18 +57,20 @@ General guest actions
 
 
 @app.get("/guests/enter")
-def enter_as_guest():
-    response = service.enter_as_guest()
-    if response.error_occurred():
+def enter_as_guest(response: Response):
+    res = service.enter_as_guest()
+    if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             detail="Something's wrong with the server, cant reach site")
-    return response
+    response.set_cookie(key="user_id", value=res.value)
+    return res
 
 
 @app.post("/guests/login")
-def login(user_info: User_info):
+def login(user_info: User_info, user_id: Optional[str] = Cookie(None)):
+    print(user_id)
     # hashed_password = hash_pass(user_info.password)
-    res = service.login(user_info.guest_id, user_info.username, user_info.password)
+    res = service.login(user_id, user_info.username, user_info.password)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
@@ -76,18 +78,18 @@ def login(user_info: User_info):
     # create a token
     # return token
 
-    access_token = create_access_token(data={"user_id": user_info.guest_id})
+    access_token = create_access_token(data={"user_id": user_id})
 
     return {"access_token": access_token, "token_type": "bearer"}
 
 
 @app.post("/guests/register")
-def register(user_info: User_info):
+def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
     hash_password = hash_pass(user_info.password)
     user_info.password = hash_password
     user_info_dict = user_info.dict()
-    res = service.register(user_info.guest_id, user_info_dict)
+    res = service.register(user_id, user_info_dict)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return {"data": user_info_dict}
@@ -109,8 +111,8 @@ Member's purchase actions
 
 
 @app.post("/users/logout")
-def logout(user_info: User_info):
-    res = service.logout(user_info.guest_id)
+def logout(user_id: Optional[str] = Cookie(None)):
+    res = service.logout(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return Response(status_code=status.HTTP_200_OK)

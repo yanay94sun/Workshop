@@ -6,6 +6,5 @@ from random import randrange
 
 
 class User_info(BaseModel):
-    guest_id: str
     username: str
     password: str
