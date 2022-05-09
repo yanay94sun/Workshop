@@ -3,7 +3,7 @@ from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
 from random import randrange
-import os
+from fastapi.middleware.cors import CORSMiddleware
 # from Code.Backend.FastAPI import utils
 
 from jose import JWTError, jwt
@@ -28,6 +28,21 @@ service.initial_system(payment_service=PaymentService(), supply_service=SupplySe
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # RUN IN COMMEND LINE FROM WorkshopProj dir terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
 
