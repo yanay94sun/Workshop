@@ -118,6 +118,12 @@ def get_store_info(store_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
+@app.get("/stores")
+def get_stores_info():
+    res = service.get_stores_info()
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
 
 """
 --------------------------------------
