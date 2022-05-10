@@ -18,7 +18,7 @@ class ConditionalDiscount(Discount):
                         dic_to_update[0][p.get_ID()].append(self.my_discount)
 
     def __check_condition(self, quantity_dict, products):
-        if self.products_to_have_for_discount is not {}:
+        if self.products_to_have_for_discount != {}:
             for key, value in self.products_to_have_for_discount.items():
                 if key not in quantity_dict.keys() or value > quantity_dict[key]:
                     return False

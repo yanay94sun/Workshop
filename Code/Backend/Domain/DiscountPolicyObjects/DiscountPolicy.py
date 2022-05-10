@@ -11,7 +11,7 @@ class DiscountPolicy:
         """
         self.__discounts = []
         self.__authorized_for_discount = None  # TODO
-        self.__doubled_discounts = True
+        self.__doubled_discounts = False
 
     def change_doubled_discounts(self, new_val):
         self.__doubled_discounts = new_val
@@ -25,14 +25,9 @@ class DiscountPolicy:
         price = 0
         for p in products:
             # check if there is a discount
-            if products_discounts[p.get_ID()] is not []:
-                if self.__doubled_discounts:
-                    price += (p.get_price() * quantity_dic[p.get_ID()]) \
-                             - (reduce((lambda x, y: x + y), products_discounts[p.get_ID()]))\
-                             * p.get_price()* quantity_dic[p.get_ID()]
-                else:
-                    price += (p.get_price() * quantity_dic[p.get_ID()]) \
-                             - (max(products_discounts[p.get_ID()])) * p.get_price()*quantity_dic[p.get_ID()]
+            if products_discounts[p.get_ID()]:
+                price += (p.get_price() * quantity_dic[p.get_ID()]) \
+                         - (max(products_discounts[p.get_ID()])) * p.get_price()*quantity_dic[p.get_ID()]
             # if not discount
             else:
                 price += p.get_price() * quantity_dic[p.get_ID()]
