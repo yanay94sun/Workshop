@@ -54,7 +54,7 @@ class ShoppingCart extends Component {
 					style={{
 						position: 'fixed',
 						left: 0,
-						width: 200,
+						// width: 300,
 					}}>
 					<Counters
 						counters={this.state.counters}

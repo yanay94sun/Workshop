@@ -55,6 +55,18 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    # CORSMiddleware,
+    # allow_origins=origins,
+    # allow_credentials=True,
+    # allow_methods=[
+    #     "GET",
+    #     "POST",
+    #     "OPTIONS",
+    # ],  # include additional methods as per the application demand
+    # allow_headers=[
+    #     "Content-Type",
+    #     "Set-Cookie",
+    # ],  # include additional headers as per the application demand
 )
 
 """
@@ -75,6 +87,7 @@ General guest actions
 """
 #
 
+
 @app.get("/guests/enter")
 def enter_as_guest(response: Response):
     res = service.enter_as_guest()
@@ -83,7 +96,9 @@ def enter_as_guest(response: Response):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Something's wrong with the server, cant reach site",
         )
-    response.set_cookie(key="user_id", value=res.value)
+    response.set_cookie(
+        key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+    )
     return res
 
 
@@ -109,6 +124,7 @@ def login(
 @app.post("/guests/register")
 def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
+    print(user_id)
     hash_password = hash_pass(user_info.password)
     user_info.password = hash_password
     user_info_dict = user_info.dict()

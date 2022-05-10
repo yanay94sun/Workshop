@@ -1146,3 +1146,957 @@ Traceback (most recent call last):
   File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
     new_status = self.__users[user_id].register(member_info)
 KeyError: None
+INFO:uvicorn.error:Started server process [15564]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 115, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 115, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 115, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [29164]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [29164]
+INFO:uvicorn.error:Started server process [50696]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 117, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [11428]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 116, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [44060]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 117, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [2568]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 117, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 117, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 117, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [28112]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [41108]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [49268]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [47740]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 127, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 127, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 127, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [48848]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 129, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [43240]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 130, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [27032]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 130, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: None
+INFO:uvicorn.error:Started server process [39332]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [47724]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 131, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\refae\AppData\Roaming\Python\Python310\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 131, in register
+    res = service.register(user_id, user_info_dict)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Service\Service.py", line 137, in register
+    response = Response(self.facade.register(guest_id, user_info))
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Facade.py", line 102, in register
+    return self.user_controller.register(guest_id, user_info)
+  File "C:\Users\refae\BGU\Courses\Semester_F\WorkshopOnSoftwareEngineeringProject\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 40, in register
+    new_status = self.__users[user_id].register(member_info)
+KeyError: '1'
+CRITICAL:root:username already exists
+INFO:uvicorn.error:Started server process [23644]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.

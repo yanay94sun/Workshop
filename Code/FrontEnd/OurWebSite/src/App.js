@@ -8,6 +8,8 @@ import NewHome from "./Pages/NewHome/NewHome";
 import Register from "./Pages/Register/Register.js";
 import axios from "axios";
 
+axios.defaults.withCredentials = true
+
 class App extends React.Component {
   state ={
     isLog:false
@@ -18,7 +20,7 @@ class App extends React.Component {
     // connecting to back
     // e.preventDefault();
     const response = await axios.get('http://127.0.0.1:8000/guests/enter')
-    console.log(response.data.value)
+    console.log(response.data)
   }
 
   render(){

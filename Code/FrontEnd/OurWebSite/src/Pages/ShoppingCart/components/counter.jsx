@@ -16,24 +16,24 @@ class Counter extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<span style={{ fontSize: 15 }} className={this.getBadgeClasses()}>
-					{this.formatCount()}
+				<span>
+					<span style={this.getBadgeClasses()}>{this.formatCount()}</span>
 
 					<button
-						style={{ width: 50 }}
-						className='btn btn-secondary btn-sm m-2'
+						style={{ width: 50, backgroundColor: 'gray', margin: 5 }}
+						// className='btn btn-secondary btn-sm m-2'
 						onClick={() => this.props.onIncrement(this.props.counter)}>
 						+
 					</button>
 					<button
-						style={{ width: 50 }}
-						className='btn btn-secondary btn-sm'
+						style={{ width: 50, backgroundColor: 'gray', margin: 5 }}
+						// className='btn btn-secondary btn-sm'
 						onClick={() => this.props.onDicrement(this.props.counter)}>
 						-
 					</button>
 					<button
-						style={{ width: 50 }}
-						className='btn btn-danger btn-sm m-2'
+						style={{ width: 50, backgroundColor: 'red', margin: 5 }}
+						// className='btn btn-danger btn-sm m-2'
 						onClick={() => this.props.onDelete(this.props.counter.id)}>
 						Delete
 					</button>
@@ -48,9 +48,13 @@ class Counter extends Component {
 	}
 
 	getBadgeClasses() {
-		let classes = 'badge m-2 badge-';
-		classes += this.props.counter.value === 0 ? 'warning' : 'primary';
-		return classes;
+		let badgeStyle = { fontSize: 18, margin: 5 };
+		this.props.counter.value === 0
+			? (badgeStyle.backgroundColor = 'gold')
+			: (badgeStyle.backgroundColor = 'dodgerblue');
+
+		// classes += this.props.counter.value === 0 ? 'warning' : 'primary';
+		return badgeStyle;
 	}
 
 	formatCount() {

@@ -39,7 +39,7 @@ function Header({isLogged}){
                     <NavLink to ='/home/newHome' activeClassName='active'><HomeIcon className="div-svg"/></NavLink>
                     <NavLink to ='/home/explore'activeClassName='active'><ExploreIcon className="div-svg"/></NavLink>
                     <NavLink to ='/home/shopping-cart'activeClassName='active'><CartIcon className="div-svg"/></NavLink>
-                    <NavLink to ='/home/my-account'activeClassName='active'><CartIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/my-account'activeClassName='active'><MyAccountIcon className="div-svg"/></NavLink>
 
 
                     <button className="button-header" onClick={handleClick} style={{ cursor:'pointer'}}>log out</button>
