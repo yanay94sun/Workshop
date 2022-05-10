@@ -305,3 +305,6 @@ class StoreController:
     def __generate_id(self):
         self.id_counter += 1
         return str(self.id_counter)
+
+    def remove_store_owner(self, remover_username, store_id, subject_username):
+        return self.stores[store_id].remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(remover_username, subject_username)

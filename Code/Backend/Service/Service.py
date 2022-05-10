@@ -464,15 +464,17 @@ class Service:
         write_to_log(response, "successfully added store owner")
         return response
 
-    def remove_store_owner(self, user_id: str, store_id: str, owner_id: str):
+    def remove_store_owner(self, user_id: str, store_id: str, subject_username: str):
         """
-        II.4.5
+        II.4.5(
         :param user_id:
         :param store_id:
-        :param owner_id:
+        :param subject_username:
         :return:
         """
-        pass
+        response = Response(self.facade.remove_store_owner(user_id, store_id, subject_username))
+        write_to_log(response, "successfully removed store owner")
+        return response
 
     def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
         """

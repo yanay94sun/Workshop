@@ -59,6 +59,13 @@ class UserController:
     def is_member(self, member_id):
         return Response(member_id in self.__members)
 
+    def get_users_username(self, user_id):
+        res = self.is_logged_in(user_id)
+        if res.error_occurred():
+            return res
+
+        return self.__users[user_id].get_username()
+
     def add_product_to_shop_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:
             return Response.from_error("user doesn't exist")

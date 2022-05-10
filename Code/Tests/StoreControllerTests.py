@@ -131,6 +131,23 @@ class StoreControllerTests(unittest.TestCase):
         response = sc.get_store_info(STORE_ID)
         self.assertTrue(response.msg == "Store id does not exist or is inactive")
 
+    def test_a_15_remove_store_owner(self):
+        sc.open_store("123", "1")
+        sc.add_store_owner("123", "1", "123456789")
+        sc.add_store_owner("123", "1", "1234")
+        sc.add_store_owner("1234", "1", "12345")
+        sc.add_store_owner("1234", "1", "12346")
+        sc.add_store_owner("12345", "1", "123456")
+        sc.add_store_owner("123456", "1", "1234567")
+
+        self.assertEqual(len(sc.stores["1"].get_officials()), 7)
+
+        sc.remove_store_owner("123", "1", "1234")
+
+        self.assertEqual(len(sc.stores["1"].get_officials()), 2)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

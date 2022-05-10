@@ -422,7 +422,7 @@ class Facade:
         II.4.4
         :param user_id:
         :param store_id:
-        :param new_owner_id:
+        :param new_owner_id: the new owner's *member_id*
         :return:
         """
         if not self.user_controller.is_logged_in(user_id):
@@ -431,15 +431,20 @@ class Facade:
             return Response(msg="New owner is not a member")
         return self.store_controller.add_store_owner(user_id, store_id, new_owner_id)
 
-    def remove_store_owner(self, user_id: str, store_id: str, owner_id: str):
+    def remove_store_owner(self, user_id: str, store_id: str, subject_username: str):
         """
         II.4.5
         :param user_id:
         :param store_id:
-        :param owner_id:
+        :param subject_username:
         :return:
         """
-        pass
+        if not self.user_controller.is_logged_in(user_id):
+            return Response.from_error("user is not logged in")
+        remover_username = self.user_controller.get_users_username(user_id)
+        if remover_username.error_occurred():
+            return remover_username
+        return self.store_controller.remove_store_owner(remover_username.value, store_id, subject_username)
 
     def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
         """

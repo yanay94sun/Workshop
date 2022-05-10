@@ -19,5 +19,8 @@ class MemberState(State):
     def password_confirmed(self, password: str) -> bool:
         return self.__password == password
 
+    def get_username(self):
+        return self.__username
+
 
 

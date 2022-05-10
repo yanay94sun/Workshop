@@ -102,3 +102,14 @@ class Store:
 
     def get_discount_policy(self):
         return self.__discount_policy
+
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(self,
+                                                                                                     remover_username,
+                                                                                                     subject_username):
+        all_my_children = list(filter(lambda official:
+                                      official.appointee and
+                                      official.appointee.appointed == subject_username,
+                                      self.__officials.values()))
+        for child in all_my_children:
+            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(subject_username, child.appointed)
+        self.__officials.pop(subject_username)
