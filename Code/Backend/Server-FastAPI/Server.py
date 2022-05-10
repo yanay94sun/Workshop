@@ -73,7 +73,7 @@ Users requirements
 General guest actions
 ---------------------------------------------------
 """
-
+#
 
 @app.get("/guests/enter")
 def enter_as_guest(response: Response):
