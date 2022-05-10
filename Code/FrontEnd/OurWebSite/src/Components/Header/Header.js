@@ -3,7 +3,8 @@ import { NavLink ,useLocation,useNavigate,useParams} from "react-router-dom";
 import {ReactComponent as LogoIcon} from '../../Assets/ricardo.svg'
 import {ReactComponent as HomeIcon} from '../../Assets/home.svg'
 import {ReactComponent as ExploreIcon} from '../../Assets/explore.svg'
-// import {ReactComponent as CartIcon} from '../../Assets/shopping-cart.svg'
+import {ReactComponent as CartIcon} from '../../Assets/shopping_cart.svg'
+import {ReactComponent as MyAccountIcon} from '../../Assets/myaccount-icon.svg'
 import './Header.css';
 
 function withRouter(Component) {
@@ -37,8 +38,8 @@ function Header({isLogged}){
                 <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                     <NavLink to ='/home/newHome' activeClassName='active'><HomeIcon className="div-svg"/></NavLink>
                     <NavLink to ='/home/explore'activeClassName='active'><ExploreIcon className="div-svg"/></NavLink>
-                    <NavLink to ='/home/shopping-cart'activeClassName='active'>Cart </NavLink>
-                    <NavLink to ='/home/my-account'activeClassName='active'>My Account </NavLink>
+                    <NavLink to ='/home/shopping-cart'activeClassName='active'><CartIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/my-account'activeClassName='active'><CartIcon className="div-svg"/></NavLink>
 
 
                     <button className="button-header" onClick={handleClick} style={{ cursor:'pointer'}}>log out</button>

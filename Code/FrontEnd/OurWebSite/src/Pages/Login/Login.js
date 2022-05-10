@@ -1,7 +1,8 @@
 import axios from "axios";
 import React from "react";
 import { withRouter } from "../../Components/Navigate";
-import "../Login/Login.css";
+import "./Login.css";
+// import { FormProvider, useForm } from "react-hook-form";
 
 
 class Login extends React.Component{
@@ -11,15 +12,15 @@ class Login extends React.Component{
     }
     handleChange = (e) =>{
         const {name,value} = e.target
+        // console.log(name, value)
         this.setState({[name]:value})
     }
-    handleSubmit = async (e) =>{
-        // connecting to back
-        e.preventDefault();
-        const response = await axios.get('http://127.0.0.1:8000/')
-        console.log(response)
+    handleSubmit = (e) =>{
         e.preventDefault()
         // connecting to back
+        const {name,value} = e.target
+        console.log(name, value)
+
         this.props.isLogin(true)
         this.props.navigate('/home')
     }
@@ -28,6 +29,7 @@ class Login extends React.Component{
         this.props.navigate('/home')
     }
     render(){
+
         return (
             <div>
             <div className="div-login">
@@ -47,7 +49,7 @@ class Login extends React.Component{
                 </div>
             </div>
             <div className="register-text">
-                <p>not registerd? <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/register')()}>click here</span></p>
+                <p>not registerd? <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/register')}>click here</span></p>
             </div>
         </div>
         )

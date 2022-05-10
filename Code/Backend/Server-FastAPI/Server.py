@@ -3,6 +3,7 @@ from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
 from fastapi.middleware.cors import CORSMiddleware
+
 # from Code.Backend.FastAPI import utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -45,7 +46,7 @@ origins = [
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
     "http://localhost",
-    "http://localhost:8080",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -78,14 +79,19 @@ General guest actions
 def enter_as_guest(response: Response):
     res = service.enter_as_guest()
     if res.error_occurred():
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail="Something's wrong with the server, cant reach site")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Something's wrong with the server, cant reach site",
+        )
     response.set_cookie(key="user_id", value=res.value)
     return res
 
 
 @app.post("/guests/login")
-def login(user_info: OAuth2PasswordRequestForm = Depends(), user_id: Optional[str] = Cookie(None)):
+def login(
+    user_info: OAuth2PasswordRequestForm = Depends(),
+    user_id: Optional[str] = Cookie(None),
+):
     # hashed_password = hash_pass(user_info.password)
     res = service.login(user_id, user_info.username, user_info.password)
     if res.error_occurred():
@@ -127,13 +133,13 @@ def get_stores_info():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
+
 @app.get("/cart")
 def get_shopping_cart(user_id: Optional[str] = Cookie(None)):
     res = service.get_shopping_cart(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
-
 
 
 """
@@ -158,9 +164,14 @@ def open_store(store_name: Store_name, user_id: Optional[str] = Cookie(None)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
+
 @app.post("/users/add_product")
-def add_product_to_shopping_cart(add_product: AddProduct, user_id: Optional[str] = Cookie(None)):
-    res = service.add_product_to_shopping_cart(user_id, add_product.store_id, add_product.product_id, add_product.quantity)
+def add_product_to_shopping_cart(
+    add_product: AddProduct, user_id: Optional[str] = Cookie(None)
+):
+    res = service.add_product_to_shopping_cart(
+        user_id, add_product.store_id, add_product.product_id, add_product.quantity
+    )
     if res.error_occurred():
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)

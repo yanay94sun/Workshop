@@ -15,16 +15,16 @@ class Register extends React.Component{
         const {name,value} = e.target
         this.setState({[name]:value})
     }
-    handleSubmit = (e) =>{
+    handleSubmit = async (e) =>{
         //this.props.navigate('/')
         e.preventDefault()
         const signUp = {
-            fullName: this.state.fullName,
-            email: this.state.email,
-            pwd: this.state.pwd
+            username: this.state.fullName,
+            // email: this.state.email,
+            password: this.state.pwd
         }
-        axios.post("http://localhost:4000/app/register",signUp)
-        .then(response => console.log(response.data))
+        const response = await axios.post("http://127.0.0.1:8000/guests/register",signUp)
+        console.log(response.data)
         this.setState({register:true})
     }
     render(){

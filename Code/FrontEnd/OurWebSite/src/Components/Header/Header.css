@@ -6,7 +6,7 @@ nav{
 .div-header{
     width: 80%;
     height: 100%;
-    margin: 0 auto;
+    margin:  auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -24,6 +24,9 @@ nav{
     height: 40px;
     width: 40px;
     padding: 0 20px;
+    border: 1px solid #2f2e30;
+    border-radius: 20px;
+    margin: 3px;
 }
 
 .active{
