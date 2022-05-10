@@ -106,10 +106,24 @@ class Store:
     def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(self,
                                                                                                      remover_username,
                                                                                                      subject_username):
+        if remover_username not in self.__officials:
+            raise Exception("isn't official")
+        if isinstance(self.__officials[remover_username], StoreManager):
+            raise Exception("isn't store owner or founder")
+        if subject_username not in self.__officials:
+            raise Exception("subject isn't official")
+        if self.__officials[subject_username].appointee.appointed != remover_username:
+            raise Exception("subject wasn't appointed by remover")
+        self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(
+            subject_username
+        )
+
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(self,
+                                                                                                                subject_username):
         all_my_children = list(filter(lambda official:
                                       official.appointee and
                                       official.appointee.appointed == subject_username,
                                       self.__officials.values()))
         for child in all_my_children:
-            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(subject_username, child.appointed)
+            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(child.appointed)
         self.__officials.pop(subject_username)
