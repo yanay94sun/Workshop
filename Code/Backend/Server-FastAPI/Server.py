@@ -97,7 +97,8 @@ def enter_as_guest(response: Response):
             detail="Something's wrong with the server, cant reach site",
         )
     response.set_cookie(
-        key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+        # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+        key="user_id", value=res.value
     )
     return res
 
@@ -109,6 +110,7 @@ def login(
 ):
     # hashed_password = hash_pass(user_info.password)
     res = service.login(user_id, user_info.username, user_info.password)
+    print(user_id)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
