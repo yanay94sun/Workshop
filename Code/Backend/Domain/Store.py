@@ -97,7 +97,7 @@ class Store:
     def get_officials(self):
         return self.__officials
 
-    def add_purchase(self, product_name, deal_price, quantity):
+    def add_purchase_to_history(self, product_name, deal_price, quantity):
         self.__purchase_history.append(Purchase(product_name, deal_price, quantity))
 
     def get_purchase_history(self):
