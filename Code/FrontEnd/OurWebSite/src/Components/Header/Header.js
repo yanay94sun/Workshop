@@ -33,7 +33,7 @@ function Header({isLogged}){
         <nav>
             <div className="div-header">
                 <div >
-                    <LogoIcon onClick={() => navigate('/home')()} style={{cursor:'pointer'}} className="logo"/> 
+                    <LogoIcon onClick={() => navigate('/home')} style={{cursor:'pointer'}} className="logo"/> 
                 </div>
                 <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                     <NavLink to ='/home/newHome' activeClassName='active'><HomeIcon className="div-svg"/></NavLink>

@@ -12,20 +12,23 @@ axios.defaults.withCredentials = true
 
 class App extends React.Component {
   state ={
-    isLog:false
+    isLog:false,
+    isGuest: false,
   }
   handleLogin = (isLog) => this.setState({isLog})
   
   hendleEntrec = async () =>{
     // connecting to back
     // e.preventDefault();
-    const response = await axios.get('http://127.0.0.1:8000/guests/enter')
-    console.log(response.data)
+      const response = await axios.get('http://127.0.0.1:8000/guests/enter')
+      console.log(response.data)
+      this.setState({[this.isGuest]:true})
   }
 
   render(){
     const {isLog} = this.state;
-    this.hendleEntrec();
+       this.hendleEntrec();
+
 
   return (
     <div>

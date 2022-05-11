@@ -142,6 +142,9 @@ def get_store_info(store_id: str):
     return res.value
 
 
+#
+
+
 @app.get("/stores")
 def get_stores_info():
     res = service.get_stores_info()

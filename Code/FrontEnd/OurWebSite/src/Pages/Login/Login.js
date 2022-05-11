@@ -19,7 +19,7 @@ class Login extends React.Component{
         e.preventDefault()
         // connecting to back
         const {name,value} = e.target
-        console.log(name, value)
+        // console.log(name, value)
 
         this.props.isLogin(true)
         this.props.navigate('/home')
@@ -37,7 +37,7 @@ class Login extends React.Component{
                 </div>
                 <div>
                     <form onSubmit = {this.handleSubmit}>
-                        <input type = 'email' name = 'email' placeholder="email..." required onChange = {this.handleChange}/>
+                        <input type = 'text' name = 'userName' placeholder="username..." required onChange = {this.handleChange}/>
                         <input type = 'password' name ='pwd' placeholder="password..." required onChange = {this.handleChange}/>
                         <button onSubmit = {this.handleSubmit}>Log in</button>
                     </form>
