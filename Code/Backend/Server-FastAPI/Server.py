@@ -13,6 +13,7 @@ from passlib.context import CryptContext
 
 from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.PaymentService import PaymentService
+from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.StoreName import Store_name
 from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Objects.TokenData import TokenData
@@ -85,6 +86,8 @@ Users requirements
 General guest actions
 ---------------------------------------------------
 """
+
+
 #
 
 
@@ -105,8 +108,8 @@ def enter_as_guest(response: Response):
 
 @app.post("/guests/login")
 def login(
-    user_info: OAuth2PasswordRequestForm = Depends(),
-    user_id: Optional[str] = Cookie(None),
+        user_info: OAuth2PasswordRequestForm = Depends(),
+        user_id: Optional[str] = Cookie(None),
 ):
     # hashed_password = hash_pass(user_info.password)
     res = service.login(user_id, user_info.username, user_info.password)
@@ -152,6 +155,18 @@ def get_stores_info():
     return res.value
 
 
+@app.post("/add_product_to_shopping_cart")
+def add_product_to_shopping_cart(
+        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
+):
+    res = service.add_product_to_shopping_cart(
+        user_id, add_product.store_id, add_product.product_id, add_product.quantity
+    )
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
 @app.get("/cart")
 def get_shopping_cart(user_id: Optional[str] = Cookie(None)):
     res = service.get_shopping_cart(user_id)
@@ -183,15 +198,22 @@ def open_store(store_name: Store_name, user_id: Optional[str] = Cookie(None)):
     return res.value
 
 
-@app.post("/users/add_product")
-def add_product_to_shopping_cart(
-    add_product: AddProduct, user_id: Optional[str] = Cookie(None)
+@app.post("/users/add_products_to_inventory")
+def add_products_to_inventory(
+        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
 ):
-    res = service.add_product_to_shopping_cart(
+    res = service.add_products_to_inventory(
         user_id, add_product.store_id, add_product.product_id, add_product.quantity
     )
     if res.error_occurred():
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.put("/users/edit_product_info")
+def edit_product_info(add_product: AddProduct, product_info: ProductInfo, user_id: Optional[str] = Cookie(None)):
+    res = service.edit_product_info(user_id, add_product.store_id, add_product.product_id, product_info)
+    if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
