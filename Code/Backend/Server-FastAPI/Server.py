@@ -93,7 +93,6 @@ General guest actions
 
 @app.get("/guests/enter")
 def enter_as_guest(response: Response, user_id: Optional[str] = Cookie(None)):
-    print(user_id)
     if not user_id:
         res = service.enter_as_guest()
         if res.error_occurred():
@@ -105,8 +104,9 @@ def enter_as_guest(response: Response, user_id: Optional[str] = Cookie(None)):
             # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
             key="user_id", value=res.value
         )
-        return user_id
-    return
+        return {"user_id": user_id}
+
+    return {"user_id": user_id}
 
 
 @app.post("/guests/login")
