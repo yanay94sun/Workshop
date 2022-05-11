@@ -92,21 +92,18 @@ General guest actions
 
 
 @app.get("/guests/enter")
-def enter_as_guest(response: Response, user_id: Optional[str] = Cookie(None)):
-    if not user_id:
-        res = service.enter_as_guest()
-        if res.error_occurred():
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Something's wrong with the server, cant reach site",
-            )
-        response.set_cookie(
-            # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
-            key="user_id", value=res.value
+def enter_as_guest(response: Response):
+    res = service.enter_as_guest()
+    if res.error_occurred():
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Something's wrong with the server, cant reach site",
         )
-        return {"user_id": user_id}
-
-    return {"user_id": user_id}
+    response.set_cookie(
+        # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+        key="user_id", value=res.value
+    )
+    return res
 
 
 @app.post("/guests/login")
