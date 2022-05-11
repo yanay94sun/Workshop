@@ -43,12 +43,12 @@ class UserController:
         self.__members[key] = new_status.value
         return Response()
 
-    def login(self, guest_id: str, username: str, password: str):
+    def login(self, user_id: str, username: str, password: str):
         if username not in self.__members:
             return Response(msg="username doesn't exist")
-        if guest_id not in self.__users:
+        if user_id not in self.__users:
             return Response(msg="guest id doesn't exist")
-        return self.__users[guest_id].login(self.__members[username], password)
+        return self.__users[user_id].login(self.__members[username], password)
 
     def is_logged_in(self, user_id: str):
         if user_id not in self.__users:
