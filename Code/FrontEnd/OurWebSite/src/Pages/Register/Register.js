@@ -30,10 +30,11 @@ class Register extends React.Component{
         try{
         const response = await axios.post("http://127.0.0.1:8000/guests/register",signUp)
         this.setState({register:true})
-
+        console.log(response)
+            
         } catch (err){
             console.log(err.response);
-            this.handleSubmit()
+            //this.handleSubmit()
         }
         // console.log(response.data)
         
