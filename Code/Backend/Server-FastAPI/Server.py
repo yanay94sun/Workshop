@@ -13,6 +13,7 @@ from passlib.context import CryptContext
 
 from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.PaymentService import PaymentService
+from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.StoreName import Store_name
 from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Objects.TokenData import TokenData
@@ -85,6 +86,8 @@ Users requirements
 General guest actions
 ---------------------------------------------------
 """
+
+
 #
 
 
@@ -97,18 +100,20 @@ def enter_as_guest(response: Response):
             detail="Something's wrong with the server, cant reach site",
         )
     response.set_cookie(
-        key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+        # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+        key="user_id", value=res.value
     )
     return res
 
 
 @app.post("/guests/login")
 def login(
-    user_info: OAuth2PasswordRequestForm = Depends(),
-    user_id: Optional[str] = Cookie(None),
+        user_info: OAuth2PasswordRequestForm = Depends(),
+        user_id: Optional[str] = Cookie(None),
 ):
     # hashed_password = hash_pass(user_info.password)
     res = service.login(user_id, user_info.username, user_info.password)
+    print(user_id)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
@@ -124,7 +129,6 @@ def login(
 @app.post("/guests/register")
 def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
-    print(user_id)
     hash_password = hash_pass(user_info.password)
     user_info.password = hash_password
     user_info_dict = user_info.dict()
@@ -150,6 +154,18 @@ def get_stores_info():
     res = service.get_stores_info()
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.post("/add_product_to_shopping_cart")
+def add_product_to_shopping_cart(
+        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
+):
+    res = service.add_product_to_shopping_cart(
+        user_id, add_product.store_id, add_product.product_id, add_product.quantity
+    )
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
 
@@ -184,15 +200,22 @@ def open_store(store_name: Store_name, user_id: Optional[str] = Cookie(None)):
     return res.value
 
 
-@app.post("/users/add_product")
-def add_product_to_shopping_cart(
-    add_product: AddProduct, user_id: Optional[str] = Cookie(None)
+@app.post("/users/add_products_to_inventory")
+def add_products_to_inventory(
+        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
 ):
-    res = service.add_product_to_shopping_cart(
+    res = service.add_products_to_inventory(
         user_id, add_product.store_id, add_product.product_id, add_product.quantity
     )
     if res.error_occurred():
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.put("/users/edit_product_info")
+def edit_product_info(add_product: AddProduct, product_info: ProductInfo, user_id: Optional[str] = Cookie(None)):
+    res = service.edit_product_info(user_id, add_product.store_id, add_product.product_id, product_info)
+    if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
