@@ -129,7 +129,6 @@ def login(
 @app.post("/guests/register")
 def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
-    print(user_id)
     hash_password = hash_pass(user_info.password)
     user_info.password = hash_password
     user_info_dict = user_info.dict()
