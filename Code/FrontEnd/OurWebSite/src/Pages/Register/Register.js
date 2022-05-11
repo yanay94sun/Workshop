@@ -47,7 +47,7 @@ class Register extends React.Component{
         if(!this.state.register)
         return (
             <div className="div-register">
-                    <button type="button" className="button-header" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
+                    <button type="button" className="button-header" onClick={() => this.props.navigate("/Login")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
             <div>
                 <form onSubmit = {this.handleSubmit}>
                     <p style={{textAlign: "center"}}>Enter your email and password</p>
@@ -63,7 +63,7 @@ class Register extends React.Component{
             return(
                 <div className="div-register">
                     <h1 style={{textAlign:"center"}}>Registration complete :)</h1>
-                    <p style={{textAlign:"center"}}>Go back to <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/')}>Login page</span></p>
+                    <p style={{textAlign:"center"}}>Go back to <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/Login')}>Login page</span></p>
                 </div>
                 )
         }

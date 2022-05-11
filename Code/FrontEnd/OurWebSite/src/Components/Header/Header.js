@@ -26,7 +26,7 @@ function withRouter(Component) {
 function Header({isLogged}){
     const navigate = useNavigate();
     const handleClick = ()=>{
-        navigate('/')
+        navigate('/Login')
         isLogged(false)
     }
     return(
@@ -36,10 +36,10 @@ function Header({isLogged}){
                     <LogoIcon onClick={() => navigate('/home')} style={{cursor:'pointer'}} className="logo"/> 
                 </div>
                 <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                    <NavLink to ='/home/newHome' activeClassName='active'><HomeIcon className="div-svg"/></NavLink>
-                    <NavLink to ='/home/explore'activeClassName='active'><ExploreIcon className="div-svg"/></NavLink>
-                    <NavLink to ='/home/shopping-cart'activeClassName='active'><CartIcon className="div-svg"/></NavLink>
-                    <NavLink to ='/home/my-account'activeClassName='active'><MyAccountIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/newHome' activeclassname='active'><HomeIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/explore'activeclassname='active'><ExploreIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/shopping-cart'activeclassname='active'><CartIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/my-account'activeclassname='active'><MyAccountIcon className="div-svg"/></NavLink>
 
 
                     <button className="button-header" onClick={handleClick} style={{ cursor:'pointer'}}>log out</button>

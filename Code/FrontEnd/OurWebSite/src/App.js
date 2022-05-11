@@ -23,7 +23,7 @@ class App extends React.Component {
 
   render(){
     const {isLog} = this.state;
-    //this.hendleEntrec();
+    this.hendleEntrec();
 
   return (
     <div>
