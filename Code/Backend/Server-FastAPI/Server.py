@@ -105,7 +105,7 @@ def enter_as_guest(response: Response, user_id: Optional[str] = Cookie(None)):
             # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
             key="user_id", value=res.value
         )
-        return res
+        return user_id
     return
 
 
