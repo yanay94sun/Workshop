@@ -6,6 +6,8 @@ import {ReactComponent as SearchIcon} from '../../Assets/search.svg'
 import {ReactComponent as CartIcon} from '../../Assets/shopping_cart.svg'
 import {ReactComponent as MyAccountIcon} from '../../Assets/myaccount-icon.svg'
 import './Header.css';
+import axios from 'axios'
+
 
 function withRouter(Component) {
     function ComponentWithRouterProp(props) {
@@ -23,11 +25,23 @@ function withRouter(Component) {
     return ComponentWithRouterProp;
   }
 
-function Header({isLogged}){
+function Header({handleLogin, checkLogged }){
     const navigate = useNavigate();
-    const handleClick = ()=>{
+
+    const logout = async ()=>{
+      if (checkLogged){
+        try{
+        const response = await axios.post('http://127.0.0.1:8000/users/logout')
+        console.log(response)
+        handleLogin(false)
         navigate('/')
-        isLogged(false)
+        } catch (err){
+            console.log(err.response);
+        }
+      }
+      else{
+        navigate('/')
+      }
     }
     return(
         <nav>
@@ -44,7 +58,7 @@ function Header({isLogged}){
                     <NavLink to ='/home/shopping-cart'activeclassname='active'><CartIcon className="div-svg"/></NavLink>
 
 
-                    <button className="button-header" onClick={handleClick} style={{ cursor:'pointer'}}>log out</button>
+                    <button className="button-header" onClick={logout} style={{ cursor:'pointer'}}>{formatExit(checkLogged)}</button>
                 </div>
             </div>
         </nav>
@@ -52,8 +66,8 @@ function Header({isLogged}){
     )
 }
 
-function formatExit(){
-  return this.props.isLogged ? 'Log out' : 'Exit'
+function formatExit(isLogged){
+  return isLogged ? 'Log out' : 'Exit'
 
 }
 

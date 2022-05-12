@@ -2,7 +2,6 @@ import axios from "axios";
 import React from "react";
 import { withRouter } from "../../Components/Navigate";
 import "./Login.css";
-// import { FormProvider, useForm } from "react-hook-form";
 
 
 class Login extends React.Component{
@@ -24,7 +23,7 @@ class Login extends React.Component{
         try{
             console.log(signIn)
             const response = await axios.post("http://127.0.0.1:8000/guests/login",signIn)
-            this.props.isLogin(true)
+            this.props.setLogin(true)
             console.log(response)
             this.props.navigate('/home')
             } catch (err){

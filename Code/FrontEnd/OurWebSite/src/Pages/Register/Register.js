@@ -5,7 +5,7 @@ import axios from 'axios'
 import {useNavigate} from "react-router-dom"; 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const PWD_REGEX = /^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%]).{8,24}$/;
 const REGISTER_URL = '/register';
 
 class Register extends React.Component{
@@ -24,11 +24,13 @@ class Register extends React.Component{
         e.preventDefault()
         const signUp = {
             username: this.state.userName,
+            // email: this.state.email,
             password: this.state.pwd
         }
         try{
         const response = await axios.post("http://127.0.0.1:8000/guests/register",signUp)
-        this.setState({register:true})
+        //this.setState({register:true})
+        this.props.handleLog(true);
         console.log(response)
             
         } catch (err){
@@ -44,7 +46,7 @@ class Register extends React.Component{
     //     navigate('/')
     // }
     render(){
-        if(!this.state.register)
+        if(!this.props.logged)
         return (
             <div className="div-register">
                     <button type="button" className="button-header" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
