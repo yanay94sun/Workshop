@@ -48,7 +48,12 @@ class Counter extends Component {
 	}
 
 	getBadgeClasses() {
-		let badgeStyle = { fontSize: 18, margin: 5 };
+		let badgeStyle = {
+			border: '1px solid blue',
+			fontSize: 18,
+			margin: 5,
+			marginLeft: '10px',
+		};
 		this.props.counter.value === 0
 			? (badgeStyle.backgroundColor = 'gold')
 			: (badgeStyle.backgroundColor = 'dodgerblue');

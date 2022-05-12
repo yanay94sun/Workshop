@@ -2,11 +2,12 @@ import React from "react";
 import {Routes , Route} from 'react-router-dom';
 import Header from "../../Components/Header/Header";
 import Explore from "../Explore/Explore";
-import NewHome from "../NewHome/NewHome";
+import MyStores from "../MyStores/MyStores";
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
-import MyAccount from "../MyAcoount"
-import product from "../Product/Product"
+import MyAccount from "../MyAccount"
 import Product from "../Product/Product";
+import NoMatch from "../404Page/404Page"
+
 
 
 const Home = ({handleLogged}) => {
@@ -14,12 +15,11 @@ const Home = ({handleLogged}) => {
         <div>
             <Header isLogged={handleLogged}/>
             <Routes>
-                <Route path ='/newHome' element= {<NewHome/>}/>
+                <Route path ='/MyStores' element= {<MyStores/>}/>
                 <Route path ='/explore' element= {<Explore/>}/>
                 <Route path ='/shopping-cart' element= {<ShoppingCart/>}/>
                 <Route path ='/my-account' element= {<MyAccount/>}/>
                 <Route path ='/product' element= {<Product/>}/>
-
             </Routes>
             
         </div>
