@@ -2030,3 +2030,14 @@ INFO:uvicorn.error:Application startup complete.
 INFO:uvicorn.error:Started server process [16744]
 INFO:uvicorn.error:Waiting for application startup.
 INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [20056]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user is already logged in
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [20056]
+INFO:uvicorn.error:Started server process [8036]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.

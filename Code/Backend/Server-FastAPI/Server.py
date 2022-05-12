@@ -108,7 +108,7 @@ def enter_as_guest(response: Response):
 
 @app.post("/guests/login")
 def login(
-        user_info: OAuth2PasswordRequestForm = Depends(),
+        user_info: User_info,
         user_id: Optional[str] = Cookie(None),
 ):
     # hashed_password = hash_pass(user_info.password)
