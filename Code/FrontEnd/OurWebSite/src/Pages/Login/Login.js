@@ -7,22 +7,29 @@ import "./Login.css";
 
 class Login extends React.Component{
     state ={
-        email:'',
-        pwd:''
+        username:'',
+        password:'',
     }
     handleChange = (e) =>{
         const {name,value} = e.target
-        // console.log(name, value)
         this.setState({[name]:value})
     }
-    handleSubmit = (e) =>{
+    handleSubmit = async (e) =>{
         e.preventDefault()
-        // connecting to back
         const {name,value} = e.target
-        // console.log(name, value)
-
-        this.props.isLogin(true)
-        this.props.navigate('/home')
+        const signIn = {
+            username: this.state.username,
+            password: this.state.password
+        }
+        try{
+            console.log(signIn)
+            const response = await axios.post("http://127.0.0.1:8000/guests/login",signIn)
+            this.props.isLogin(true)
+            console.log(response)
+            this.props.navigate('/home')
+            } catch (err){
+                console.log(err.response);
+            }
     }
     handleGuestSubmit = (e) =>{
         e.preventDefault()
@@ -37,8 +44,8 @@ class Login extends React.Component{
                 </div>
                 <div>
                     <form onSubmit = {this.handleSubmit}>
-                        <input type = 'text' name = 'userName' placeholder="username..." required onChange = {this.handleChange}/>
-                        <input type = 'password' name ='pwd' placeholder="password..." required onChange = {this.handleChange}/>
+                        <input type = 'text' name = 'username' placeholder="username..." required onChange = {this.handleChange}/>
+                        <input type = 'password' name ='password' placeholder="password..." required onChange = {this.handleChange}/>
                         <button onSubmit = {this.handleSubmit}>Log in</button>
                     </form>
                     <form onSubmit={this.handleGuestSubmit}>

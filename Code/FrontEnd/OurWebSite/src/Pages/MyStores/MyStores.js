@@ -5,18 +5,27 @@ import { useNavigate } from "react-router-dom";
 
 
 function MyStores(){
-    //("<li>" + {input} + "</li>")
     const Navigate = useNavigate()
 
     const [storeName,setStoreName] = useState('')
+
+    const [listItems,setListItems] = useState([])
 
     const handleSumbit = async (e) =>{
         e.preventDefault()
         const storeNameToBack = {
             store_name: storeName,
         }
-        const response = await axios.post("http://127.0.0.1:8000/users/open_store",storeNameToBack)
-        console.log(response)
+        setListItems(listItems => [...listItems, <li style={{cursor:'pointer'}} onClick={()=>Navigate("../Stores/"+"1")}>{storeName}</li>])
+
+    //    try{
+    //    const response = await axios.post("http://127.0.0.1:8000/users/open_store",storeNameToBack)
+    //    setListItems(listItems => [...listItems, <li style={{cursor:'pointer'}} onClick={()=>Navigate("/Stores/"+response.data)}>{storeName}</li>])
+    //    console.log(listItems)
+    //    } catch (err){
+    //     console.log(err.response);
+    //}
+       
     }
 
     return(
@@ -26,8 +35,7 @@ function MyStores(){
                 <input type="text" placeholder="please enter store name" required onChange = {(e) => setStoreName(e.target.value)}/> 
                 <button style={{ cursor:'pointer'}} onSubmit={handleSumbit}>add</button>
                 <ul>
-                    <li style={{cursor:'pointer'}} onClick={()=>Navigate('/Store{id}')} >exmaple store</li>
-                    {/* {should be a updating list here} */}
+                    {listItems}
                 </ul>
             </form>
         </div>

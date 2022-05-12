@@ -23,6 +23,7 @@ class App extends React.Component {
 
   render(){
     const {isLog} = this.state;
+    console.log(isLog);
     this.hendleEntrec();
 
   return (

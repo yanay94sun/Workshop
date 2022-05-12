@@ -6,8 +6,7 @@ import MyStores from "../MyStores/MyStores";
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
 import MyAccount from "../MyAccount"
 import Product from "../Product/Product";
-import NoMatch from "../404Page/404Page"
-
+import Store from "../Store/Store"
 
 
 const Home = ({handleLogged}) => {
@@ -19,6 +18,7 @@ const Home = ({handleLogged}) => {
                 <Route path ='/explore' element= {<Explore/>}/>
                 <Route path ='/shopping-cart' element= {<ShoppingCart/>}/>
                 <Route path ='/my-account' element= {<MyAccount/>}/>
+                <Route path="/stores/:storeId" element= {<Store/>}/>
                 <Route path ='/product' element= {<Product/>}/>
             </Routes>
             
