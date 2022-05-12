@@ -24,7 +24,6 @@ class Register extends React.Component{
         e.preventDefault()
         const signUp = {
             username: this.state.userName,
-            // email: this.state.email,
             password: this.state.pwd
         }
         try{
@@ -64,7 +63,7 @@ class Register extends React.Component{
             return(
                 <div className="div-register">
                     <h1 style={{textAlign:"center"}}>Registration complete :)</h1>
-                    <p style={{textAlign:"center"}}>Go back to <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/')}>Login page</span></p>
+                    <p style={{textAlign:"center"}}>Login <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/home')}>Here</span></p>
                 </div>
                 )
         }

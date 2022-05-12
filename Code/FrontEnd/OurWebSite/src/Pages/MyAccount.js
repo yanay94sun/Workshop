@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 function MyAccount(){
+    
 return(
     <h2>My Account </h2>
 )
