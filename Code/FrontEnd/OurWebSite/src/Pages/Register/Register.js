@@ -48,7 +48,7 @@ class Register extends React.Component{
         if(!this.state.register)
         return (
             <div className="div-register">
-                    <button type="button" className="button-header" onClick={() => this.props.navigate("/Login")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
+                    <button type="button" className="button-header" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
             <div>
                 <form onSubmit = {this.handleSubmit}>
                     <p style={{textAlign: "center"}}>Enter your email and password</p>

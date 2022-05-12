@@ -1,10 +1,8 @@
 import React from "react";
 import {Routes , Route} from 'react-router-dom';
 import NoMatch from "./Pages/404Page/404Page";
-import Explore from "./Pages/Explore/Explore";
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login";
-import NewHome from "./Pages/NewHome/NewHome";
 import Register from "./Pages/Register/Register.js";
 import axios from "axios";
 
