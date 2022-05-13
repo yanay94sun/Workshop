@@ -1,7 +1,7 @@
 from typing import Dict, List
 
-from Code.Backend.Domain.DiscountPolicy import DiscountPolicy
-from Code.Backend.Domain.Permissions import Permissions
+from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Domain.StoreOfficials.Permissions import Permissions, Actions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
 from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
@@ -77,22 +77,19 @@ class Store:
     def add_owner(self, user_id: str, new_user_id: str):
         if new_user_id in self.__officials.keys():
             return False
-        new_permission = Permissions(self.__officials[user_id])
-        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id]
-                                                   , new_permission)
+
+        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id])
         return True
 
     def add_manager(self, user_id: str, new_manager_id: str):
         if new_manager_id in self.__officials.keys():
             return False
-        new_permission = Permissions(self.__officials[user_id])
         self.__officials[new_manager_id] = StoreManager(new_manager_id,
-                                                        self.__officials[user_id],
-                                                        new_permission)
+                                                        self.__officials[user_id])
         return True
 
-    def change_permissions(self, user_id, action_number, new_val):
-        self.__officials[user_id].set_permission(action_number, new_val)
+    def change_permissions(self, user_id, new_permission):
+        self.__officials[user_id].set_permission(new_permission)
 
     def get_officials(self):
         return self.__officials
@@ -105,3 +102,28 @@ class Store:
 
     def get_discount_policy(self):
         return self.__discount_policy
+
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(self,
+                                                                                                     remover_username,
+                                                                                                     subject_username):
+        if remover_username not in self.__officials:
+            raise Exception("isn't official")
+        if isinstance(self.__officials[remover_username], StoreManager):
+            raise Exception("isn't store owner or founder")
+        if subject_username not in self.__officials:
+            raise Exception("subject isn't official")
+        if self.__officials[subject_username].appointee.appointed != remover_username:
+            raise Exception("subject wasn't appointed by remover")
+        self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(
+            subject_username
+        )
+
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(self,
+                                                                                                                subject_username):
+        all_my_children = list(filter(lambda official:
+                                      official.appointee and
+                                      official.appointee.appointed == subject_username,
+                                      self.__officials.values()))
+        for child in all_my_children:
+            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(child.appointed)
+        self.__officials.pop(subject_username)

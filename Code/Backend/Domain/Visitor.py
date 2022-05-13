@@ -49,3 +49,6 @@ class Visitor:
 
     def remove_product_from_shopping_cart(self, ppr: ProductPurchaseRequest):
         return self.__status.get_shopping_cart().remove_product(ppr)
+
+    def get_username(self):
+        return self.__status.get_username()
