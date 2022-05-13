@@ -1,6 +1,5 @@
 import unittest
 
-from Code.Backend.Domain.DiscountPolicyObjects.MinPriceForDiscount import MinPriceForDiscount
 from Code.Backend.Domain.Controllers.StoreController import StoreController
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.StoreOfficials.Permissions import Actions, Permissions
