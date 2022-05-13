@@ -11,25 +11,15 @@ import axios from "axios";
 
 
 const Home = ({setLogin,isLogged}) => {
-    const [storeList,setStoreList] = useState([])   
-    const [products, setProducts] = useState([]); //{producdid: product} should get from database
-    useEffect(() => {
-        const getProducts = async () => {
-            try {
-           const response = await axios.get('http://127.0.0.1:8000/')
-           setProducts(response.data) 
 
-        }catch{
+    const [myStoreList,setMyStoreList] = useState([])   
+    const [products, setProducts] = useState([]) //{producdid: product} should get from database
 
-        }
-        getProducts();
-        }
-    }, []);
     return (
         <div>
             <Header handleLogin={setLogin} checkLogged = {isLogged}/>
             <Routes>
-                <Route path ='/MyStores' element= {<MyStores listItems={storeList} setListItems ={setStoreList}/>}/>
+                <Route path ='/MyStores' element= {<MyStores listItems={myStoreList} setListItems ={setMyStoreList}/>}/>
                 <Route path ='/explore' element= {<Explore/>}/>
                 <Route path ='/shopping-cart' element= {<ShoppingCart/>}/>
                 <Route path ='/my-account/:userId' element= {<MyAccount/>}/>

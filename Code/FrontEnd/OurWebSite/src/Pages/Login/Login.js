@@ -24,6 +24,7 @@ class Login extends React.Component{
             console.log(signIn)
             const response = await axios.post("http://127.0.0.1:8000/guests/login",signIn)
             this.props.setLogin(true)
+            localStorage.setItem("logged","true")
             console.log(response)
             this.props.navigate('/home')
             } catch (err){
@@ -35,9 +36,9 @@ class Login extends React.Component{
         this.props.navigate('/home')
     }
     render(){
-
         return (
             <div>
+            {this.props.isLogged ? this.props.navigate('/home'):""}
             <div className="div-login">
                 <div className="div-login-logo">
                 </div>
