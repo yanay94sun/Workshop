@@ -196,6 +196,7 @@ def get_store_info(product_search_filters: ProductSearchFilters):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
+
 # @TODO no ProductPurchaseRequest service object, need to do
 # @app.delete("/cart/remove_product", status_code=status.HTTP_204_NO_CONTENT)
 # def remove_product_from_shopping_cart(ppr: ProductPurchaseRequest, user_id: Optional[str] = Cookie(None)):
@@ -253,6 +254,19 @@ def add_products_to_inventory(
     )
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+# @TODO not working
+@app.delete("/users/remove_products_from_inventory")
+def remove_products_from_inventory(
+        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
+):
+    res = service.remove_products_from_inventory(
+        user_id, add_product.store_id, add_product.product_id, add_product.quantity
+    )
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=res.msg)
     return res.value
 
 
