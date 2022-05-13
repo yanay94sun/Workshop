@@ -13,6 +13,8 @@ from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PersonalInfo import PersonalInfo
+
+
 # from Code.Backend.Service.Objects.ProductSearchFilters import Product_search_filters
 
 
@@ -67,7 +69,6 @@ class Facade:
         :return:
         """
         return self.market.contact_supply_service(package_info)
-
 
     """
     Users requirements
@@ -339,8 +340,7 @@ class Facade:
         """
         II.4.1.1
         adds the given product's quantity to the store's inventory.
-        if the product id does not exists, it adds a new default product info.
-        (to edit to product info, user should call edit)
+        if the product id does not exists,
         :param user_id:
         :param store_id:
         :param product_id:
@@ -350,6 +350,18 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         return self.store_controller.add_products_to_inventory(user_id, store_id, product_id, quantity)
+
+    # new function in version 2
+    def add_new_product_to_inventory(self, user_id: str, store_id: str,
+                                     product_name: str, product_description
+                                     , price: int, category: str):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return self.store_controller.add_new_product_to_inventory(user_id,
+                                                                  store_id,
+                                                                  product_name,
+                                                                  product_description,
+                                                                  price, category)
 
     def remove_products_from_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
         """
@@ -612,3 +624,17 @@ class Facade:
         :return:
         """
         pass
+
+    def get_users_stores(self, user_id: str):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        res = self.store_controller.get_officials_stores(user_id)
+        return Response(value=res)
+
+    def is_logged_in(self, user_id: str):
+        if self.user_controller.is_logged_in(user_id):
+            return Response(value=True)
+        else:
+            return Response(value=False)
+
+
