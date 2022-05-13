@@ -1,8 +1,10 @@
-class ProductSearchFilters:
-    def __init__(self, text, by_name=True, by_category=None, filter_type=None,
-                 filter_value=None):
-        self.text = text
-        self.by_name = by_name
-        self.by_category = by_category
-        self.filter_type = filter_type
-        self.filter_value = filter_value
+from pydantic import BaseModel
+from pydantic.class_validators import Optional
+
+
+class ProductSearchFilters(BaseModel):
+    text: str
+    by_name: bool = True
+    by_category: Optional[bool] = None
+    filter_type: Optional[bool] = None
+    filter_value: Optional[bool] = None

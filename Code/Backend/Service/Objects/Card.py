@@ -5,6 +5,8 @@ class Card:
         self.__cvv = cvv
 
     def pay(self, amount):
+        print(amount)
+        print(self.__balance)
         self.__balance -= amount
 
     def get_number(self):

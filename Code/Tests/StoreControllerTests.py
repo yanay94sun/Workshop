@@ -8,7 +8,7 @@ from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 sc = StoreController()
 USER_ID = '123'
 STORE_ID = '1'
-PRODUCT_ID = "13"
+PRODUCT_ID = "1"
 
 
 class StoreControllerTests(unittest.TestCase):
@@ -37,10 +37,10 @@ class StoreControllerTests(unittest.TestCase):
 
     def test_4_add_products_to_inventory(self):
         # create new product
-        response = sc.add_products_to_inventory(USER_ID, STORE_ID, PRODUCT_ID, 4)
+        response = sc.add_new_product_to_inventory(USER_ID, STORE_ID, "Apple", "", 30, "fruits")
         self.assertTrue(response.value is not None)
-        # add the more quantity
-        sc.add_products_to_inventory(USER_ID, STORE_ID, PRODUCT_ID, 5)
+        # add more quantity
+        sc.add_products_to_inventory(USER_ID, STORE_ID, PRODUCT_ID, 9)
         # check if the amount is really 9 as it should be
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 9) is not None)
         self.assertTrue(sc.get_product(STORE_ID, PRODUCT_ID, 10) is None)
@@ -124,7 +124,11 @@ class StoreControllerTests(unittest.TestCase):
         response = sc.get_basket_price(STORE_ID, basket)
         self.assertTrue(response.value == 90)
 
-    def test_a_14_close_store(self):
+    def test_a_14_get_users_stores(self):
+        response = sc.get_officials_stores(USER_ID)
+        self.assertTrue(response.value["1"] is 'The_Store')
+
+    def test_a_15_close_store(self):
         response = sc.close_store(USER_ID, STORE_ID)
         self.assertTrue(response.value == "Store was successfully closed")
         response = sc.get_store_info(STORE_ID)

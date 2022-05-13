@@ -1,0 +1,49 @@
+import React, {useState,useEffect} from "react";
+import "./MyStore.css"
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+
+
+function MyStores({listItems, setListItems}){
+    const Navigate = useNavigate() 
+
+    const [storeName,setStoreName] = useState('')
+
+    const handleSumbit = async (e) =>{
+        e.preventDefault()
+        const storeNameToBack = {
+            store_name: storeName,
+        }
+       try{
+       const response = await axios.post("http://127.0.0.1:8000/users/open_store",storeNameToBack)
+       setListItems(listItems => [...listItems, <li key={storeName} style={{cursor:'pointer' ,width:'40px'}} onClick={()=>Navigate("../Stores/"+response.data)}>{storeName}</li>])
+       console.log(response)
+    } catch (err){
+        console.log(err.response);
+    }  
+    }
+
+    return(
+        <div>
+            <h3 style={{textAlign:'center'}}>{welomeText(listItems)}</h3>
+            <form className="div-list" onSubmit = {handleSumbit}>
+                <input type="text" placeholder="please enter store name" required onChange = {(e) => setStoreName(e.target.value)}/> 
+                <button style={{ cursor:'pointer'}} onSubmit={handleSumbit}>add</button>
+                <ul>
+                    {listItems}
+                </ul>
+            </form>
+        </div>
+)
+}
+
+function welomeText(listItems){
+    if (listItems.length == 0) {
+        return "You dont have any store you own but you can create a new one here:"
+    }
+    else {
+        return "here are the stores you own"
+    }
+}
+
+export default MyStores;     

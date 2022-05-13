@@ -32,7 +32,7 @@ class StoreController:
             if products is None:
                 res["products"] = []
             else:
-                res["products"] = list(map(lambda x: x.get_name(), products))
+                res["products"] = list(map(lambda x: x.get_ID(), products))
             return Response(value=res)
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -45,10 +45,16 @@ class StoreController:
         for store in stores:
             store_info_with_products = store.get_store_info().__dict__
             products = store.get_all_products()
-            store_info_with_products["products"] = list(map(lambda x: x.get_name(), products))
+            store_info_with_products["products"] = list(map(lambda x: x.get_ID(), products))
             res.append(store_info_with_products)
         return Response(value=res)
 
+    def get_officials_stores(self, official_id):
+        res = {}
+        for id, store in self.stores.items():
+            if official_id in store.get_officials().keys():
+                res[id] = store.get_store_info().store_name
+        return Response(value=res)
     def search_product(self, text, by_name, by_category, filter_type,
                        filter_value):  # TODO think about filter_value
         res = []
@@ -56,10 +62,10 @@ class StoreController:
             tmp_store_products = store.get_all_products()
             for product in tmp_store_products:
                 if by_category:
-                    if product.get_category() == text:
+                    if text in product.get_category():
                         res.append(product)
                 elif by_name:
-                    if product.get_name() == text:
+                    if text in product.get_name():
                         res.append(product)
         if filter_type is not None:
             if filter_value is None:
@@ -95,16 +101,27 @@ class StoreController:
             # check if user has access to this action
             if not store.has_access(user_id, Actions.INVENTORY_ACTION):
                 return Response(msg="User does not have access to this action")
-            try:
-                # check if the product exists. if it is, add new quantity
-                product = store.get_product(product_id, 0)
-                store.update_quantities(product_id, quantity)
-                return Response(value="Added " + str(quantity) + " items of " + product.get_name())
 
-            except ValueError:
-                # if product does not exist, create new product
-                store.add_new_product(product_id, quantity)
-                return Response(value="Added new Product with " + str(quantity) + " items")
+            # check if the product exists. if it is, add new quantity
+            product = store.get_product(product_id, 0)
+            store.update_quantities(product_id, quantity)
+            return Response(value="Added " + str(quantity) + " items of " + product.get_name())
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    ##########################################
+    # new function in version 2
+    def add_new_product_to_inventory(self, user_id: str, store_id: str,
+                                     product_name: str, product_description
+                                     , price: int, category: str):
+        try:
+            store = self.__get_store(store_id)
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.INVENTORY_ACTION):
+                return Response(msg="User does not have access to this action")
+
+            ID = store.add_new_product(product_name, product_description, price, category)
+            return Response(value=ID)
 
         except ValueError as e:
             return Response(msg=e.args[0])
