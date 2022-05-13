@@ -4,18 +4,20 @@ from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 
 
 class ConditionalDiscount(Discount):
-    def __init__(self, discount, end_date, rules=[], products_ids=[],
+    def __init__(self, discount, end_date, products_ids,
                  dic_of_products_and_quantity={}, min_price_for_discount=0):
-        super().__init__(discount, end_date, rules, products_ids)
+        super().__init__(discount, end_date, products_ids)
         self.products_to_have_for_discount = dic_of_products_and_quantity
         self.min_price_for_discount = min_price_for_discount
 
-    def calculate_price(self, quantity_dict, products, dic_to_update, invisible_code):
-        if all(map(lambda r: r.enforse_rule(products, quantity_dict), self.rules)):
-            if self.__check_condition(quantity_dict, products):
-                for p in products:
-                    if p.get_ID() in self.products_ids:
-                        dic_to_update[0][p.get_ID()].append(self.my_discount)
+    def calculate_price(self, quantity_dict, products, dic_to_update):
+        had_discount = False
+        if self.__check_condition(quantity_dict, products):
+            for p in products:
+                if p.get_ID() in self.products_ids:
+                    had_discount = True
+                    dic_to_update[0][p.get_ID()].append(self.my_discount)
+        return had_discount
 
     def __check_condition(self, quantity_dict, products):
         if self.products_to_have_for_discount != {}:

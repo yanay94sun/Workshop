@@ -1,6 +1,8 @@
 from functools import reduce
 from typing import Dict, List
 
+from Code.Backend.Domain.DiscountPolicyObjects.ConditionalDiscount import ConditionalDiscount
+from Code.Backend.Domain.DiscountPolicyObjects.OrDiscount import OrDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.VisibleDiscount import VisibleDiscount
 from Code.Backend.Domain.Product import Product
 
@@ -11,10 +13,6 @@ class DiscountPolicy:
         """
         self.__discounts = []
         self.__authorized_for_discount = None  # TODO
-        self.__doubled_discounts = False
-
-    def change_doubled_discounts(self, new_val):
-        self.__doubled_discounts = new_val
 
     def calculate_basket(self, products: List[Product], user_status, quantity_dic, invisible_codes):
         # TODO need to check if user is authorized.
@@ -27,7 +25,7 @@ class DiscountPolicy:
             # check if there is a discount
             if products_discounts[p.get_ID()]:
                 price += (p.get_price() * quantity_dic[p.get_ID()]) \
-                         - (max(products_discounts[p.get_ID()])) * p.get_price()*quantity_dic[p.get_ID()]
+                         - (max(products_discounts[p.get_ID()])) * p.get_price() * quantity_dic[p.get_ID()]
             # if not discount
             else:
                 price += p.get_price() * quantity_dic[p.get_ID()]
@@ -41,8 +39,24 @@ class DiscountPolicy:
                 lst.append(discount)
         return lst
 
-    def add_visible_discount(self, list_of_products_ids, discount_price, end_date, rules):
+    def add_visible_discount(self, list_of_products_ids, discount_price, end_date):
         if discount_price >= 1:
             raise ValueError("cant get discount over 100%")
-        discount = VisibleDiscount(discount_price, end_date, rules=rules, products_ids=list_of_products_ids)
+        discount = VisibleDiscount(discount_price, end_date, products_ids=list_of_products_ids)
         self.__discounts.append(discount)
+        return discount
+
+    def add_conditional_discount(self, list_of_products_ids, discount_price, end_date, dic_of_products_and_quantity,
+                                 min_price_for_discount):
+        if discount_price >= 1:
+            raise ValueError("cant get discount over 100%")
+        discount = ConditionalDiscount(discount_price, end_date, list_of_products_ids,
+                                       dic_of_products_and_quantity=dic_of_products_and_quantity,
+                                       min_price_for_discount=min_price_for_discount)
+        self.__discounts.append(discount)
+        return discount
+
+    def add_or_discount(self, first_discount, second_discount):
+        discount = OrDiscount(first_discount, second_discount)
+        self.__discounts.append(discount)
+        return discount

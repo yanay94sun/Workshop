@@ -120,9 +120,11 @@ class StoreControllerTests(unittest.TestCase):
     def test_a_13_get_basket_price(self):
         basket = ShoppingBasket(STORE_ID)
         basket.add_to_basket(PRODUCT_ID, 3)
-        sc.add_visible_discount(STORE_ID, [PRODUCT_ID], 0.4, "24/5/2022")
+        discount1 = sc.add_visible_discount(STORE_ID, [PRODUCT_ID], 0.4, "24/5/2022")
+        discount2 = sc.add_conditional_discount(STORE_ID, [PRODUCT_ID], 0.7, "24/5/2022", {PRODUCT_ID: 2}, 0)
+        #sc.add_or_discount(discount1, discount2)
         response = sc.get_basket_price(STORE_ID, basket)
-        self.assertTrue(response.value == 90)
+        self.assertTrue(response.value == 45)
 
     def test_a_14_get_users_stores(self):
         response = sc.get_officials_stores(USER_ID)

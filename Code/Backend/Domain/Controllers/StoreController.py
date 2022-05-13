@@ -55,6 +55,7 @@ class StoreController:
             if official_id in store.get_officials().keys():
                 res[id] = store.get_store_info().store_name
         return Response(value=res)
+
     def search_product(self, text, by_name, by_category, filter_type,
                        filter_value):  # TODO think about filter_value
         res = []
@@ -292,18 +293,37 @@ class StoreController:
             products_list_ids = list(quantity_dic.keys())
             product_list = list(map(lambda x: store.get_product(x, 0), products_list_ids))
             # TODO should send basket.user_state instead of None
-            price = store.get_discount_policy().calculate_basket(product_list, None, quantity_dic,
-                                                                 invisible_codes)
+            price = store.get_discount_policy().calculate_basket(product_list, None, quantity_dic)
             return Response(value=price)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_visible_discount(self, store_id, list_of_products_ids, discount_price, end_date, rules=[]):
+    def add_visible_discount(self, store_id, list_of_products_ids, discount_price, end_date):
         try:
             store = self.__get_store(store_id)
-            store.get_discount_policy().add_visible_discount(list_of_products_ids,
-                                                             discount_price, end_date, rules)
-            return Response(value="Added Discount")
+            discount = store.get_discount_policy().add_visible_discount(list_of_products_ids,
+                                                                        discount_price, end_date)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_conditional_discount(self, store_id, list_of_products_ids, discount_price, end_date,
+                                 dic_of_products_and_quantity, min_price_for_discount):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_conditional_discount(list_of_products_ids, discount_price,
+                                                                            end_date, dic_of_products_and_quantity,
+                                                                            min_price_for_discount)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_or_discount(self, store_id, first_discount, second_discount):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_or_discount(first_discount, second_discount)
+
+            return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
