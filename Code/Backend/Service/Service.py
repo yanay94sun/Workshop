@@ -387,6 +387,16 @@ class Service:
         write_to_log(response, "successfully added products to inventory")
         return response
 
+    # new function in version 2
+    def add_new_product_to_inventory(self, user_id: str, store_id: str,
+                                     product_name: str, product_description
+                                     , price: int, category: str):
+        response = Response(
+            self.facade.add_new_product_to_inventory(user_id, store_id, product_name, product_description, price,
+                                                     category))
+        write_to_log(response, "successfully added new product")
+        return response
+
     def remove_products_from_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
         """
         II.4.1.2
@@ -636,3 +646,14 @@ class Service:
         :return:
         """
         pass
+
+    ##################################################################
+    # functions for frontend
+    ##############################################################
+    def get_users_stores(self, user_id: str):
+        """
+        returns all users stores (id and name)
+        """
+        response = Response(self.facade.get_users_stores(user_id))
+        write_to_log(response, "successfully got stores")
+        return response
