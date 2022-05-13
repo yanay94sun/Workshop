@@ -196,13 +196,13 @@ def get_store_info(product_search_filters: ProductSearchFilters):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
-
-@app.delete("/cart/delete", status_code=status.HTTP_204_NO_CONTENT)
-def remove_product_from_shopping_cart(ppr: ProductPurchaseRequest, user_id: Optional[str] = Cookie(None)):
-    res = service.remove_product_from_shopping_cart(user_id, ppr)
-    if res.error_occurred():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
-    return res.value
+# @TODO no ProductPurchaseRequest service object, need to do
+# @app.delete("/cart/remove_product", status_code=status.HTTP_204_NO_CONTENT)
+# def remove_product_from_shopping_cart(ppr: ProductPurchaseRequest, user_id: Optional[str] = Cookie(None)):
+#     res = service.remove_product_from_shopping_cart(user_id, ppr)
+#     if res.error_occurred():
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+#     return res.value
 
 
 @app.post("/pay")
