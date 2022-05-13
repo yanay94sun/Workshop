@@ -11,9 +11,12 @@ from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Service.Objects.AddProduct import AddProduct
+from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PaymentService import PaymentService
 from Code.Backend.Service.Objects.ProductInfo import ProductInfo
+from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
 from Code.Backend.Service.Objects.StoreName import Store_name
 from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Objects.TokenData import TokenData
@@ -106,6 +109,17 @@ def enter_as_guest(response: Response):
     return res
 
 
+@app.get("/exit")
+def exit_site(user_id: Optional[str] = Cookie(None)):
+    res = service.exit(user_id)
+    if res.error_occurred():
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Something's wrong with the server"
+        )
+    return res
+
+
 @app.post("/guests/login")
 def login(
         user_info: User_info,
@@ -169,6 +183,30 @@ def add_product_to_shopping_cart(
 @app.get("/cart")
 def get_shopping_cart(user_id: Optional[str] = Cookie(None)):
     res = service.get_shopping_cart(user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/products/search")
+def get_store_info(product_search_filters: ProductSearchFilters):
+    res = service.search_product(product_search_filters)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.delete("/cart/delete", status_code=status.HTTP_204_NO_CONTENT)
+def remove_product_from_shopping_cart(ppr: ProductPurchaseRequest, user_id: Optional[str] = Cookie(None)):
+    res = service.remove_product_from_shopping_cart(user_id, ppr)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.post("/pay")
+def contact_payment_service(payment_info: PaymentInfo):
+    res = service.contact_payment_service(payment_info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value

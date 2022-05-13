@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from pydantic.class_validators import Optional
 
 
-class PaymentInfo:
+class PaymentInfo(BaseModel):
     # def __init__(self, customer_id, customer_name, credit_card, cvv, amount_to_pay):
     #     self.customer_id = customer_id
     #     self.customer_name = customer_name
@@ -15,4 +15,4 @@ class PaymentInfo:
     customer_name: str
     credit_card: str
     cvv: str
-    amount_to_pay: str
+    amount_to_pay: int
