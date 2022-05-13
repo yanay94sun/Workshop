@@ -13,6 +13,7 @@ from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Service.Objects.AddProduct import AddProduct
+from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PaymentService import PaymentService
 from Code.Backend.Service.Objects.ProductInfo import ProductInfo
@@ -207,6 +208,14 @@ def remove_product_from_shopping_cart(ppr: ProductPurchaseRequest, user_id: Opti
 @app.post("/pay")
 def contact_payment_service(payment_info: PaymentInfo):
     res = service.contact_payment_service(payment_info)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.post("/supply")
+def contact_supply_service(package_info: PackageInfo):
+    res = service.contact_supply_service(package_info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
