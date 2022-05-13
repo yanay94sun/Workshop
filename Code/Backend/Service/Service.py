@@ -657,3 +657,8 @@ class Service:
         response = Response(self.facade.get_users_stores(user_id))
         write_to_log(response, "successfully got stores")
         return response
+
+    def is_logged_in(self, user_id: str):
+        response = Response(self.facade.is_logged_in(user_id))
+        write_to_log(response, "successfully checked if logged in")
+        return response

@@ -631,3 +631,10 @@ class Facade:
         res = self.store_controller.get_officials_stores(user_id)
         return Response(value=res)
 
+    def is_logged_in(self, user_id: str):
+        if self.user_controller.is_logged_in(user_id):
+            return Response(value=True)
+        else:
+            return Response(value=False)
+
+
