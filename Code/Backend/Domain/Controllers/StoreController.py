@@ -32,7 +32,7 @@ class StoreController:
             if products is None:
                 res["products"] = []
             else:
-                res["products"] = list(map(lambda x: x.get_name(), products))
+                res["products"] = list(map(lambda x: x.get_ID(), products))
             return Response(value=res)
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -45,8 +45,18 @@ class StoreController:
         for store in stores:
             store_info_with_products = store.get_store_info().__dict__
             products = store.get_all_products()
-            store_info_with_products["products"] = list(map(lambda x: x.get_name(), products))
+            store_info_with_products["products"] = list(map(lambda x: x.get_ID(), products))
             res.append(store_info_with_products)
+        return Response(value=res)
+
+    def get_officials_stores(self, official_id):
+        """
+        returns dic {store id: store name}
+        """
+        res = {}
+        for id, store in self.stores.items():
+            if official_id in store.get_officials().keys():
+                res[id] = store.get_store_info().store_name
         return Response(value=res)
 
     def search_product(self, text, by_name, by_category, filter_type,
@@ -56,10 +66,10 @@ class StoreController:
             tmp_store_products = store.get_all_products()
             for product in tmp_store_products:
                 if by_category:
-                    if product.get_category() == text:
+                    if text in product.get_category():
                         res.append(product)
                 elif by_name:
-                    if product.get_name() == text:
+                    if text in product.get_name():
                         res.append(product)
         if filter_type is not None:
             if filter_value is None:
@@ -95,16 +105,27 @@ class StoreController:
             # check if user has access to this action
             if not store.has_access(user_id, Actions.INVENTORY_ACTION):
                 return Response(msg="User does not have access to this action")
-            try:
-                # check if the product exists. if it is, add new quantity
-                product = store.get_product(product_id, 0)
-                store.update_quantities(product_id, quantity)
-                return Response(value="Added " + str(quantity) + " items of " + product.get_name())
 
-            except ValueError:
-                # if product does not exist, create new product
-                store.add_new_product(product_id, quantity)
-                return Response(value="Added new Product with " + str(quantity) + " items")
+            # check if the product exists. if it is, add new quantity
+            product = store.get_product(product_id, 0)
+            store.update_quantities(product_id, quantity)
+            return Response(value="Added " + str(quantity) + " items of " + product.get_name())
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    ##########################################
+    # new function in version 2
+    def add_new_product_to_inventory(self, user_id: str, store_id: str,
+                                     product_name: str, product_description
+                                     , price: int, category: str):
+        try:
+            store = self.__get_store(store_id)
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.INVENTORY_ACTION):
+                return Response(msg="User does not have access to this action")
+
+            ID = store.add_new_product(product_name, product_description, price, category)
+            return Response(value=ID)
 
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -166,7 +187,7 @@ class StoreController:
             # check if user is already an owner or store manager
             if not store.add_owner(user_id, new_owner_id):
                 return Response(msg="User is already an Owner of this store")
-            return Response(value="Made User with id: " + str(user_id) + " an owner")
+            return Response(value="Made User with id: " + str(new_owner_id) + " an owner")
         except ValueError as e:
             return Response(msg=e.args[0])
 
@@ -180,8 +201,8 @@ class StoreController:
 
             # check if user is already a manager or store owner
             if not store.add_manager(user_id, new_manager_id):
-                return Response(msg="User is already an Owner of this store")
-            return Response(value="Made User with id: " + str(user_id) + " a manager")
+                return Response(msg="User is already a Manager of this store")
+            return Response(value="Made User with id: " + str(new_manager_id) + " a manager")
         except ValueError as e:
             return Response(msg=e.args[0])
 
@@ -267,7 +288,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    # TODO change store id
+    # TODO change store id should be in basket
     def get_basket_price(self, store_id, basket: ShoppingBasket, invisible_codes=None):
         try:
             store = self.__get_store(store_id)
@@ -275,18 +296,124 @@ class StoreController:
             products_list_ids = list(quantity_dic.keys())
             product_list = list(map(lambda x: store.get_product(x, 0), products_list_ids))
             # TODO should send basket.user_state instead of None
-            price = store.get_discount_policy().calculate_basket(product_list, None, quantity_dic,
-                                                                 invisible_codes)
+            price = store.get_discount_policy().calculate_basket(product_list, None, quantity_dic)
             return Response(value=price)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_visible_discount(self, store_id, list_of_products_ids, discount_price, end_date, rules=[]):
+    def add_visible_discount(self, store_id, list_of_products_ids,
+                             discount_price, end_date, by_category="", by_store=False):
         try:
             store = self.__get_store(store_id)
-            store.get_discount_policy().add_visible_discount(list_of_products_ids,
-                                                             discount_price, end_date, rules)
-            return Response(value="Added Discount")
+            discount = store.get_discount_policy().add_visible_discount(list_of_products_ids,
+                                                                        discount_price, end_date, by_category, by_store)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_conditional_discount(self, store_id, list_of_products_ids, discount_price, end_date,
+                                 dic_of_products_and_quantity, min_price_for_discount=0, by_category="",
+                                 by_store=False):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_conditional_discount(list_of_products_ids, discount_price,
+                                                                            end_date, by_category, by_store,
+                                                                            dic_of_products_and_quantity,
+                                                                            min_price_for_discount)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_or_discount(self, store_id, first_discount_id, second_discount_id):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_or_discount(first_discount_id, second_discount_id)
+
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_and_discount(self, store_id, first_discount_id, second_discount_id):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_and_discount(first_discount_id, second_discount_id)
+
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_xor_discount(self, store_id, first_discount_id, second_discount_id):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_xor_discount(first_discount_id, second_discount_id)
+
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+    def add_sum_discount(self, store_id, first_discount_id, second_discount_id):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_sum_discount(first_discount_id, second_discount_id)
+
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_max_discount(self, store_id, first_discount_id, second_discount_id):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_max_discount(first_discount_id, second_discount_id)
+
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def check_purchase_policy(self, store_id, basket: ShoppingBasket):
+        """
+        checks if all purchase condition are met
+        """
+        try:
+            store = self.__get_store(store_id)
+            quantity_dic = basket.get_products_and_quantities()
+            products_list_ids = list(quantity_dic.keys())
+            product_list = list(map(lambda x: store.get_product(x, 0), products_list_ids))
+            # TODO should send basket.user_state instead of None
+            can_buy = store.get_purchase_policy().can_buy(product_list, None, quantity_dic)
+            return Response(value=can_buy)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_simple_purchase_rule(self, store_id, products_to_have_for_purchase,
+                                 min_price_to_have_for_purchase=0,
+                                 by_category="", by_store=False):
+        """
+           add to products_to_have_for_purchase if the condition is "at least x of product y"
+           add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+           add to by_category if the condition is "the cart should have at least one product of category x"
+           by store i don't know...
+           """
+        try:
+            store = self.__get_store(store_id)
+            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule(products_to_have_for_purchase,
+                                                                                 min_price_to_have_for_purchase,
+                                                                                 by_category, by_store)
+            return Response(value=purchase_rule)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_and_purchase_rule(self, store_id, first_rule_id, second_rule_id):
+        try:
+            store = self.__get_store(store_id)
+            purchase_rule = store.get_purchase_policy().add_and_purchase_rule(first_rule_id, second_rule_id)
+            return Response(value=purchase_rule)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_or_purchase_rule(self, store_id, first_rule_id, second_rule_id):
+        try:
+            store = self.__get_store(store_id)
+            purchase_rule = store.get_purchase_policy().add_or_purchase_rule(first_rule_id, second_rule_id)
+            return Response(value=purchase_rule)
         except ValueError as e:
             return Response(msg=e.args[0])
 
