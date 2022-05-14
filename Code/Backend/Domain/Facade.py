@@ -197,17 +197,13 @@ class Facade:
         with self.purchase_lock:
             cart = self.user_controller.get_shopping_cart(user_id)
             all_products = [p for p in cart.value.iter_products()]
-
-            all_removed = self.store_controller.remove_all_products_for_purchasing(all_products)
-            if all_removed.error_occured():
-                return Response(all_removed)
+            return self.store_controller.remove_all_products_for_purchasing(all_products)
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)
         #  purchase_history = Purchase()
         #  self.user_controller.update_purchase_history(purchase_history)
         # self.store_controller.update_purchase_history(purchase_history)
-        return Response()
 
     """
     --------------------------------------

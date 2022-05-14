@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.StoreOfficials.Permissions import Permissions, Actions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
@@ -127,3 +128,30 @@ class Store:
         for child in all_my_children:
             self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(child.appointed)
         self.__officials.pop(subject_username)
+
+    def remove_products_by_id(self, product_id, quantity):
+        if product_id in self.__products:
+            if self.__quantities[product_id] >= quantity:
+                self.__quantities[product_id] -= quantity
+
+    def has_quantity(self, product_id, quantity):
+        if product_id in self.__products:
+            return self.__quantities[product_id] >= quantity
+        raise BufferError("store does not exist")
+
+    def purchase_single_product(self, ppr: ProductPurchaseRequest):
+        if ppr.product_id not in self.__products:
+            raise Exception(f"product {ppr.product_id} doesnt appear in store {ppr.store_id}")
+        with self.__products[ppr.product_id]:
+            if self.has_quantity(ppr.product_id, ppr.quantity):
+                self.remove_products_by_id(ppr.product_id, ppr.quantity)
+            else:
+                raise Exception(f"quantity of {ppr.product_id} is not enough")
+
+    def revert_purchase_single_product(self, ppr):
+        with self.__products[ppr.product_id]:
+            self.__quantities[ppr.product_id] += ppr.quantity
+
+
+
+

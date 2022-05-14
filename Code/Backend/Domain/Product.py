@@ -1,4 +1,7 @@
-class Product:
+import threading
+
+
+class Product(threading.Condition):
     def __init__(self, ID, store_ID):
         """
         """
@@ -22,7 +25,7 @@ class Product:
     def change_price(self, new_price):
         self.__price = new_price
 
-    def change_category(self,new_category):
+    def change_category(self, new_category):
         self.__category = new_category
 
     def get_name(self):
