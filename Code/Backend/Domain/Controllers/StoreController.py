@@ -307,31 +307,32 @@ class StoreController:
         return str(self.id_counter)
 
     def remove_store_owner(self, remover_username, store_id, subject_username):
-        return self.stores[store_id].remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(remover_username, subject_username)
+        return self.stores[
+            store_id].remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(
+            remover_username, subject_username)
 
     def __revert_purchase(self, product_to_revert: List[ProductPurchaseRequest]):
         for ppr in product_to_revert:
             self.stores[ppr.store_id].revert_purchase_single_product(ppr)
 
     def remove_all_products_for_purchasing(self, all_products: List[ProductPurchaseRequest]):
-        to_revert = []
-        all_products.sort(key=lambda ppr: ppr.product_id)
-        for ppr in all_products:
-            if ppr.store_id not in self.stores:
-                self.__revert_purchase(to_revert)
-                return Response.from_error(f"store id {ppr.store_id} doesnt exist")
-            single_purchase = self.stores[ppr.store_id].purchase_single_product(ppr)
-            if single_purchase.error_occured():
-                self.__revert_purchase(to_revert)
-                return single_purchase
-        return Response()
+        # to_revert = []
+        # all_products.sort(key=lambda ppr: ppr.product_id)
+        # for ppr in all_products:
+        #     if ppr.store_id not in self.stores:
+        #         self.__revert_purchase(to_revert)
+        #         return Response.from_error(f"store id {ppr.store_id} doesnt exist")
+        #     single_purchase = self.stores[ppr.store_id].purchase_single_product(ppr)
+        #     if single_purchase.error_occured():
+        #         self.__revert_purchase(to_revert)
+        #         return single_purchase
+        # return Response()
 
-
-        # try:
-        #     if all(map(lambda p: self.stores[p.store_id].has_quantity(p.product_id, p.quantity), all_products)):
-        #         for p in all_products:
-        #             self.stores[p.product_id].remove_products_by_id(p.product_id, p.quantity)
-        #         return Response()
-        # except Exception as e:
-        #     return Response(msg=e.args[0])
-        # return Response(msg="Asaf is gay in his mouth")
+        try:
+            if all(map(lambda p: self.stores[p.store_id].has_quantity(p.product_id, p.quantity), all_products)):
+                for p in all_products:
+                    self.stores[p.product_id].remove_products_by_id(p.product_id, p.quantity)
+                return Response()
+        except Exception as e:
+            return Response(msg=e.args[0])
+        return Response(msg="some products has not enough quantity")
