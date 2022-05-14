@@ -27,14 +27,17 @@ except ValueError:  # e.g 31.1 + 1 !- 32.1
 next_year = today.replace(year=today.year + 1)
 last_year = today.replace(year=today.year - 1)
 
-good_payment_info = PaymentInfo(
-    customer_id_nitzan,
-    nitzan,
-    credit_card,
-    # next_year,
-    123,
-    100
-)
+# good_payment_info = PaymentInfo(
+#     customer_id_nitzan,
+#     nitzan,
+#     credit_card,
+#     # next_year,
+#     123,
+#     100
+# )
+
+good_payment_info = PaymentInfo.construct()
+
 
 bad_expiration_payment_info = PaymentInfo(
     customer_id_nitzan,

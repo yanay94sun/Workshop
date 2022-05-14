@@ -279,25 +279,25 @@ class AcceptanceTests(unittest.TestCase):
                                                                   ProductPurchaseRequest(store_id, product1_id, 1))
         self.assertTrue(not is_error(response))
 
-    def test_A5_purchase_shop_cart(self):
-        """
-        II.2.5
-        TODO: test product race condition, (test bad payment as well?)
-        """
-        g_id = self.enter_as_guest().value
-        self.login(good_register_info2)  # store opener
-        store_id = self.open_store(good_register_info2["username"], store_name)
-
-        service.add_product_to_shoppping_cart(guest_id, store_id, product1_id, 1)
-        response = service.purchase_shopping_cart(guest_id, good_payment_info)
-        self.assertTrue(not is_error(response))
-        self.__check_products_of_store(expected_products=[])
-        response = service.get_shopping_cart(guest_id)
-        self.assertTrue(not is_error(response))
-        self.assertIsNotNone(response.value)
-        cart = response.value
-        with self.assertRaises(KeyError):
-            cart[store_id]
+    # def test_A5_purchase_shop_cart(self):
+    #     """
+    #     II.2.5
+    #     TODO: test product race condition, (test bad payment as well?)
+    #     """
+    #     g_id = self.enter_as_guest().value
+    #     self.login(good_register_info2)  # store opener
+    #     store_id = self.open_store(good_register_info2["username"], store_name)
+    #
+    #     service.add_product_to_shoppping_cart(guest_id, store_id, product1_id, 1)
+    #     response = service.purchase_shopping_cart(guest_id, good_payment_info)
+    #     self.assertTrue(not is_error(response))
+    #     self.__check_products_of_store(expected_products=[])
+    #     response = service.get_shopping_cart(guest_id)
+    #     self.assertTrue(not is_error(response))
+    #     self.assertIsNotNone(response.value)
+    #     cart = response.value
+    #     with self.assertRaises(KeyError):
+    #         cart[store_id]
 
     # def test_A51_purchase_shop_cart(self):
     #     l = [0, 0]

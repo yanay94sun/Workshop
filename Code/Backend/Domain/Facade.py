@@ -225,7 +225,6 @@ class Facade:
         #  purchase_history = Purchase()
         #  self.user_controller.update_purchase_history(purchase_history)
         # self.store_controller.update_purchase_history(purchase_history)
-        return Response()
 
     """
     --------------------------------------
