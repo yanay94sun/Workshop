@@ -303,6 +303,11 @@ class StoreController:
 
     def add_visible_discount(self, store_id, list_of_products_ids,
                              discount_price, end_date, by_category="", by_store=False):
+        """
+          list_of_products_ids contains id of products that get this discount
+          if by category is not empty, the discount will be on all products with this category
+          if by store is True all products will get the discount
+        """
         try:
             store = self.__get_store(store_id)
             discount = store.get_discount_policy().add_visible_discount(list_of_products_ids,
@@ -314,6 +319,14 @@ class StoreController:
     def add_conditional_discount(self, store_id, list_of_products_ids, discount_price, end_date,
                                  dic_of_products_and_quantity, min_price_for_discount=0, by_category="",
                                  by_store=False):
+        """
+               add to list_of_products_ids if the discount is on specific products "
+               add to by_category if the discount is on products by category"
+              add to by_store if the discount is on all products"
+
+               add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
+               add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+               """
         try:
             store = self.__get_store(store_id)
             discount = store.get_discount_policy().add_conditional_discount(list_of_products_ids, discount_price,
