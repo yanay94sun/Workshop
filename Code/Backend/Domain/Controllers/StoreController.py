@@ -336,3 +336,6 @@ class StoreController:
         except Exception as e:
             return Response(msg=e.args[0])
         return Response(msg="some products has not enough quantity")
+
+    def valid_all_products_for_purchase(self, all_products: List[ProductPurchaseRequest]):
+        return all(map(lambda p: self.stores[p.store_id].has_quantity(p.product_id, p.quantity), all_products))

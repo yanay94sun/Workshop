@@ -184,7 +184,7 @@ class Facade:
         """
         return self.user_controller.remove_product_from_shopping_cart(user_id, ppr)
 
-    def purchase_shopping_cart(self, user_id: str, payment_info):
+    def purchase_shopping_cart(self, user_id: str, payment_info: DomainPaymentInfo):
         # TODO still
         """
         II.2.5
@@ -195,9 +195,26 @@ class Facade:
         :return:
         """
         with self.purchase_lock:
+            """
+            valid products quantities
+            get price for baskets (apply disc)
+            reduce products from store
+            pay
+            revert if could not pay
+            """
             cart = self.user_controller.get_shopping_cart(user_id)
             all_products = [p for p in cart.value.iter_products()]
-            return self.store_controller.remove_all_products_for_purchasing(all_products)
+            all_baskets = cart.value.shopping_baskets
+            # validate cart
+            if not self.store_controller.valid_all_products_for_purchase(all_products):
+                return Response(msg="not enough quantities")
+            # get prices
+            total_price = sum((self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
+            response = self.store_controller.remove_all_products_for_purchasing(all_products)
+            if response.error_occurred():
+                return response
+            self.market.contact_payment_service(payment_info)
+
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)
