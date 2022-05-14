@@ -1,8 +1,10 @@
-class ProductInfo:
-    def __init__(self, name=None, description=None, rating=None
-                 , price=None, category=None):
-        self.name = name
-        self.description = description
-        self.rating = rating
-        self.price = price
-        self.category = category
+from pydantic import BaseModel
+from pydantic.class_validators import Optional
+
+
+class ProductInfo(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    rating: Optional[int] = None
+    price: Optional[int] = None
+    category: Optional[str] = None

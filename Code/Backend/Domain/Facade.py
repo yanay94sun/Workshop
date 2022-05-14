@@ -13,6 +13,8 @@ from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PersonalInfo import PersonalInfo
+
+
 # from Code.Backend.Service.Objects.ProductSearchFilters import Product_search_filters
 
 
@@ -195,12 +197,28 @@ class Facade:
         :return:
         """
         with self.purchase_lock:
+            """
+            valid products quantities
+            get price for baskets (apply disc)
+            reduce products from store
+            pay
+            revert if could not pay
+            """
             cart = self.user_controller.get_shopping_cart(user_id)
             all_products = [p for p in cart.value.iter_products()]
-
-            all_removed = self.store_controller.remove_all_products_for_purchasing(all_products)
-            if all_removed.error_occured():
-                return Response(all_removed)
+            all_baskets = cart.value.shopping_baskets
+            # validate cart
+            if not self.store_controller.valid_all_products_for_purchase(all_products):
+                return Response(msg="not enough quantities")
+            # get prices
+            total_price = sum((self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
+            # remove products from inventories
+            response = self.store_controller.remove_all_products_for_purchasing(all_products)
+            if response.error_occurred():
+                return response
+            if not total_price == payment_info.amount_to_pay:
+                return Response(msg="You little piece of shit, trying to steal aha?")
+            return self.market.contact_payment_service(payment_info)
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)
@@ -350,6 +368,18 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         return self.store_controller.add_products_to_inventory(user_id, store_id, product_id, quantity)
+
+    # new function in version 2
+    def add_new_product_to_inventory(self, user_id: str, store_id: str,
+                                     product_name: str, product_description
+                                     , price: int, category: str):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        return self.store_controller.add_new_product_to_inventory(user_id,
+                                                                  store_id,
+                                                                  product_name,
+                                                                  product_description,
+                                                                  price, category)
 
     def remove_products_from_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
         """
@@ -617,3 +647,17 @@ class Facade:
         :return:
         """
         pass
+
+    def get_users_stores(self, user_id: str):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        res = self.store_controller.get_officials_stores(user_id)
+        return Response(value=res)
+
+    def is_logged_in(self, user_id: str):
+        if self.user_controller.is_logged_in(user_id):
+            return Response(value=True)
+        else:
+            return Response(value=False)
+
+

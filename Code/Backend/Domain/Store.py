@@ -1,10 +1,11 @@
 from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.StoreOfficials.Permissions import Permissions, Actions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
-from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
+from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 from Code.Backend.Domain.StoreOfficials.StoreManager import StoreManager
 from Code.Backend.Domain.StoreOfficials.StoreOfficial import StoreOfficial
@@ -24,9 +25,13 @@ class Store:
         self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreFounder(founder_id)}
         # self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
         self.__purchase_history: List[Purchase] = []
+        self.__id_counter = 0
 
     def get_store_info(self):
         return self.__store_info
+
+    def get_store_officials(self):
+        return self.__officials
 
     def get_all_products(self) -> List[Product]:
         if self.__products is not None:
@@ -57,11 +62,14 @@ class Store:
     def update_quantities(self, product_id, quantity):
         self.__quantities[product_id] += quantity
 
-    def add_new_product(self, product_id, quantity):
-        self.__products[product_id] = Product(product_id, self.__store_info.ID)
-        self.__quantities[product_id] = quantity
+    def add_new_product(self, name, description, price, category):
+        self.__id_counter += 1
+        ID = str(self.__id_counter)
+        self.__products[ID] = Product(ID, name, description, price, category, self.__store_info.ID)
+        self.__quantities[ID] = 0
+        return ID
 
-    def edit_product(self, product_id, name=None, description=None, rating=None, price=None, category=None):
+    def edit_product(self, product_id, name, description, rating, price, category):
         product = self.__products[product_id]
         if name is not None:
             product.change_name(name)
@@ -127,3 +135,29 @@ class Store:
         for child in all_my_children:
             self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(child.appointed)
         self.__officials.pop(subject_username)
+
+    def remove_products_by_id(self, product_id, quantity):
+        if product_id in self.__products:
+            if self.__quantities[product_id] >= quantity:
+                self.__quantities[product_id] -= quantity
+
+    def has_quantity(self, product_id, quantity):
+        if product_id in self.__products:
+            return self.__quantities[product_id] >= quantity
+        raise BufferError("store does not exist")
+
+    def purchase_single_product(self, ppr: ProductPurchaseRequest):
+        if ppr.product_id not in self.__products:
+            raise Exception(f"product {ppr.product_id} doesnt appear in store {ppr.store_id}")
+        with self.__products[ppr.product_id]:
+            if self.has_quantity(ppr.product_id, ppr.quantity):
+                self.remove_products_by_id(ppr.product_id, ppr.quantity)
+            else:
+                raise Exception(f"quantity of {ppr.product_id} is not enough")
+
+    def revert_purchase_single_product(self, ppr):
+        with self.__products[ppr.product_id]:
+            self.__quantities[ppr.product_id] += ppr.quantity
+
+    def get_purchase_policy(self):
+        return self.__purchase_policy
