@@ -7,17 +7,9 @@ from Code.Backend.Service.Service import Service
 from Code.Tests.Acceptance_Tests.Initialized_objects import *
 
 
-# manager_id = None
-# store_id = ""
-# service = Service()
-# service.initial_system(admin_id=admin_user, admin_pwd=admin_pass,
-#                        payment_service=PaymentService(), supply_service=SupplyService())
-# guest_id = service.enter_as_guest().value
 
 
 def is_error(response):
-    if response.msg:
-        print(f"Error: {response.msg}")
     return response.msg is not None
 
 
@@ -145,8 +137,8 @@ class AcceptanceTests(unittest.TestCase):
         # assert the store is empty first
         self.__check_products_of_store(store_id, expected_products=[])
         # add a product
-        response = self.service.add_products_to_inventory(username, store_id, product1_id, 1)
-        self.assertTrue(not is_error(response))
+        response = self.service.add_new_product_to_inventory(username, store_id, **add_new_product_args)
+        self.assertTrue(not is_error(response), f"{response.msg}")
         self.__check_products_of_store(store_id, expected_products=[default_product_name])
 
     def __check_products_of_store(self, store_id, expected_products):
@@ -158,7 +150,6 @@ class AcceptanceTests(unittest.TestCase):
         self.assertTrue(store_info["store_name"] == store_name)
         self.assertTrue(store_info["ID"] == store_id)
         self.assertEqual(expected_products, store_info["products"])
-        # self.assertTrue(store_info["products"] == expected_products, f"expected {expected_products}")
 
     # def test_7_edit_product_info(self):
     #     """
@@ -222,17 +213,17 @@ class AcceptanceTests(unittest.TestCase):
         response = self.service.add_product_to_shopping_cart(g_id, store_id, product1_id, 1)
         self.assertTrue(is_error(response), "product does not exist in inventory")
         # add products to inventory
-        self.add_products_to_inventory(store_id, store_opener)
+        p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
         # add product to shopping cart - good
-        response = self.service.add_product_to_shopping_cart(g_id, store_id, product1_id, 1)
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
         self.assertTrue(not is_error(response))
 
         # add the same product but no more products in inventory FIXME
-        # response = self.service.add_products_to_inventory(good_register_info2["username"], store_id, product1_id, 1)
-        # self.assertTrue(is_error(response), "there are no any products in the inventory")
+        response = self.service.add_products_to_inventory(good_register_info2["username"], store_id, p1_id, 1)
+        self.assertTrue(is_error(response), "there are no any products in the inventory")
 
         # bad add
-        response = self.service.add_product_to_shopping_cart(g_id, store_id, product2_id, 2)
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p2_id, 2)
         self.assertTrue(is_error(response))
 
         # check in the shopping cart
@@ -241,14 +232,17 @@ class AcceptanceTests(unittest.TestCase):
         self.assertIsNotNone(response.value)
         cart = response.value.shopping_baskets
         basket = cart[store_id].get_products_and_quantities()
-        self.assertTrue(basket[product1_id] == 1)
-        self.assertTrue(product2_id not in basket)
+        self.assertTrue(basket[p1_id] == 1)
+        self.assertTrue(p2_id not in basket)
 
     def add_products_to_inventory(self, store_id, store_opener):
-        response = self.service.add_products_to_inventory(store_opener, store_id, product1_id, 1)
-        self.assertTrue(not is_error(response))
-        response = self.service.add_products_to_inventory(store_opener, store_id, product2_id, 1)
-        self.assertTrue(not is_error(response))
+        r1 = self.service.add_new_product_to_inventory(store_opener, store_id, **add_new_product_args)
+        self.assertTrue(not is_error(r1))
+        r2 = self.service.add_new_product_to_inventory(store_opener, store_id, **add_new_product_args)
+        self.assertTrue(not is_error(r2))
+        self.assertIsNotNone(r1.value)
+        self.assertIsNotNone(r2.value)
+        return r1, r2
 
     # def test_A3_get_shop_cart(self):
     #     """
@@ -266,17 +260,17 @@ class AcceptanceTests(unittest.TestCase):
         store_id = self.open_store(good_register_info2["username"], store_name)
         store_opener = good_register_info2["username"]
         # add products to inventory
-        self.add_products_to_inventory(store_id, store_opener)
+        p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
         # add product to shopping cart
-        response = self.service.add_product_to_shopping_cart(g_id, store_id, product1_id, 1)
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
         self.assertTrue(not is_error(response))
         # bad remove
         response = self.service.remove_product_from_shopping_cart(g_id,
-                                                                  ProductPurchaseRequest(store_id, product2_id, 1))
+                                                                  ProductPurchaseRequest(store_id, p2_id, 1))
         self.assertTrue(is_error(response))
         # good remove
         response = self.service.remove_product_from_shopping_cart(g_id,
-                                                                  ProductPurchaseRequest(store_id, product1_id, 1))
+                                                                  ProductPurchaseRequest(store_id, p1_id, 1))
         self.assertTrue(not is_error(response))
 
     # def test_A5_purchase_shop_cart(self):

@@ -10,10 +10,22 @@ lary = "Lary"
 default_product_name = "default name"
 credit_card = "1234123412341234"
 store_name = "my_store"
-product1_id = "product1_id"
+product1_id = {"product1_id"}
 product1_name = "product1"
 product2_id = "product2_id"
 today = datetime.date.today()
+
+add_new_product_args = {
+    "product_name": "some product's name",
+    "product_description": "some product description",
+    "price": 10,
+    "category": "bread"
+}
+"""
+user_id: str, store_id: str,
+product_name: str, product_description
+, price: int, category: str
+"""
 
 # tomorrow
 try:
@@ -27,34 +39,24 @@ except ValueError:  # e.g 31.1 + 1 !- 32.1
 next_year = today.replace(year=today.year + 1)
 last_year = today.replace(year=today.year - 1)
 
-# good_payment_info = PaymentInfo(
-#     customer_id_nitzan,
-#     nitzan,
-#     credit_card,
-#     # next_year,
-#     123,
-#     100
-# )
-
-good_payment_info = PaymentInfo.construct()
-
-
-bad_expiration_payment_info = PaymentInfo(
-    customer_id_nitzan,
-    nitzan,
-    credit_card,
-    # last_year,
-    123,
-    100
+good_payment_info = PaymentInfo(
+    **{
+        "customer_id": customer_id_nitzan,
+        "customer_name": nitzan,
+        "credit_card": credit_card,
+        "cvv": 123,
+        "amount_to_pay": 100
+    }
 )
 
 bad_amount_payment_info = PaymentInfo(
-    customer_id_nitzan,
-    nitzan,
-    credit_card,
-    last_year,
-    # 123,
-    -100
+    **{
+        "customer_id": customer_id_nitzan,
+        "customer_name": nitzan,
+        "credit_card": credit_card,
+        "cvv": 123,
+        "amount_to_pay": -100
+    }
 )
 
 # good_package_info = PackageInfo(
