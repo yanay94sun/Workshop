@@ -8,6 +8,7 @@ import MyAccount from "../MyAccount"
 import Product from "../Product/Product";
 import Store from "../Store/Store"
 import axios from "axios";
+import HomePage from "../HomePage/HomePage";
 
 
 const Home = ({setLogin,isLogged}) => {
@@ -19,6 +20,7 @@ const Home = ({setLogin,isLogged}) => {
         <div>
             <Header handleLogin={setLogin} checkLogged = {isLogged}/>
             <Routes>
+                <Route path = '/' element = {<HomePage/>}/>
                 <Route path ='/MyStores' element= {<MyStores listItems={myStoreList} setListItems ={setMyStoreList}/>}/>
                 <Route path ='/explore' element= {<Explore/>}/>
                 <Route path ='/shopping-cart' element= {<ShoppingCart/>}/>

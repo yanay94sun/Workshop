@@ -30,14 +30,14 @@ function App() {
         }
       }
       const loggedUser = localStorage.getItem("user_id")
-      if (loggedUser){
-        setUserId(loggedUser)
-        console.log("id is "+loggedUser)
+      if (loggedUser && !isNaN(loggedUser)){
+          setUserId(loggedUser)
+          console.log("id is "+loggedUser)
       }
       else{
-        const response = await axios.get('http://127.0.0.1:8000/guests/enter')
-        localStorage.setItem("user_id",response.data)
-        console.log(response)    
+      const response = await axios.get('http://127.0.0.1:8000/guests/enter')
+      localStorage.setItem("user_id",response.data)
+      console.log(response)    
       }
   }
   return (
