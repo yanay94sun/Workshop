@@ -1,10 +1,9 @@
 from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
-from Code.Backend.Domain.StoreOfficials.Permissions import Permissions, Actions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
-from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
+from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 from Code.Backend.Domain.StoreOfficials.StoreManager import StoreManager
 from Code.Backend.Domain.StoreOfficials.StoreOfficial import StoreOfficial
@@ -62,7 +61,8 @@ class Store:
         self.__quantities[product_id] += quantity
 
     def add_new_product(self, name, description, price, category):
-        ID = str(self.__id_counter + 1)
+        self.__id_counter += 1
+        ID = str(self.__id_counter)
         self.__products[ID] = Product(ID, name, description, price, category, self.__store_info.ID)
         self.__quantities[ID] = 0
         return ID
@@ -108,3 +108,6 @@ class Store:
 
     def get_discount_policy(self):
         return self.__discount_policy
+
+    def get_purchase_policy(self):
+        return self.__purchase_policy

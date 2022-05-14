@@ -3,9 +3,9 @@ from Code.Backend.Domain.DiscountPolicyObjects.Discount import Discount
 
 class VisibleDiscount(Discount):
 
-    def __init__(self, discount, end_date, products_ids=[]):
+    def __init__(self, discount, end_date, products_ids, by_category, by_store):
 
-        super().__init__(discount, end_date, products_ids)
+        super().__init__(discount, end_date, products_ids, by_category, by_store)
 
     def calculate_price(self, quantity_dict, products, dic_to_update):
         for p in products:

@@ -1,11 +1,13 @@
 from functools import reduce
 from typing import Dict, List
 
+from Code.Backend.Domain.DiscountPolicyObjects.AndDiscount import AndDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.ConditionalDiscount import ConditionalDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.MaxDiscount import MaxDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.OrDiscount import OrDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.SumDiscount import SumDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.VisibleDiscount import VisibleDiscount
+from Code.Backend.Domain.DiscountPolicyObjects.XorDiscount import XorDiscount
 from Code.Backend.Domain.Product import Product
 
 
@@ -42,23 +44,23 @@ class DiscountPolicy:
                 lst.append(discount)
         return lst
 
-    def add_visible_discount(self, list_of_products_ids, discount_price, end_date):
+    def add_visible_discount(self, list_of_products_ids, discount_price, end_date, by_category, by_store):
         if discount_price >= 1:
             raise ValueError("cant get discount over 100%")
         self.id_counter += 1
-        discount = VisibleDiscount(discount_price, end_date, products_ids=list_of_products_ids)
+        discount = VisibleDiscount(discount_price, end_date, list_of_products_ids, by_category, by_store)
         discount.set_id(self.id_counter)
         self.__discounts[self.id_counter] = discount
         return discount
 
-    def add_conditional_discount(self, list_of_products_ids, discount_price, end_date, dic_of_products_and_quantity,
+    def add_conditional_discount(self, list_of_products_ids, discount_price, end_date, by_category, by_store, dic_of_products_and_quantity,
                                  min_price_for_discount):
         if discount_price >= 1:
             raise ValueError("cant get discount over 100%")
         self.id_counter += 1
-        discount = ConditionalDiscount(discount_price, end_date, list_of_products_ids,
-                                       dic_of_products_and_quantity=dic_of_products_and_quantity,
-                                       min_price_for_discount=min_price_for_discount)
+        discount = ConditionalDiscount(discount_price, end_date, list_of_products_ids, by_category, by_store,
+                                       dic_of_products_and_quantity,
+                                       min_price_for_discount)
         discount.set_id(self.id_counter)
         self.__discounts[self.id_counter] = discount
         return discount
@@ -69,6 +71,30 @@ class DiscountPolicy:
             discount2 = self.__discounts.pop(second_discount)
             self.id_counter += 1
             discount = OrDiscount(discount1, discount2)
+            discount.set_id(self.id_counter)
+            self.__discounts[self.id_counter] = discount
+            return discount
+        except:
+            raise ValueError("no discount was found with the given id")
+
+    def add_and_discount(self, first_discount, second_discount):
+        try:
+            discount1 = self.__discounts.pop(first_discount)
+            discount2 = self.__discounts.pop(second_discount)
+            self.id_counter += 1
+            discount = AndDiscount(discount1, discount2)
+            discount.set_id(self.id_counter)
+            self.__discounts[self.id_counter] = discount
+            return discount
+        except:
+            raise ValueError("no discount was found with the given id")
+
+    def add_xor_discount(self, first_discount, second_discount):
+        try:
+            discount1 = self.__discounts.pop(first_discount)
+            discount2 = self.__discounts.pop(second_discount)
+            self.id_counter += 1
+            discount = XorDiscount(discount1, discount2)
             discount.set_id(self.id_counter)
             self.__discounts[self.id_counter] = discount
             return discount

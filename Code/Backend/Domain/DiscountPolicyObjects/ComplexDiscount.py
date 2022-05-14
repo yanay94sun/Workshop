@@ -7,7 +7,7 @@ from Code.Backend.Domain.Product import Product
 class ComplexDiscount(Discount):
 
     def __init__(self, firstDiscount: Discount, secondDiscount: Discount):
-        super().__init__(discount=0, end_date="", products_ids={})
+        super().__init__(discount=0, end_date="", products_ids=[], by_category="", by_store=False)
         self.firstDiscount = firstDiscount
         self.secondDiscount = secondDiscount
 

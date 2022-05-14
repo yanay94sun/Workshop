@@ -160,9 +160,12 @@ class Facade:
         :param quantity:
         :return:
         """
-        prod_pur_req_response = self.store_controller.create_product_purchase_request(store_id, product_id, quantity)
+        total_quantity = self.user_controller.get_shopping_cart().\
+            value.shopping_baskets[store_id].get_products_and_quantities()[product_id]
+        prod_pur_req_response = self.store_controller.create_product_purchase_request(store_id, product_id, total_quantity + quantity)
         # check if error occurred
         if not prod_pur_req_response.error_occurred():
+            prod_pur_req_response.value.quantity -= total_quantity
             return self.user_controller.add_product_to_shop_cart(user_id, prod_pur_req_response.value)
         return prod_pur_req_response
 
@@ -339,8 +342,7 @@ class Facade:
     def add_products_to_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
         """
         II.4.1.1
-        adds the given product's quantity to the store's inventory.
-        if the product id does not exists,
+        adds the given product's quantity to the store's inventory.,
         :param user_id:
         :param store_id:
         :param product_id:

@@ -2,6 +2,7 @@ from Code.Backend.Domain.DiscountPolicyObjects.Discount import Discount
 
 
 class InvisibleDiscount(Discount):
+    # not implemented
 
     def __init__(self, discount, end_date, invisible_code, rules=[], products_ids=[]):
         super().__init__(discount, end_date, rules, products_ids)
