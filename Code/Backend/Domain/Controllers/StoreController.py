@@ -327,6 +327,24 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
+    def add_sum_discount(self, store_id, first_discount, second_discount):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_sum_discount(first_discount, second_discount)
+
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_max_discount(self, store_id, first_discount, second_discount):
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_max_discount(first_discount, second_discount)
+
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
     # ---------------------------------------------------------------------
 
     def __get_store(self, store_id):

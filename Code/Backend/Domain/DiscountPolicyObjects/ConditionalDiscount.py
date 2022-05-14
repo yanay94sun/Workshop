@@ -1,6 +1,4 @@
 from Code.Backend.Domain.DiscountPolicyObjects.Discount import Discount
-from Code.Backend.Domain.Product import Product
-from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 
 
 class ConditionalDiscount(Discount):
@@ -11,20 +9,17 @@ class ConditionalDiscount(Discount):
         self.min_price_for_discount = min_price_for_discount
 
     def calculate_price(self, quantity_dict, products, dic_to_update):
-        had_discount = False
-        if self.__check_condition(quantity_dict, products):
+        if self.check_condition(quantity_dict, products):
             for p in products:
                 if p.get_ID() in self.products_ids:
-                    had_discount = True
                     dic_to_update[0][p.get_ID()].append(self.my_discount)
-        return had_discount
 
-    def __check_condition(self, quantity_dict, products):
+    def check_condition(self, quantity_dict, products):
         if self.products_to_have_for_discount != {}:
             for key, value in self.products_to_have_for_discount.items():
                 if key not in quantity_dict.keys() or value > quantity_dict[key]:
                     return False
-        elif self.min_price_for_discount is not 0:
+        elif self.min_price_for_discount != 0:
             price = 0
             for p in products:
                 price += p.get_price() * quantity_dict[p.get_ID]
