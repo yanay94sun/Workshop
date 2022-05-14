@@ -146,8 +146,8 @@ def login(
 @app.post("/guests/register")
 def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
-    hash_password = hash_pass(user_info.password)
-    user_info.password = hash_password
+    # hash_password = hash_pass(user_info.password)
+    # user_info.password = hash_password
     user_info_dict = user_info.dict()
     res = service.register(user_id, user_info_dict)
     if res.error_occurred():
@@ -336,8 +336,7 @@ def purchase_shopping_cart(payment_info: PaymentInfo, user_id: Optional[str] = C
 """
 
 
-def hash_pass(password: str):
-    return pwd_context.hash(password)
+
 
 
 """

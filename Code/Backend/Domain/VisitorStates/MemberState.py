@@ -1,4 +1,6 @@
 # from plistlib import Dict
+from passlib.exc import UnknownHashError
+
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.VisitorStates.VisitorState import State
 
@@ -12,10 +14,11 @@ class MemberState(State):
     """
 
     """
+
     def __init__(self, shopping_cart: ShoppingCart, member_info):
         State.__init__(self, shopping_cart)
         self.__username = member_info["username"]
-        self.__password = member_info["password"]
+        self.__password = pwd_context.hash(member_info["password"])
         self.__member_info = member_info
 
     def is_logged_in(self):
@@ -26,8 +29,7 @@ class MemberState(State):
     #     return self.__password == password
 
     def password_confirmed(self, plain_password):
-        return pwd_context.verify(plain_password, self.__password)
-
-
-
-
+        try:
+            return pwd_context.verify(plain_password, self.__password)
+        except UnknownHashError:
+            return False
