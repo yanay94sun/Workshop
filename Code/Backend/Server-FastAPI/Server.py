@@ -104,8 +104,8 @@ def enter_as_guest(response: Response):
             detail="Something's wrong with the server, cant reach site",
         )
     response.set_cookie(
-        # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
-        key="user_id", value=res.value
+        key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+        # key="user_id", value=res.value
     )
     return res
 

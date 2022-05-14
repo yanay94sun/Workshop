@@ -20,19 +20,34 @@ class Counter extends Component {
 					<span style={this.getBadgeClasses()}>{this.formatCount()}</span>
 
 					<button
-						style={{ width: 50, backgroundColor: 'gray', margin: 5 }}
+						style={{
+							width: 50,
+							backgroundColor: 'gray',
+							margin: 5,
+							cursor: 'pointer',
+						}}
 						// className='btn btn-secondary btn-sm m-2'
 						onClick={() => this.props.onIncrement(this.props.counter)}>
 						+
 					</button>
 					<button
-						style={{ width: 50, backgroundColor: 'gray', margin: 5 }}
+						style={{
+							width: 50,
+							backgroundColor: 'gray',
+							margin: 5,
+							cursor: 'pointer',
+						}}
 						// className='btn btn-secondary btn-sm'
 						onClick={() => this.props.onDicrement(this.props.counter)}>
 						-
 					</button>
 					<button
-						style={{ width: 50, backgroundColor: 'red', margin: 5 }}
+						style={{
+							width: 50,
+							backgroundColor: 'red',
+							margin: 5,
+							cursor: 'pointer',
+						}}
 						// className='btn btn-danger btn-sm m-2'
 						onClick={() => this.props.onDelete(this.props.counter.id)}>
 						Delete

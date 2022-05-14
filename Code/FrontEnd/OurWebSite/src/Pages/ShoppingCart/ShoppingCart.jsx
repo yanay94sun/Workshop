@@ -56,6 +56,10 @@ class ShoppingCart extends Component {
 						left: 0,
 						// width: 300,
 					}}>
+					<button style={{ cursor: 'pointer' }}>Buy Now !</button>
+					<h4 style={{ color: 'red' }}>
+						Discount available only for today! hurry up!!
+					</h4>
 					<Counters
 						counters={this.state.counters}
 						onDelete={this.handleDelete}

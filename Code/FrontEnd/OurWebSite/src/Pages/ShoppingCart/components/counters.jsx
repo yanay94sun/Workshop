@@ -5,10 +5,6 @@ class Counters extends Component {
 	render() {
 		return (
 			<div className='container'>
-				<button className='btn btn-primary m-2' onClick={this.props.onReset}>
-					Reset
-				</button>
-				<br />
 				{this.props.counters.map((counter) => (
 					<Counter
 						key={counter.id}
@@ -18,6 +14,13 @@ class Counters extends Component {
 						counter={counter} //
 					/>
 				))}
+				<br />
+				<button
+					className='btn btn-primary m-2'
+					onClick={this.props.onReset}
+					style={{ cursor: 'pointer' }}>
+					Reset
+				</button>
 			</div>
 		);
 	}
