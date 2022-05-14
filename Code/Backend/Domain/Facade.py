@@ -188,6 +188,26 @@ class Facade:
         """
         return self.user_controller.remove_product_from_shopping_cart(user_id, ppr)
 
+    def get_cart_price(self, user_id):
+        with self.purchase_lock:
+            """
+            valid products quantities
+            get price for baskets (apply disc)
+            reduce products from store
+            pay
+            revert if could not pay
+            """
+            cart = self.user_controller.get_shopping_cart(user_id)
+            all_products = [p for p in cart.value.iter_products()]
+            all_baskets = cart.value.shopping_baskets
+            # validate cart
+            if not self.store_controller.valid_all_products_for_purchase(all_products):
+                return Response(msg="not enough quantities")
+            # get prices
+            total_price = sum(
+                (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
+            return Response(total_price)
+
     def purchase_shopping_cart(self, user_id: str, payment_info: DomainPaymentInfo):
         # TODO still
         """
@@ -196,6 +216,7 @@ class Facade:
         product in the store
         supports only instant purchase
         :param user_id:
+        :param payment_info
         :return:
         """
         with self.purchase_lock:
@@ -214,11 +235,13 @@ class Facade:
                 return Response(msg="not enough quantities")
             # get prices
             total_price = sum((self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
+            # remove products from inventories
             response = self.store_controller.remove_all_products_for_purchasing(all_products)
             if response.error_occurred():
                 return response
-            self.market.contact_payment_service(payment_info)
-
+            if not total_price == payment_info.amount_to_pay:
+                return Response(msg="You little piece of shit, trying to steal aha?")
+            return self.market.contact_payment_service(payment_info)
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)

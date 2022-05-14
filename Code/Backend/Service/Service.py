@@ -229,8 +229,15 @@ class Service:
         write_to_log(response, "successfully removed product from shopping cart")
         return response
 
+    def get_cart_price(self, user_id):
+        """
+
+        """
+        response = Response(self.facade.get_cart_price(user_id))
+        write_to_log(response, "successfully purchased shopping cart")
+        return response
+
     def purchase_shopping_cart(self, user_id: str, payment_info):
-        # TODO not implemented
         """
         II.2.5
         gets user's shopping cart and applies discount policies on each basket, then decrease the quantity of the
