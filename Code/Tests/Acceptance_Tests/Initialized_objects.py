@@ -7,6 +7,7 @@ admin_pass = "123"
 customer_id_nitzan = "205952971"
 nitzan = "Nitzan"
 lary = "Lary"
+default_product_name = "default name"
 credit_card = "1234123412341234"
 store_name = "my_store"
 product1_id = "product1_id"
@@ -64,7 +65,13 @@ bad_amount_payment_info = PaymentInfo(
 good_register_info = dict(
     {
         "username": nitzan,
-        "password": "nitzan"
+        "password": "nitzanPass"
     }
 )
 
+good_register_info2 = dict(
+    {
+        "username": "Asaf",
+        "password": "AsafPass"
+    }
+)
