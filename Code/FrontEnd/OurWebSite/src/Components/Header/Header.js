@@ -34,6 +34,7 @@ function Header({handleLogin, checkLogged }){
         const response = await axios.post('http://127.0.0.1:8000/users/logout')
         console.log(response)
         handleLogin(false)
+        localStorage.setItem("logged","false")
         navigate('/')
         } catch (err){
             console.log(err.response);

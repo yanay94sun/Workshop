@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function MyStores({listItems, setListItems}){
-    const Navigate = useNavigate()
+    const Navigate = useNavigate() 
 
     const [storeName,setStoreName] = useState('')
 
@@ -16,7 +16,7 @@ function MyStores({listItems, setListItems}){
         }
        try{
        const response = await axios.post("http://127.0.0.1:8000/users/open_store",storeNameToBack)
-       setListItems(listItems => [...listItems, <li key={storeName} style={{cursor:'pointer'}} onClick={()=>Navigate("../Stores/"+response.data)}>{storeName}</li>])
+       setListItems(listItems => [...listItems, <li key={storeName} style={{cursor:'pointer' ,width:'40px'}} onClick={()=>Navigate("../Stores/"+response.data)}>{storeName}</li>])
        console.log(response)
     } catch (err){
         console.log(err.response);

@@ -31,6 +31,7 @@ class Register extends React.Component{
         const response = await axios.post("http://127.0.0.1:8000/guests/register",signUp)
         //this.setState({register:true})
         this.props.handleLog(true);
+        localStorage.setItem("logged","true")
         console.log(response)
             
         } catch (err){

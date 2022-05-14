@@ -17,7 +17,7 @@ function Store({products}){
         setStoreName(response.data["store_name"])
         setFounderName(response.data["founder_id"])
         setRank(response.data["rank"])
-        setStoresProducts(storesProducts => [...storesProducts,...response.data["products"]])
+        //setStoresProducts(storesProducts => [...storesProducts,...response.data["products"]])
         } catch (err){
             console.log(err.response);
         }
@@ -33,7 +33,7 @@ return(
             <li>store name: {storeName}</li>
             <li>store founder's name: {founderName}</li>
             <li>store ranking: {storeRank}</li>
-            <li>store products: {storesProducts.length == 0 ? "no products": storesProducts}</li>
+            <li>store products: {storesProducts.length === 0 ? "no products": storesProducts}</li>
         </ul>
         
     </div>
