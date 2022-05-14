@@ -12,6 +12,8 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Service.Objects.AddNewProduct import AddNewProduct
+from Code.Backend.Service.Objects.AddNewStoreOwnerOrManager import AddNewStoreOwnerOrManager
 from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
@@ -104,8 +106,8 @@ def enter_as_guest(response: Response):
             detail="Something's wrong with the server, cant reach site",
         )
     response.set_cookie(
-        key="user_id", value=res.value, httponly=True, samesite="None", secure=True
-        # key="user_id", value=res.value
+        # key="user_id", value=res.value, httponly=True, samesite="None", secure=True
+        key="user_id", value=res.value
     )
     return res
 
@@ -153,7 +155,7 @@ def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
     return {"data": user_info_dict}
 
 
-@app.get("/stores/{store_id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.get("/stores/{store_id}")
 def get_store_info(store_id: str):
     res = service.get_store_info(store_id)
     if res.error_occurred():
@@ -257,7 +259,16 @@ def add_products_to_inventory(
     return res.value
 
 
-# @TODO not working
+@app.post("/users/add_new_product_to_inventory")
+def add_new_product_to_inventory(add_new_product: AddNewProduct, user_id: Optional[str] = Cookie(None)):
+    res = service.add_new_product_to_inventory(user_id, add_new_product.store_id, add_new_product.product_name,
+                                               add_new_product.product_description, add_new_product.price,
+                                               add_new_product.category)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
 @app.delete("/users/remove_products_from_inventory")
 def remove_products_from_inventory(
         add_product: AddProduct, user_id: Optional[str] = Cookie(None)
@@ -275,6 +286,46 @@ def edit_product_info(add_product: AddProduct, product_info: ProductInfo, user_i
     res = service.edit_product_info(user_id, add_product.store_id, add_product.product_id, product_info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/add_store_owner")
+def add_store_owner(add_new_store_owner: AddNewStoreOwnerOrManager, user_id: Optional[str] = Cookie(None)):
+    res = service.add_store_owner(user_id, add_new_store_owner.store_id, add_new_store_owner.to_add_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/add_store_manager")
+def add_store_owner(add_new_store_manager: AddNewStoreOwnerOrManager, user_id: Optional[str] = Cookie(None)):
+    res = service.add_store_manager(user_id, add_new_store_manager.store_id, add_new_store_manager.to_add_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.delete("/users/close_store/{store_id}")
+def close_store(store_id: str, user_id: Optional[str] = Cookie(None)):
+    res = service.close_store(user_id, store_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.get("/users/get_users_stores")
+def get_users_stores(user_id: Optional[str] = Cookie(None)):
+    res = service.get_users_stores(user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/cart/purchase_cart")
+def purchase_shopping_cart(payment_info: PaymentInfo, user_id: Optional[str] = Cookie(None)):
+    res = service.purchase_shopping_cart(user_id, payment_info)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
