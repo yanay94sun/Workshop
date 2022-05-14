@@ -4,7 +4,7 @@ from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 class DomainPackageInfo:
     def __init__(self, package_info: PackageInfo):
         self.costumer_name = package_info.costumer_name
-        self.costume_last_name = package_info.costume_last_name
+        self.costume_last_name = package_info.costumer_last_name
         self.costumer_address = package_info.costumer_address
         self.store_id = package_info.store_id
         self.products_ids_and_quantity = package_info.products_ids_and_quantity

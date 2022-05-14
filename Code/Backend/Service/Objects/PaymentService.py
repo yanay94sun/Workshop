@@ -4,11 +4,11 @@ from Code.Backend.Service.Objects.Card import Card
 class PaymentService:
     def __init__(self):
 
-        self.__valid_cards = {4580123456789123: Card(10000, 4580123456789123, 123),
-                              4580223456789123: Card(10000, 4580223456789123, 123),
-                              4580323456789123: Card(10000, 4580323456789123, 123),
-                              4580423456789123: Card(10000, 4580423456789123, 123),
-                              4580523456789123: Card(10000, 4580523456789123, 123)
+        self.__valid_cards = {"4580123456789123": Card("4580123456789123", 10000, "123"),
+                              "4580223456789123": Card("4580223456789123", 10000, "123"),
+                              "4580323456789123": Card("4580323456789123", 10000, "123"),
+                              "4580423456789123": Card("4580423456789123", 10000, "123"),
+                              "4580523456789123": Card("4580523456789123", 10000, "123")
                               }
 
     def is_valid_card(self, card_num, cvv):
@@ -18,7 +18,7 @@ class PaymentService:
         return False
 
     def check_founds(self, card_num, amount):
-        if self.__valid_cards[card_num].get_number() < amount:
+        if self.__valid_cards[card_num].get_balance() < amount:
             return False
         return True
 
