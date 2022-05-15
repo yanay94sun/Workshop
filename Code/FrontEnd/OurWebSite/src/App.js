@@ -20,6 +20,8 @@ function App() {
   }, []);
 
   const hendleEntrec = async () =>{
+      //localStorage.setItem("user_id","fsdf")
+      //localStorage.setItem("logged","false")
       const checkIfLogged = localStorage.getItem("logged")
       if (checkIfLogged){
         if (checkIfLogged == "true"){
@@ -36,8 +38,7 @@ function App() {
       }
       else{
       const response = await axios.get('http://127.0.0.1:8000/guests/enter')
-      localStorage.setItem("user_id",response.data)
-      console.log(response)    
+      localStorage.setItem("user_id",response.data.value)    
       }
   }
   return (

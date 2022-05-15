@@ -53,18 +53,25 @@ function Explore(){
         <div>
             <div className="div-list">
                 <table>
+                    <tbody>
                 <tr className="table">
-                    <th ><input type="radio"  name="type" checked={!searchType} onChange={() =>setSearchType(!searchType)}/>search stores</th>
-                    <th style={{paddingLeft: "200px"}}><input type="radio" name="type" checked={searchType} onChange={() =>setSearchType(!searchType)}/>search prodcuts</th>
+                    <td ><input type="radio"  name="type" checked={!searchType} onChange={() =>setSearchType(!searchType)}/>search stores</td>
+                    <td style={{paddingLeft: "200px"}}><input type="radio" name="type" checked={searchType} onChange={() =>setSearchType(!searchType)}/>search prodcuts</td>
                 </tr>
+                </tbody>
                 </table>
+
                 <input type="text" placeholder="Search for anything" onChange = {(e) => setText(e.target.value)}/> 
                 <button style={{cursor:'pointer'}} onClick={handleSumbit}>search</button>
                 {searchType ?
+                <table>
+                    <tbody>
                     <tr className="table">
                         <th style={{paddingLeft: "40px"}}><input type="radio" name="search" checked={proudctType} onChange={() =>setProudctType(!proudctType)}/>by name</th>
                         <th style={{paddingLeft: "70px"}}><input type="radio" name="search" checked={!proudctType} onChange={() =>setProudctType(!proudctType)}/>by category</th>
                     </tr>
+                    </tbody>
+                    </table>
                 : ""}
                 <div className="products-type">
                 <ul>
