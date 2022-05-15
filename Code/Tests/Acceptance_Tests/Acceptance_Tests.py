@@ -7,8 +7,6 @@ from Code.Backend.Service.Service import Service
 from Code.Tests.Acceptance_Tests.Initialized_objects import *
 
 
-
-
 def is_error(response):
     return response.msg is not None
 
