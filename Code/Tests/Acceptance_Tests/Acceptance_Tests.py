@@ -1,5 +1,8 @@
+import threading
 import unittest
 # login-> fill-> log out  ->log in-> purchase
+from typing import List
+
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Service.Objects.PaymentService import PaymentService
 from Code.Backend.Service.Objects.SupplySevice import SupplyService
@@ -137,6 +140,8 @@ class AcceptanceTests(unittest.TestCase):
         # add a product
         response = self.service.add_new_product_to_inventory(username, store_id, **add_new_product_args)
         self.assertTrue(not is_error(response), f"{response.msg}")
+        self.assertIsNotNone(response.value)
+        response = self.service.add_products_to_inventory(username, store_id, response.value, 1)
         self.__check_products_of_store(store_id, expected_products=[default_product_name])
 
     def __check_products_of_store(self, store_id, expected_products):
@@ -217,8 +222,8 @@ class AcceptanceTests(unittest.TestCase):
         self.assertTrue(not is_error(response))
 
         # add the same product but no more products in inventory FIXME
-        response = self.service.add_products_to_inventory(good_register_info2["username"], store_id, p1_id, 1)
-        self.assertTrue(is_error(response), "there are no any products in the inventory")
+        # response = self.service.add_products_to_inventory(good_register_info2["username"], store_id, p1_id, 1)
+        # self.assertTrue(is_error(response), "there are no any products in the inventory")
 
         # bad add
         response = self.service.add_product_to_shopping_cart(g_id, store_id, p2_id, 2)
@@ -234,12 +239,19 @@ class AcceptanceTests(unittest.TestCase):
         self.assertTrue(p2_id not in basket)
 
     def add_products_to_inventory(self, store_id, store_opener):
+        """
+        add 1 of p1 and 2 of p2
+        """
         r1 = self.service.add_new_product_to_inventory(store_opener, store_id, **add_new_product_args)
         self.assertTrue(not is_error(r1))
         r2 = self.service.add_new_product_to_inventory(store_opener, store_id, **add_new_product_args)
         self.assertTrue(not is_error(r2))
         self.assertIsNotNone(r1.value)
         self.assertIsNotNone(r2.value)
+        response = self.service.add_products_to_inventory(store_opener, store_id, r1.value, 1)
+        self.assertTrue(not is_error(response), response.msg)
+        response = self.service.add_products_to_inventory(store_opener, store_id, r2.value, 2)
+        self.assertTrue(not is_error(response), response.msg)
         return r1, r2
 
     # def test_A3_get_shop_cart(self):
@@ -271,25 +283,62 @@ class AcceptanceTests(unittest.TestCase):
                                                                   ProductPurchaseRequest(store_id, p1_id, 1))
         self.assertTrue(not is_error(response))
 
-    # def test_A5_purchase_shop_cart(self):
-    #     """
-    #     II.2.5
-    #     TODO: test product race condition, (test bad payment as well?)
-    #     """
-    #     g_id = self.enter_as_guest().value
-    #     self.login(good_register_info2)  # store opener
-    #     store_id = self.open_store(good_register_info2["username"], store_name)
-    #
-    #     service.add_product_to_shoppping_cart(guest_id, store_id, product1_id, 1)
-    #     response = service.purchase_shopping_cart(guest_id, good_payment_info)
-    #     self.assertTrue(not is_error(response))
-    #     self.__check_products_of_store(expected_products=[])
-    #     response = service.get_shopping_cart(guest_id)
-    #     self.assertTrue(not is_error(response))
-    #     self.assertIsNotNone(response.value)
-    #     cart = response.value
-    #     with self.assertRaises(KeyError):
-    #         cart[store_id]
+    def test_A5_purchase_shop_cart(self):
+        """
+        II.2.5
+        TODO: test product race condition, (test bad payment as well?)
+        """
+        g_id = self.enter_as_guest().value
+        g_id2 = self.enter_as_guest().value
+        self.login(good_register_info2)  # store opener
+        store_id = self.open_store(good_register_info2["username"], store_name)
+        store_opener = good_register_info2["username"]
+        # add products to inventory (1 of p1, 2 of p2)
+        p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
+        # add product to shopping cart for g_id1
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
+        self.assertTrue(not is_error(response))
+        # get cart's price
+        response = self.service.get_cart_price(g_id)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        payment = good_payment(response.value)
+        # purchase
+        response = self.service.purchase_shopping_cart(g_id, payment)
+        self.assertTrue(not is_error(response), response.msg)
+
+        # 2 purchases simultaneously
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p2_id, 1)
+        self.assertTrue(not is_error(response))
+        response = self.service.add_product_to_shopping_cart(g_id2, store_id, p2_id, 1)
+        self.assertTrue(not is_error(response))
+        error_list = [None, None]
+        threading.Thread(target=self.func_to_thread, args=[g_id, error_list, 0]).start()
+        threading.Thread(target=self.service.get_cart_price, args=[g_id2, error_list, 1]).start()
+
+        
+        # add product to shopping cart for g_id2
+        # service.add_product_to_shoppping_cart(guest_id, store_id, product1_id, 1)
+        # response = service.purchase_shopping_cart(guest_id, good_payment_info)
+        # self.assertTrue(not is_error(response))
+        # self.__check_products_of_store(expected_products=[])
+        # response = service.get_shopping_cart(guest_id)
+        # self.assertTrue(not is_error(response))
+        # self.assertIsNotNone(response.value)
+        # cart = response.value
+        # with self.assertRaises(KeyError):
+        #     cart[store_id]
+
+    def func_to_thread(self, g_id, error_list: List, idx):
+        response = self.service.get_cart_price(g_id)
+        error_list[idx] = response
+        if is_error(response):
+            return
+        self.assertIsNotNone(response.value)
+        payment = good_payment(response.value)
+        response = self.service.purchase_shopping_cart(g_id, payment)
+        # TODO finish
+        self.assertTrue(not is_error(response), response.msg)
 
     # def test_A51_purchase_shop_cart(self):
     #     l = [0, 0]
