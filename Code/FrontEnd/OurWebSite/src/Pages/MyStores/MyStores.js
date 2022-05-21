@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
 
-function MyStores({listItems, setListItems}){
+function MyStores({listItems, setListItems, ip }){
     const Navigate = useNavigate() 
 
     const [storeName,setStoreName] = useState('')
@@ -13,6 +13,7 @@ function MyStores({listItems, setListItems}){
         e.preventDefault()
         const storeNameToBack = {
             store_name: storeName,
+            id: ip
         }
        try{
        const response = await axios.post("http://127.0.0.1:8000/users/open_store",storeNameToBack)
@@ -28,7 +29,7 @@ function MyStores({listItems, setListItems}){
             <h3 style={{textAlign:'center'}}>{welomeText(listItems)}</h3>
             <form className="div-list" onSubmit = {handleSumbit}>
                 <input type="text" placeholder="please enter store name" required onChange = {(e) => setStoreName(e.target.value)}/> 
-                <button style={{ cursor:'pointer'}} onSubmit={handleSumbit}>add</button>
+                <button className="buttonS" style={{ cursor:'pointer'}} onSubmit={handleSumbit}>add</button>
                 <ul>
                     {listItems}
                 </ul>

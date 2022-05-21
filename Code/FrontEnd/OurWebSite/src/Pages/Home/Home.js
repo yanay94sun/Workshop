@@ -11,21 +11,21 @@ import axios from "axios";
 import HomePage from "../HomePage/HomePage";
 
 
-const Home = ({setLogin,isLogged}) => {
+const Home = ({setLogin,isLogged,myId}) => {
 
     const [myStoreList,setMyStoreList] = useState([])   
     const [products, setProducts] = useState([]) //{producdid: product} should get from database
 
     return (
         <div>
-            <Header handleLogin={setLogin} checkLogged = {isLogged}/>
+            <Header handleLogin={setLogin} checkLogged = {isLogged} ip = {myId}/>
             <Routes>
                 <Route path = '/' element = {<HomePage/>}/>
-                <Route path ='/MyStores' element= {<MyStores listItems={myStoreList} setListItems ={setMyStoreList}/>}/>
+                <Route path ='/MyStores' element= {<MyStores listItems={myStoreList} setListItems ={setMyStoreList} ip = {myId}/>}/>
                 <Route path ='/explore' element= {<Explore/>}/>
                 <Route path ='/shopping-cart' element= {<ShoppingCart/>}/>
                 <Route path ='/my-account/:userId' element= {<MyAccount/>}/>
-                <Route path="/stores/:storeId" element= {<Store products = {products}/>}/>
+                <Route path="/stores/:storeId" element= {<Store products = {products} ip = {myId}/>}/>
                 <Route path ='/products/:productId' element= {<Product/>}/>
             </Routes>
             

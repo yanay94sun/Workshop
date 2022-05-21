@@ -34,7 +34,7 @@ input{
     box-shadow: none;
     font-family: 'Cabin', sans-serif;} 
 
-button{
+.buttonS{
     width: 100%;
     margin: 5px 0;
     background-color: dodgerblue;
@@ -50,4 +50,12 @@ button{
 }
 .btnGuest{
     background-color: #383c3d;
+    width: 100%;
+    margin: 5px 0;
+    font-family: 'Cabin', sans-serif;
+    padding: 9px; 
+    font-weight: 600px;
+    border: none;
+    color: white;
+    border-radius: 5px;
 }

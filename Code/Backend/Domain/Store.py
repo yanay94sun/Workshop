@@ -61,6 +61,8 @@ class Store:
         self.__quantities[product_id] += quantity
 
     def add_new_product(self, name, description, price, category):
+        if name in map(lambda x: x.get_name(),list(self.__products.values())):
+            raise ValueError("product name already exist")
         self.__id_counter += 1
         ID = str(self.__id_counter)
         self.__products[ID] = Product(ID, name, description, price, category, self.__store_info.ID)

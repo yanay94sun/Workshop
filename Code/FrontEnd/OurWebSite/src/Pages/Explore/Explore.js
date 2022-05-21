@@ -62,7 +62,7 @@ function Explore(){
                 </table>
 
                 <input type="text" placeholder="Search for anything" onChange = {(e) => setText(e.target.value)}/> 
-                <button style={{cursor:'pointer'}} onClick={handleSumbit}>search</button>
+                <button className="buttonS" style={{cursor:'pointer'}} onClick={handleSumbit}>search</button>
                 {searchType ?
                 <table>
                     <tbody>

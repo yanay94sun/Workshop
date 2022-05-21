@@ -20,8 +20,8 @@ function App() {
   }, []);
 
   const hendleEntrec = async () =>{
-      //localStorage.setItem("user_id","fsdf")
-      //localStorage.setItem("logged","false")
+       //localStorage.setItem("user_id","fsdf")
+      // localStorage.setItem("logged","false")
       const checkIfLogged = localStorage.getItem("logged")
       if (checkIfLogged){
         if (checkIfLogged == "true"){
@@ -32,22 +32,23 @@ function App() {
         }
       }
       const loggedUser = localStorage.getItem("user_id")
-      // if (loggedUser && !isNaN(loggedUser)){
-      //     setUserId(loggedUser)
-      //     console.log("id is "+loggedUser)
-      // }
-      // else{
+      if (loggedUser && !isNaN(loggedUser)){
+          setUserId(loggedUser)
+          console.log("id is "+loggedUser)
+      }
+      else{
       const response = await axios.get('http://127.0.0.1:8000/guests/enter')
       localStorage.setItem("user_id",response.data.value)   
+      setUserId(response.data.value)
       console.log(response) 
-    //  }
+      }
   }
   return (
     <div>
       <Routes >
-        <Route path = '/' element= {<Login setLogin={setIsLog} isLogged = {isLog}/>}/>
-        <Route path = '/home/*' element = {<Home setLogin ={setIsLog}  isLogged = {isLog}/>}/>
-        <Route path ="/register" element= {<Register handleLog = {setIsLog} logged = {isLog} />}/>
+        <Route path = '/' element= {<Login setLogin={setIsLog} isLogged = {isLog} myId = {userId}/>}/>
+        <Route path = '/home/*' element = {<Home setLogin ={setIsLog}  isLogged = {isLog} myId = {userId}/>}/>
+        <Route path ="/register" element= {<Register handleLog = {setIsLog} logged = {isLog} myId = {userId} />}/>
         <Route path = '*' element={<NoMatch/>}/>
       </Routes>
     </div>

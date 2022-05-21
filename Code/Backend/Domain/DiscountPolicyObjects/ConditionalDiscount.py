@@ -2,22 +2,23 @@ from Code.Backend.Domain.DiscountPolicyObjects.Discount import Discount
 
 
 class ConditionalDiscount(Discount):
-    def __init__(self, discount, end_date, products_ids, by_category, by_store,
+    def __init__(self, discount, end_date, discount_on, Type,
                  dic_of_products_and_quantity, min_price_for_discount):
-        super().__init__(discount, end_date, products_ids, by_category, by_store)
+
+        super().__init__(discount, end_date, discount_on, Type)
         self.products_to_have_for_discount = dic_of_products_and_quantity
         self.min_price_for_discount = min_price_for_discount
 
     def calculate_price(self, quantity_dict, products, dic_to_update):
         if self.check_condition(quantity_dict, products):
             for p in products:
-                if self.products_ids:
-                    if p.get_ID() in self.products_ids:
+                if self.Type == 1:
+                    if p.get_ID() == self.discount_on:
                         dic_to_update[0][p.get_ID()].append(self.my_discount)
-                elif self.by_category != "":
-                    if p.get_category() == self.by_category:
+                elif self.Type == 2:
+                    if p.get_category() == self.discount_on:
                         dic_to_update[0][p.get_ID()].append(self.my_discount)
-                elif self.by_store:
+                else:
                     dic_to_update[0][p.get_ID()].append(self.my_discount)
 
     def check_condition(self, quantity_dict, products):
