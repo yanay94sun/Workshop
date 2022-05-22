@@ -32,7 +32,7 @@ class StoreController:
             if products is None:
                 res["products"] = []
             else:
-                res["products"] = list(map(lambda x: x.get_ID(), products))
+                res["products"] = list(map(lambda x: x.__dict__, products))
             return Response(value=res)
         except ValueError as e:
             return Response(msg=e.args[0])

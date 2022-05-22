@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Counter from '../ShoppingCart/components/counter';
 
-function Product() {
+function Product({Products}) {
 	const [name, setName] = useState('NIKE AIR JORDAN');
 	const [description, setDescription] = useState(
 		'the actual shoes Michel Jordan ware in his final game !'

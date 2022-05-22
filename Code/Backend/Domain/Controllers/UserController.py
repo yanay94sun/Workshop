@@ -53,7 +53,7 @@ class UserController:
     def is_logged_in(self, user_id: str):
         if user_id not in self.__users:
             return Response(msg="user isn't logged in")
-        return self.__users[user_id].is_logged_in()
+        return Response(value=self.__users[user_id].is_logged_in())
 
     def is_member(self, member_id):
         return Response(member_id in self.__members)

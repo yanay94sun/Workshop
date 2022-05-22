@@ -20,11 +20,11 @@ function App() {
   }, []);
 
   const hendleEntrec = async () =>{
-       //localStorage.setItem("user_id","fsdf")
-      // localStorage.setItem("logged","false")
+      localStorage.setItem("user_id","fsdf")
+      localStorage.setItem("logged","false")
       const checkIfLogged = localStorage.getItem("logged")
       if (checkIfLogged){
-        if (checkIfLogged == "true"){
+        if (checkIfLogged === "true"){
           setIsLog(true)
         }
         else{

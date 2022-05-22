@@ -9,6 +9,7 @@ import Product from "../Product/Product";
 import Store from "../Store/Store"
 import axios from "axios";
 import HomePage from "../HomePage/HomePage";
+import StoreHome from "../Stores/StoresHome";
 
 
 const Home = ({setLogin,isLogged,myId}) => {
@@ -25,8 +26,7 @@ const Home = ({setLogin,isLogged,myId}) => {
                 <Route path ='/explore' element= {<Explore/>}/>
                 <Route path ='/shopping-cart' element= {<ShoppingCart/>}/>
                 <Route path ='/my-account/:userId' element= {<MyAccount/>}/>
-                <Route path="/stores/:storeId" element= {<Store products = {products} ip = {myId}/>}/>
-                <Route path ='/products/:productId' element= {<Product/>}/>
+                <Route path="/stores/:storeId/*" element= {<StoreHome ip = {myId}/>}/>
             </Routes>
             
         </div>

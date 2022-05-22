@@ -460,16 +460,16 @@ class Service:
 
     """ Nitzan: put responsibilities the next methods in Store Controller, until II.4.12.2"""
 
-    def add_store_owner(self, user_id: str, store_id: str, new_owner_id: str):
+    def add_store_owner(self, user_id: str, store_id: str, new_owner_name: str):
         """
         TODO: follow specification
         II.4.4
         :param user_id:
         :param store_id:
-        :param new_owner_id:
+        :param new_owner_name:
         :return:
         """
-        response = Response(self.facade.add_store_owner(user_id, store_id, new_owner_id))
+        response = Response(self.facade.add_store_owner(user_id, store_id, new_owner_name))
         write_to_log(response, "successfully added store owner")
         return response
 
@@ -498,18 +498,18 @@ class Service:
         write_to_log(response, "successfully added store manager")
         return response
 
-    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Dict):
+    def change_manager_permission(self, user_id: str, store_id: str, manager_name: str, new_permission: Dict):
         """
         replaces the permissions of the manager with manager_id with the new permissions.
         II.4.7
         :param user_id:
         :param store_id:
-        :param manager_id:
+        :param manager_name:
         :param new_permission:
         :return:
         """
         response = Response(self.store_controller.change_manager_permission(
-            user_id, store_id, manager_id, new_permission))
+            user_id, store_id, manager_name, new_permission))
         write_to_log(response, "successfully changed manager permissions")
         return response
 
