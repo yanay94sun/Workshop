@@ -1,4 +1,5 @@
 # from typing import List, Dict
+from typing import Dict
 
 from Code.Backend.Domain.Product import Product
 from collections.abc import Sequence
@@ -18,4 +19,4 @@ class PackageInfo(BaseModel):
     costumer_last_name: str
     costumer_address: str
     store_id: str
-    products_ids_and_quantity: dict[str, int]
+    products_ids_and_quantity: Dict[str, int]
