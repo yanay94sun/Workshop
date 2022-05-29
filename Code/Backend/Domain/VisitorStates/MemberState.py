@@ -1,4 +1,6 @@
 # from plistlib import Dict
+from passlib.exc import UnknownHashError
+
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.VisitorStates.VisitorState import State
 
@@ -22,11 +24,14 @@ class MemberState(State):
         return True
 
     # # TODO yanay changed to hashing verfy
-    # def password_confirmed(self, password: str) -> bool:
-    #     return self.__password == password
+    def password_confirmed(self, password: str) -> bool:
+        return self.__password == password
 
-    def password_confirmed(self, plain_password):
-        return pwd_context.verify(plain_password, self.__password)
+    # def password_confirmed(self, plain_password):
+    #     try:
+    #         return pwd_context.verify(plain_password, self.__password)
+    #     except UnknownHashError:
+    #         return False
 
 
     def get_username(self):

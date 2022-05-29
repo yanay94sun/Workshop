@@ -126,8 +126,8 @@ def exit_site(user_id: UserID):  # Optional[str] = Cookie(None)):
 @app.post("/guests/login")
 def login(
         user_info: User_info):  # ,        user_id: Optional[str] = Cookie(None),):
-    # hashed_password = hash_pass(user_info.password)
-    res = service.login(user_info.id, user_info.username, user_info.password)
+    hashed_password = hash_pass(user_info.password)
+    res = service.login(user_info.id, user_info.username, hashed_password)  # user_info.password)
     print(user_info.id)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
