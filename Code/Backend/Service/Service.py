@@ -166,11 +166,6 @@ class Service:
         return response
 
     def get_stores_info(self) -> Response:
-        """
-        II.2.1.2
-        when a user request for all stores info.
-        return: List of all store info
-        """
         response = Response(self.facade.get_stores_info())
         write_to_log(response, "successfully got stores info")
         return response
