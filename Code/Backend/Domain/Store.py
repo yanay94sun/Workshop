@@ -1,10 +1,9 @@
 from typing import Dict, List
 
-from Code.Backend.Domain.DiscountPolicy import DiscountPolicy
-from Code.Backend.Domain.Permissions import Permissions
+from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
-from Code.Backend.Domain.PurchasePolicy import PurchasePolicy
+from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Domain.StoreOfficials.StoreFounder import StoreFounder
 from Code.Backend.Domain.StoreOfficials.StoreManager import StoreManager
 from Code.Backend.Domain.StoreOfficials.StoreOfficial import StoreOfficial
@@ -24,9 +23,13 @@ class Store:
         self.__officials: Dict[str, StoreOfficial] = {founder_id: StoreFounder(founder_id)}
         # self.__roles: Dict[str, Permissions] = {founder_id: Permissions(True, None)}  # {user_id, permissions object}
         self.__purchase_history: List[Purchase] = []
+        self.__id_counter = 0
 
     def get_store_info(self):
         return self.__store_info
+
+    def get_store_officials(self):
+        return self.__officials
 
     def get_all_products(self) -> List[Product]:
         if self.__products is not None:
@@ -57,11 +60,14 @@ class Store:
     def update_quantities(self, product_id, quantity):
         self.__quantities[product_id] += quantity
 
-    def add_new_product(self, product_id, quantity):
-        self.__products[product_id] = Product(product_id, self.__store_info.ID)
-        self.__quantities[product_id] = quantity
+    def add_new_product(self, name, description, price, category):
+        self.__id_counter += 1
+        ID = str(self.__id_counter)
+        self.__products[ID] = Product(ID, name, description, price, category, self.__store_info.ID)
+        self.__quantities[ID] = 0
+        return ID
 
-    def edit_product(self, product_id, name=None, description=None, rating=None, price=None, category=None):
+    def edit_product(self, product_id, name, description, rating, price, category):
         product = self.__products[product_id]
         if name is not None:
             product.change_name(name)
@@ -77,22 +83,19 @@ class Store:
     def add_owner(self, user_id: str, new_user_id: str):
         if new_user_id in self.__officials.keys():
             return False
-        new_permission = Permissions(self.__officials[user_id])
-        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id]
-                                                   , new_permission)
+
+        self.__officials[new_user_id] = StoreOwner(new_user_id, self.__officials[user_id])
         return True
 
     def add_manager(self, user_id: str, new_manager_id: str):
         if new_manager_id in self.__officials.keys():
             return False
-        new_permission = Permissions(self.__officials[user_id])
         self.__officials[new_manager_id] = StoreManager(new_manager_id,
-                                                        self.__officials[user_id],
-                                                        new_permission)
+                                                        self.__officials[user_id])
         return True
 
-    def change_permissions(self, user_id, action_number, new_val):
-        self.__officials[user_id].set_permission(action_number, new_val)
+    def change_permissions(self, user_id, new_permission):
+        self.__officials[user_id].set_permission(new_permission)
 
     def get_officials(self):
         return self.__officials
@@ -105,3 +108,6 @@ class Store:
 
     def get_discount_policy(self):
         return self.__discount_policy
+
+    def get_purchase_policy(self):
+        return self.__purchase_policy

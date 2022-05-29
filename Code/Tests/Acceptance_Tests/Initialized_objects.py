@@ -1,7 +1,7 @@
 import datetime
 
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
-from Code.Backend.Service.Objects.Payment_info import Payment_info
+from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 admin_user = "admin"
 admin_pass = "123"
 customer_id_nitzan = "205952971"
@@ -26,7 +26,7 @@ except ValueError:  # e.g 31.1 + 1 !- 32.1
 next_year = today.replace(year=today.year + 1)
 last_year = today.replace(year=today.year - 1)
 
-good_payment_info = Payment_info(
+good_payment_info = PaymentInfo(
     customer_id_nitzan,
     nitzan,
     credit_card,
@@ -35,7 +35,7 @@ good_payment_info = Payment_info(
     100
 )
 
-bad_expiration_payment_info = Payment_info(
+bad_expiration_payment_info = PaymentInfo(
     customer_id_nitzan,
     nitzan,
     credit_card,
@@ -44,7 +44,7 @@ bad_expiration_payment_info = Payment_info(
     100
 )
 
-bad_amount_payment_info = Payment_info(
+bad_amount_payment_info = PaymentInfo(
     customer_id_nitzan,
     nitzan,
     credit_card,

@@ -2,6 +2,11 @@
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.VisitorStates.VisitorState import State
 
+from passlib.context import CryptContext
+
+# hashing passwords
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 class MemberState(State):
     """
@@ -16,8 +21,16 @@ class MemberState(State):
     def is_logged_in(self):
         return True
 
-    def password_confirmed(self, password: str) -> bool:
-        return self.__password == password
+    # # TODO yanay changed to hashing verfy
+    # def password_confirmed(self, password: str) -> bool:
+    #     return self.__password == password
+
+    def password_confirmed(self, plain_password):
+        return pwd_context.verify(plain_password, self.__password)
+
+
+    def get_username(self):
+        return self.__username
 
 
 

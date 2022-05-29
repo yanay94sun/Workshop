@@ -43,13 +43,12 @@ class UserController:
         self.__members[key] = new_status.value
         return Response()
 
-
-    def login(self, guest_id: str, username: str, password: str):
+    def login(self, user_id: str, username: str, password: str):
         if username not in self.__members:
             return Response(msg="username doesn't exist")
-        if guest_id not in self.__users:
+        if user_id not in self.__users:
             return Response(msg="guest id doesn't exist")
-        return self.__users[guest_id].login(self.__members[username], password)
+        return self.__users[user_id].login(self.__members[username], password)
 
     def is_logged_in(self, user_id: str):
         if user_id not in self.__users:
@@ -58,6 +57,13 @@ class UserController:
 
     def is_member(self, member_id):
         return Response(member_id in self.__members)
+
+    def get_users_username(self, user_id):
+        res = self.is_logged_in(user_id)
+        if res.error_occurred():
+            return res
+
+        return self.__users[user_id].get_username()
 
     def add_product_to_shop_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:
@@ -93,5 +99,3 @@ class UserController:
 
     def edit_personal_info(self, user_id: str, new_personal_info):
         pass  # todo
-
-

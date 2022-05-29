@@ -15,5 +15,10 @@ class GuestState(State):
     def exit(self):
         self._shopping_cart = ShoppingCart()
 
+    def get_username(self):
+        raise Exception("guest doesnt have username")
+
+
+
 
 

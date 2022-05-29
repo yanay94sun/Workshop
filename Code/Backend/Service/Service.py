@@ -4,6 +4,7 @@ from typing import Dict, List
 import logging
 
 from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
+from Code.Backend.Domain.Facade import Facade
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 
 from Code.Backend.Domain.Controllers.Market import Market
@@ -13,14 +14,13 @@ from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import Product
 from Code.Backend.Domain.DM_product_info import DM_product_info
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
 from Code.Backend.Service.Objects import Shopcart_info
-from Code.Backend.Service.Objects.Contact_info import Contact_info
+from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
-from Code.Backend.Service.Objects.Payment_info import Payment_info
-from Code.Backend.Service.Objects.Permissions import Permission
-from Code.Backend.Service.Objects.Personal_info import Personal_info
+from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
+from Code.Backend.Service.Objects.PersonalInfo import PersonalInfo
 from Code.Backend.Service.Objects.Personal_purchase_history import Personal_purchase_history
-from Code.Backend.Service.Objects.Product_info import Product_info
-from Code.Backend.Service.Objects.Product_search_filters import Product_search_filters
+from Code.Backend.Service.Objects.ProductInfo import ProductInfo
+from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
 from Code.Backend.Service.Objects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
 from Code.Backend.Service.Objects.Store_info import Store_info
@@ -28,17 +28,18 @@ from Code.Backend.Service.Objects.Store_info import Store_info
 logging.basicConfig(filename="SystemLog.log")
 
 
+def write_to_log(response, success_msg):
+    if response.error_occurred():
+        logging.critical(response.msg)
+    else:
+        logging.info(success_msg)
+
+
 class Service:
     def __init__(self):
-        self.user_controller: UserController = None
-        self.market: Market = None
-        self.store_controller: StoreController = None
-        self.purchase_lock = threading.Condition()
+        self.facade = Facade()
 
-    """Functional requirements"""
-
-    def initial_system(self, admin_id: str = None, admin_pwd: str = None,
-                       payment_service=None, supply_service=None):
+    def initial_system(self, payment_service, supply_service, admin_id: str = None, admin_pwd: str = None):
         """
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
@@ -49,35 +50,33 @@ class Service:
         :param supply_service: an Enum to configure the supply service
         :return: None
         """
-        market = Market().init(admin_id, admin_pwd, payment_service, supply_service)
-        if market.error_occurred():
-            logging.critical(msg=market.msg)
-        self.market = market.value
-        self.user_controller = UserController()
-        self.store_controller = StoreController()
+        response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
+        write_to_log(response, "The system initialized successfully")
+        return response
 
-        if self.market is not None and self.user_controller is not None and self.store_controller is not None:
-            logging.info("The system initialized successfully")
-        else:
-            logging.critical("Can't initial system")
-
-    def contact_payment_service(self, payment_info: Payment_info) -> Response:
+    def contact_payment_service(self, payment_info: PaymentInfo) -> Response:
         """
         I.3
         a payment transaction with the current payment service, with the given payment information.
         :param payment_info: the data the payment service needs to successfully manage the payment.
         :return: Response object
         """
-        return Response(self.market.contact_payment_service(self.__service_payment_info_to_domain(payment_info)))
+        response = Response(self.facade.contact_payment_service(self.__service_payment_info_to_domain(payment_info)))
+        write_to_log(response, "successfully contacted payment service")
+        return response
 
     def change_payment_service(self, payment_service):
-        return self.market.connect_payment_service(payment_service)
+        response = Response(self.facade.change_payment_service(payment_service))
+        write_to_log(response, "successfully changed payment service")
+        return response
 
     def change_supply_service(self, supply_service):
-        return self.market.connect_supply_service(supply_service)
+        response = Response(self.facade.change_supply_service(supply_service))
+        write_to_log(response, "successfully changed supply service")
+        return response
 
     def __service_payment_info_to_domain(self, payment_info):
-        """
+        """ 
         converts ...
         """
         return DomainPaymentInfo(payment_info)
@@ -89,17 +88,21 @@ class Service:
         :param package_info: the data the current supply service needs to successfully process the request.
         :return:
         """
-        return Response(self.market.contact_supply_service(self.__service_supply_info_to_domain(package_info)))
+        response = Response(self.facade.contact_supply_service(self.__service_supply_info_to_domain(package_info)))
+        write_to_log(response, "successfully contacted supply service")
+        return response
 
     def __service_supply_info_to_domain(self, package_info):
         """
 
         """
-        return DomainPackageInfo(package_info)  # FIXME! domain objects should not know service objects!
+        return DomainPackageInfo(package_info)
 
     """
+    ---------------------------------------------------
     Users requirements
     General guest actions
+    ---------------------------------------------------
     """
 
     def enter_as_guest(self) -> Response:
@@ -108,8 +111,9 @@ class Service:
         generates a temp id and creates a Visitor object with a default guest state and a shopping cart.
         :return: guest id
         """
-        return Response(self.user_controller.create_guest())
-        # write to log
+        response = Response(self.facade.enter_as_guest())
+        write_to_log(response, "successfully entered as guest")
+        return response
 
     def exit(self, user_id: str):
         """
@@ -118,7 +122,9 @@ class Service:
         :param user_id:
         :return:
         """
-        return Response(self.user_controller.exit(user_id))
+        response = Response(self.facade.exit(user_id))
+        write_to_log(response, "successfully exited")
+        return response
 
     def register(self, guest_id: str, user_info: Dict):
         """
@@ -128,7 +134,9 @@ class Service:
         :param user_info: all info needed for registration.
         :return:
         """
-        return Response(self.user_controller.register(guest_id, user_info))
+        response = Response(self.facade.register(guest_id, user_info))
+        write_to_log(response, "successfully register to the system")
+        return response
 
     def login(self, guest_id: str, username: str, password: str):
         """
@@ -139,46 +147,51 @@ class Service:
         :param password:
         :return:
         """
-        return Response(self.user_controller.login(guest_id, username, password))
+        response = Response(self.facade.login(guest_id, username, password))
+        write_to_log(response, "successfully logged in")
+        return response
 
     """Guest's Purchase actions"""
 
-    def get_store_info(self, user_id: str, store_id: str) -> Response:
+    def get_store_info(self, store_id: str) -> Response:
         """
         II.2.1.1
         when a user request for a specific store info.
-        :param user_id:
-        :param store_id:
-        :return: Store's info which contains:
+        param store_id:
+        return: Store's info which contains:
         store's name, store's owners, rank, products
         """
-        return Response(self.store_controller.get_store_info(store_id))
+        response = Response(self.facade.get_store_info(store_id))
+        write_to_log(response, "successfully got store info")
+        return response
 
-    def get_stores_info(self, user_id: str) -> Response:
+    def get_stores_info(self) -> Response:
         """
         II.2.1.2
         when a user request for all stores info.
-        :param user_id:
-        :param: store_id
-        :return: List of store info
+        return: List of all store info
         """
-        return Response(self.store_controller.get_stores_info())
-        pass
+        response = Response(self.facade.get_stores_info())
+        write_to_log(response, "successfully got stores info")
+        return response
 
-    def search_product(self, user_id: str, product_filters: Product_search_filters):
+    def search_product(self, product_filters: ProductSearchFilters):
         """
         II.2.2
-        TODO add arguments
-        Search a product by given product name, category or key words.
+        Search a product by given product name, category or keywords.
         Filtering results by given feature filters
-        :param user_id:
         :param product_filters: An object contains filtering criteria, like price range, product's grade...
         :return:
         """
-        return Response(self.store_controller.search_product())
-        pass
+        response = Response(self.facade.search_product(product_filters.text,
+                                                       product_filters.by_name,
+                                                       product_filters.by_category,
+                                                       product_filters.filter_type,
+                                                       product_filters.filter_value))
+        write_to_log(response, "successfully searched for products")
+        return response
 
-    def add_product_to_shoppping_cart(self, user_id: str, store_id, product_id, quantity):
+    def add_product_to_shopping_cart(self, user_id: str, store_id, product_id, quantity):
         """
         II.2.3
         Checks if the product is available in the store, and adds the given product to the user's shop cart.
@@ -189,22 +202,22 @@ class Service:
         :param quantity:
         :return:
         """
-        prod_pur_req_response = self.store_controller.create_product_purchase_request(store_id, product_id, quantity)
-        # check if not None
-        if not prod_pur_req_response.error_occurred():
-            return Response(self.user_controller.add_product_to_shop_cart(user_id, prod_pur_req_response.value))
-        return prod_pur_req_response
+        response = Response(self.facade.add_product_to_shopping_cart(user_id, store_id, product_id, quantity))
+        write_to_log(response, "successfully added product to shopping cart")
+        return response
 
     def get_shopping_cart(self, user_id: str) -> Response:
         """
         II.2.4
-        return he information of the user shopping cart.
-        :param user_id:
+        return the information of the user shopping cart.
+        param user_id:
         :return: Shopping cart object
         """
-        return Response(self.user_controller.get_shopping_cart(user_id))
+        response = Response(self.facade.get_shopping_cart(user_id))
+        write_to_log(response, "successfully got user's shopping cart")
+        return response
 
-    def remove_product_from_shopping_cart(self, user_id: str, ppr: ProductPurchaseRequest):  # TODO Basket!
+    def remove_product_from_shopping_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         """
         II.2.4
 
@@ -212,55 +225,53 @@ class Service:
         :param ppr:
         :return:
         """
-        return Response(self.user_controller.remove_product_from_shopping_cart(user_id, ppr))
+        response = Response(self.facade.remove_product_from_shopping_cart(user_id, ppr))
+        write_to_log(response, "successfully removed product from shopping cart")
+        return response
 
     def purchase_shopping_cart(self, user_id: str, payment_info):
+        # TODO not implemented
         """
         II.2.5
         gets user's shopping cart and applies discount policies on each basket, then decrease the quantity of the
         product in the store
         supports only instant purchase
-        :param user_id:
+        param user_id:
+        payment_info:
         :return:
         """
-        with self.purchase_lock:
-            cart = self.user_controller.get_shopping_cart(user_id)
-            all_products = [p for p in cart.value.iter_products()]
+        response = Response(self.facade.purchase_shopping_cart(user_id, payment_info))
+        write_to_log(response, "successfully purchased shopping cart")
+        return response
 
-            all_removed = self.store_controller.remove_all_products_for_purchasing(all_products)
-            if all_removed.error_occured():
-                return Response(all_removed)
-
-        # pay, if error occured revert
-        # revert: self.store_controller.revert_purchase_requests(all_products)
-        #  purchase_history = Purchase()
-        #  self.user_controller.update_purchase_history(purchase_history)
-        # self.store_controller.update_purchase_history(purchase_history)
-        return Response()
-
-    """Member's purchase actions"""
+    """
+    --------------------------------------
+    Member's purchase actions
+    --------------------------------------
+    """
 
     def logout(self, user_id: str):
         """
         II.3.1
         Logging out, the shopping cart is saved.
-        :param user_id:
+        param user_id:
         :return:
         """
-        return Response(self.user_controller.logout(user_id))
+        response = Response(self.facade.logout(user_id))
+        write_to_log(response, "successfully logged out")
+        return response
 
     def open_store(self, user_id: str, store_name: str):
         """
         II.3.2
         A registered member may open a store and be the founder and a manager.
-        :param user_id:
-        :param store_name: the store's name
+        param user_id:
+        param store_name: the store's name
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.store_controller.open_store(user_id, store_name))
-        pass
+        response = Response(self.facade.open_store(user_id, store_name))
+        write_to_log(response, "successfully opned store")
+        return response
 
     def review_product(self, user_id: str, product_info, review: str):
         """
@@ -297,7 +308,7 @@ class Service:
         """
         pass
 
-    def contact_store(self, user_id: str, store_id: str, contact_info: Contact_info):
+    def contact_store(self, user_id: str, store_id: str, contact_info: ContactInfo):
         """
         Nitzan: put the responsibility in the store
         II.3.5
@@ -309,7 +320,7 @@ class Service:
         """
         pass
 
-    def complaint(self, user_id: str, comp: Contact_info):
+    def complaint(self, user_id: str, comp: ContactInfo):
         """
         Nitzan: put the responsibility in the market
         II.3.6
@@ -330,7 +341,7 @@ class Service:
         """
         pass
 
-    def get_personal_info(self, user_id: str) -> Personal_info:
+    def get_personal_info(self, user_id: str) -> PersonalInfo:
         """
         Nitzan: put the responsibility in the user
         II.3.8
@@ -340,7 +351,7 @@ class Service:
         """
         pass
 
-    def edit_personal_info(self, user_id: str, new_personal_info: Personal_info):
+    def edit_personal_info(self, user_id: str, new_personal_info: PersonalInfo):
         """
         Nitzan: put the responsibility in the user
         II.3.8
@@ -354,7 +365,6 @@ class Service:
     def upgrade_member_security(self, user_id: str):
         """
         II.3.9
-        TODO more arguments might be necessary + give a controller responsibility
         :param user_id:
         :return:
         """
@@ -372,9 +382,20 @@ class Service:
         :param quantity:
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.store_controller.add_products_to_inventory(user_id, store_id, product_id, quantity))
+        response = Response(self.facade.add_products_to_inventory(user_id,
+                                                                  store_id, product_id, quantity))
+        write_to_log(response, "successfully added products to inventory")
+        return response
+
+    # new function in version 2
+    def add_new_product_to_inventory(self, user_id: str, store_id: str,
+                                     product_name: str, product_description
+                                     , price: int, category: str):
+        response = Response(
+            self.facade.add_new_product_to_inventory(user_id, store_id, product_name, product_description, price,
+                                                     category))
+        write_to_log(response, "successfully added new product")
+        return response
 
     def remove_products_from_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
         """
@@ -386,14 +407,11 @@ class Service:
         :param quantity:
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.store_controller.remove_products_from_inventory(user_id, store_id, product_id, quantity))
-        pass
+        response = Response(self.facade.remove_products_from_inventory(user_id, store_id, product_id, quantity))
+        write_to_log(response, "successfully removed products from inventory")
+        return response
 
-    def edit_product_info(self, user_id: str, store_id: str, product_id: str, new_product_info):
-        # TODO: I've changed the ProductInfo into ProductPurchaseRequest, Asaf.
-        # todo: also, wtf is the point of editing this unused object? i think it should be editing product obj not info
+    def edit_product_info(self, user_id: str, store_id: str, product_id: str, new_product_info: ProductInfo):
         """
         II.4.1.3
 
@@ -404,15 +422,11 @@ class Service:
         :return:
 
         """
-        return Response(self.store_controller.edit_product_info(user_id, store_id, product_id,
-                                                                self.__service_product_info_to_domain(
-                                                                    new_product_info)))
-
-    def __service_product_info_to_domain(self, product_info):
-        """
-        converts service product info into domain product info
-        """
-        pass
+        response = Response(self.facade.edit_product_info(user_id, store_id, product_id, new_product_info.name,
+                                                          new_product_info.description, new_product_info.rating,
+                                                          new_product_info.price, new_product_info.category))
+        write_to_log(response, "successfully edited product info")
+        return response
 
     def edit_store_policy(self, user_id: str, store_id: str):
         """
@@ -455,21 +469,21 @@ class Service:
         :param new_owner_id:
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        if not self.user_controller.is_member(new_owner_id):
-            return Response(msg="New owner is not a member")
-        return Response(self.store_controller.add_store_owner(user_id, store_id, new_owner_id))
+        response = Response(self.facade.add_store_owner(user_id, store_id, new_owner_id))
+        write_to_log(response, "successfully added store owner")
+        return response
 
-    def remove_store_owner(self, user_id: str, store_id: str, owner_id: str):
+    def remove_store_owner(self, user_id: str, store_id: str, subject_username: str):
         """
-        II.4.5
+        II.4.5(
         :param user_id:
         :param store_id:
-        :param owner_id:
+        :param subject_username:
         :return:
         """
-        pass
+        response = Response(self.facade.remove_store_owner(user_id, store_id, subject_username))
+        write_to_log(response, "successfully removed store owner")
+        return response
 
     def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
         """
@@ -480,14 +494,11 @@ class Service:
         :param new_manager_id: should be the new manager's username
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        if not self.user_controller.is_member(new_manager_id):
-            return Response(msg="New owner is not a member")
-        return Response(self.store_controller.add_store_manager(user_id, store_id, new_manager_id))
-        pass
+        response = Response(self.facade.add_store_manager(user_id, store_id, new_manager_id))
+        write_to_log(response, "successfully added store manager")
+        return response
 
-    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Permission):
+    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Dict):
         """
         replaces the permissions of the manager with manager_id with the new permissions.
         II.4.7
@@ -497,13 +508,10 @@ class Service:
         :param new_permission:
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.store_controller.change_manager_permission(
-            user_id, store_id, manager_id, self.__service_permissions_to_domain(new_permission)))
-
-    def __service_permissions_to_domain(self, permissions):
-        pass
+        response = Response(self.store_controller.change_manager_permission(
+            user_id, store_id, manager_id, new_permission))
+        write_to_log(response, "successfully changed manager permissions")
+        return response
 
     def remove_store_manager(self, user_id: str, store_id: str, manager_id: str):
         """
@@ -523,10 +531,9 @@ class Service:
         :param store_id:
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.store_controller.close_store(user_id, store_id))
-        pass
+        response = Response(self.facade.close_store(user_id, store_id))
+        write_to_log(response, "successfully closed store")
+        return response
 
     def reopen_store(self, user_id: str, store_id: str):
         """
@@ -545,10 +552,9 @@ class Service:
         :param store_id:
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.store_controller.get_store_roles(user_id, store_id))
-        pass
+        response = Response(self.facade.get_store_roles(user_id, store_id))
+        write_to_log(response, "successfully got store roles")
+        return response
 
     def get_users_messages(self, user_id: str, store_id: str):
         """
@@ -559,8 +565,8 @@ class Service:
         """
         pass
 
-    def reply_users_messages(self, user_id: str, store_id: str, user_contact_info: Contact_info,
-                             owner_contact_info: Contact_info):
+    def reply_users_messages(self, user_id: str, store_id: str, user_contact_info: ContactInfo,
+                             owner_contact_info: ContactInfo):
         """
         II.4.12.2
         :param user_id:
@@ -579,10 +585,9 @@ class Service:
         :param store_id:
         :return:
         """
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.store_controller.get_store_purchase_history(user_id, store_id))
-        pass
+        response = Response(self.facade.get_store_purchase_history(user_id, store_id))
+        write_to_log(response, "successfully got store purchase history")
+        return response
 
     """ Nitzan: put responsibilities of the following methods in Market """
     """Admin Section"""
@@ -613,8 +618,8 @@ class Service:
         """
         pass
 
-    def reply_users_messages_by_admin(self, user_id: str, store_id: str, user_contact_info: Contact_info,
-                                      admin_contact_info: Contact_info):
+    def reply_users_messages_by_admin(self, user_id: str, store_id: str, user_contact_info: ContactInfo,
+                                      admin_contact_info: ContactInfo):
         """
         II.6.3.2
         :param user_id:
@@ -632,11 +637,9 @@ class Service:
         :param store_id:
         :return:
         """
-        # todo check if user_id is admin user
-        if not self.user_controller.is_logged_in(user_id):
-            return Response(msg="Not logged in")
-        return Response(self.market.get_stores_purchase_history_by_admin(user_id, store_id))
-        pass
+        response = Response(self.facade.get_stores_purchase_history_by_admin(user_id, store_id))
+        write_to_log(response, "successfully got store purchase history by admin")
+        return response
 
     def get_system_statistic_by_admin(self, user_id: str):
         """
@@ -645,3 +648,19 @@ class Service:
         :return:
         """
         pass
+
+    ##################################################################
+    # functions for frontend
+    ##############################################################
+    def get_users_stores(self, user_id: str):
+        """
+        returns all users stores (id and name)
+        """
+        response = Response(self.facade.get_users_stores(user_id))
+        write_to_log(response, "successfully got stores")
+        return response
+
+    def is_logged_in(self, user_id: str):
+        response = Response(self.facade.is_logged_in(user_id))
+        write_to_log(response, "successfully checked if logged in")
+        return response
