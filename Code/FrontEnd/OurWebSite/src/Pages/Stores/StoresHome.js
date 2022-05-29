@@ -6,7 +6,7 @@ import Product from "../Product/Product";
 
 
 const StoreHome = ({myId}) => {
-    console.log("????")
+    // TODO need to replace logic in store and place it in here (calling axios)
     return (
         <div>
             <Routes>

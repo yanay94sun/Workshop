@@ -28,8 +28,7 @@ function Store({ip}){
             description: description,
             price: price,
             category: category,
-            id: ip
-        
+            id: localStorage.getItem("user_id")
         }
         try{
         const response = await axios.post("http://127.0.0.1:8000/users/add_new_product_to_inventory",newP)

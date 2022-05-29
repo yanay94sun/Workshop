@@ -108,9 +108,9 @@ class StoreControllerTests(unittest.TestCase):
 
     def test_add_store_owner(self):
         self.sc.open_store(USER_ID, "The_Store")
-        new_user_id = '111'
+        new_user_id = 'newOwner'
         response = self.sc.add_store_owner(USER_ID, STORE_ID, new_user_id)
-        self.assertEqual(response.value, "Made User with id: 111 an owner")
+        self.assertEqual(response.value, "Made User with id: newOwner an owner")
         response = self.sc.add_store_owner(USER_ID, STORE_ID, USER_ID)
         # can not add store owner that is already store owner
         self.assertEqual(response.msg, "User is already an Owner of this store")
