@@ -1,6 +1,8 @@
 from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Domain.StoreOfficials.Permissions import Permissions, Actions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
 from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
@@ -108,6 +110,54 @@ class Store:
 
     def get_discount_policy(self):
         return self.__discount_policy
+
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(self,
+                                                                                                     remover_username,
+                                                                                                     subject_username):
+        if remover_username not in self.__officials:
+            raise Exception("isn't official")
+        if isinstance(self.__officials[remover_username], StoreManager):
+            raise Exception("isn't store owner or founder")
+        if subject_username not in self.__officials:
+            raise Exception("subject isn't official")
+        if self.__officials[subject_username].appointee.appointed != remover_username:
+            raise Exception("subject wasn't appointed by remover")
+        self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(
+            subject_username
+        )
+
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(self,
+                                                                                                                subject_username):
+        all_my_children = list(filter(lambda official:
+                                      official.appointee and
+                                      official.appointee.appointed == subject_username,
+                                      self.__officials.values()))
+        for child in all_my_children:
+            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(child.appointed)
+        self.__officials.pop(subject_username)
+
+    def remove_products_by_id(self, product_id, quantity):
+        if product_id in self.__products:
+            if self.__quantities[product_id] >= quantity:
+                self.__quantities[product_id] -= quantity
+
+    def has_quantity(self, product_id, quantity):
+        if product_id in self.__products:
+            return self.__quantities[product_id] >= quantity
+        raise BufferError("store does not exist")
+
+    def purchase_single_product(self, ppr: ProductPurchaseRequest):
+        if ppr.product_id not in self.__products:
+            raise Exception(f"product {ppr.product_id} doesnt appear in store {ppr.store_id}")
+        with self.__products[ppr.product_id]:
+            if self.has_quantity(ppr.product_id, ppr.quantity):
+                self.remove_products_by_id(ppr.product_id, ppr.quantity)
+            else:
+                raise Exception(f"quantity of {ppr.product_id} is not enough")
+
+    def revert_purchase_single_product(self, ppr):
+        with self.__products[ppr.product_id]:
+            self.__quantities[ppr.product_id] += ppr.quantity
 
     def get_purchase_policy(self):
         return self.__purchase_policy

@@ -1,13 +1,13 @@
 class Product:
-    def __init__(self, ID, name, description, price, category, store_ID):
+    def __init__(self, ID, store_ID):
         """
         """
         self.__ID = ID
-        self.__name = name
-        self.__description = description
+        self.__name = "default name"
+        self.__description = ""
         self.__rating = 0
-        self.__price = price
-        self.__category = category
+        self.__price = 0
+        self.__category = "default category"
         self.store_ID = store_ID
 
 
