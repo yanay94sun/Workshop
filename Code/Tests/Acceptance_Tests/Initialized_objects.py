@@ -11,7 +11,7 @@ lary = "Lary"
 default_product_name = "default name"
 credit_card = "1234123412341234"
 store_name = "my_store"
-product1_id = {"product1_id"}
+product1_id = "product1_id"
 product1_name = "product1"
 product2_id = "product2_id"
 today = datetime.date.today()
@@ -35,6 +35,9 @@ except ValueError:  # e.g 31.1 + 1 !- 32.1
 next_year = today.replace(year=today.year + 1)
 last_year = today.replace(year=today.year - 1)
 
+def get_new_product_args(p_name: str):
+    add_new_product_args["product_name"] = p_name
+    return add_new_product_args
 
 def good_payment(amount):
     return PaymentInfo(

@@ -224,14 +224,14 @@ class AcceptanceTests(unittest.TestCase):
         p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
         # add product to shopping cart - good
         response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
-        self.assertTrue(not is_error(response))
+        self.assertTrue(not is_error(response), response.msg)
 
         # add the same product but no more products in inventory FIXME
         # response = self.service.add_products_to_inventory(good_register_info2["username"], store_id, p1_id, 1)
         # self.assertTrue(is_error(response), "there are no any products in the inventory")
 
-        # bad add
-        response = self.service.add_product_to_shopping_cart(g_id, store_id, p2_id, 2)
+        # bad add - not enough products in inventory
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p2_id, 100)
         self.assertTrue(is_error(response))
 
         # check in the shopping cart
@@ -247,17 +247,17 @@ class AcceptanceTests(unittest.TestCase):
         """
         add 1 of p1 and 2 of p2
         """
-        r1 = self.service.add_new_product_to_inventory(store_opener, store_id, **add_new_product_args)
+        r1 = self.service.add_new_product_to_inventory(store_opener, store_id, **get_new_product_args("p1"))
         self.assertTrue(not is_error(r1))
-        r2 = self.service.add_new_product_to_inventory(store_opener, store_id, **add_new_product_args)
-        self.assertTrue(not is_error(r2))
+        r2 = self.service.add_new_product_to_inventory(store_opener, store_id, **get_new_product_args("p2"))
+        self.assertTrue(not is_error(r2), r2.msg)
         self.assertIsNotNone(r1.value)
         self.assertIsNotNone(r2.value)
         response = self.service.add_products_to_inventory(store_opener, store_id, r1.value, 1)
         self.assertTrue(not is_error(response), response.msg)
         response = self.service.add_products_to_inventory(store_opener, store_id, r2.value, 2)
         self.assertTrue(not is_error(response), response.msg)
-        return r1, r2
+        return r1.value, r2.value
 
     # def test_A3_get_shop_cart(self):
     #     """
@@ -271,9 +271,8 @@ class AcceptanceTests(unittest.TestCase):
 
         """
         g_id = self.enter_as_guest().value
-        self.login(good_register_info2)  # store opener
-        store_id = self.open_store(good_register_info2["username"], store_name)
-        store_opener = good_register_info2["username"]
+        store_opener = self.login(good_register_info2)  # store opener client id
+        store_id = self.open_store(store_opener, store_name)
         # add products to inventory
         p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
         # add product to shopping cart
@@ -295,9 +294,8 @@ class AcceptanceTests(unittest.TestCase):
         """
         g_id = self.enter_as_guest().value
         g_id2 = self.enter_as_guest().value
-        self.login(good_register_info2)  # store opener
-        store_id = self.open_store(good_register_info2["username"], store_name)
-        store_opener = good_register_info2["username"]
+        store_opener = self.login(good_register_info2)  # store opener client id
+        store_id = self.open_store(store_opener, store_name)
         # add products to inventory (1 of p1, 2 of p2)
         p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
         # add product to shopping cart for g_id1
