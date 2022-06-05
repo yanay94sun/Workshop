@@ -172,8 +172,7 @@ def get_stores_info():
 
 
 @app.post("/add_product_to_shopping_cart")
-def add_product_to_shopping_cart(
-        add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
+def add_product_to_shopping_cart(add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
     res = service.add_product_to_shopping_cart(
         add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
@@ -190,9 +189,25 @@ def get_shopping_cart(user_id: UserID):  #: Optional[str] = Cookie(None)):
     return res.value
 
 
-@app.get("/products/search")
-def get_store_info(product_search_filters: ProductSearchFilters):
+@app.post("/products/search")
+def search_product(product_search_filters: ProductSearchFilters):
     res = service.search_product(product_search_filters)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/product/{store_id}/{product_id}")
+def get_product_and_his_quantities(store_id: str, product_id: str):
+    res = service.get_product_and_quantities(store_id, product_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/users/{user_id}")
+def get_users_stores(user_id: str):
+    res = service.get_users_stores(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
@@ -231,7 +246,7 @@ Member's purchase actions
 
 
 @app.post("/users/logout")
-def logout(user_id:UserID):  #: Optional[str] = Cookie(None)):
+def logout(user_id: UserID):  #: Optional[str] = Cookie(None)):
     res = service.logout(user_id.id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
@@ -245,11 +260,12 @@ def open_store(store_name: Store_name):  # , user_id: Optional[str] = Cookie(Non
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
+
 @app.post("/users/add_new_product_to_inventory")
 def add_new_product_to_inventory(
         new_product: NewProduct):  # , user_id: Optional[str] = Cookie(None)):
     res = service.add_new_product_to_inventory(
-        new_product.id,new_product.store_id,new_product.name,new_product.description,new_product.price,
+        new_product.id, new_product.store_id, new_product.name, new_product.description, new_product.price,
         new_product.category
     )
     if res.error_occurred():
@@ -265,6 +281,14 @@ def add_products_to_inventory(
     )
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.get("/permission/{store_id}/{user_id}")
+def get_permissions(store_id: str, user_id: str):
+    res = service.get_permissions(store_id, user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 

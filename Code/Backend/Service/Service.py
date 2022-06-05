@@ -666,3 +666,15 @@ class Service:
         response = Response(self.facade.is_logged_in(user_id))
         write_to_log(response, "successfully checked if logged in")
         return response
+
+    def get_product_and_quantities(self, store_id, product_id):
+        response = Response(self.facade.get_product_and_quantities(store_id, product_id))
+        write_to_log(response, "successfully got product and quantities")
+        return response
+
+    def get_permissions(self, store_id, user_id):
+        response = Response(self.facade.get_permissions(store_id, user_id))
+        write_to_log(response, "successfully got permissions")
+        return response
+
+

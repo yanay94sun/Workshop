@@ -163,3 +163,9 @@ class Store:
 
     def get_purchase_policy(self):
         return self.__purchase_policy
+
+    def get_product_and_quantities(self, product_id):
+        if product_id in self.__products.keys():
+            return {"product": self.__products[product_id].__dict__, "quantity": self.__quantities[product_id]}
+        else:
+            raise ValueError("no object with this id on this store")

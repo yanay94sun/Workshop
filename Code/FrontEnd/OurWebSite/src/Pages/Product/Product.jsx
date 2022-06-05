@@ -1,39 +1,49 @@
 import axios from 'axios';
 import React from 'react';
 import { useState, useEffect } from 'react';
+import {useParams} from 'react-router-dom'
 import Counter from '../ShoppingCart/components/counter';
 
-function Product({Products}) {
-	const [name, setName] = useState('NIKE AIR JORDAN');
-	const [description, setDescription] = useState(
-		'the actual shoes Michel Jordan ware in his final game !'
-	);
-	const [rating, setRating] = useState(5);
-	const [fixprice, setFixPrice] = useState(200);
-	const [totalPrice, setTotalPrice] = useState(0);
-	const [catagory, setCatagory] = useState('Shoes');
-	const [storeId, setStoreId] = useState('');
-	const [productId, setProductId] = useState('');
+function Product({storesProducts}) {
+	const [name, setName] = useState('');
+	const [description, setDescription] = useState('');
+	const [rating, setRating] = useState(0);
+	const [fixprice, setFixPrice] = useState(0);
+	const [totalPrice, setTotalPrice] = useState(1);
+	const [catagory, setCatagory] = useState('');
 
 	const [count, setCount] = useState(0);
 
-	// example ------------------
-	// setName('FuckShit');
-	// setDescription(
-	// 	'this Website is suck ! and the products even worst ! and yanay gay'
-	// );
-	// setRating(-42);
-	// setFixPrice(555);
-	// setCatagory('gay stuff');
-	// setStoreId(1);
-	// setProductId(1);
-	// // example ------------------
+	const params = useParams()
+	const storeId = params.storeId
+	const productId = params.productId
+
+	const getProductInfo = async () =>{
+        try{
+			const response = await axios.get("http://127.0.0.1:8000/product/" + storeId + "/" + productId)
+			console.log(response)
+			console.log(response.data['product'])
+			setName(response.data['product']['_Product__name']);
+			setDescription(response.data['product']['_Product__description']);
+			setRating(response.data['product']['_Product__rating']);
+			setFixPrice(response.data['product']['_Product__price']);
+			setCatagory(response.data['product']['_Product__category']);
+        } catch (err){
+            console.log(err.response);
+        }
+    }
+		
+	useEffect(() => {   
+        getProductInfo()
+      }, []);
+
 	const handleAddToCart = async () => {
 		try {
 			const args = {
 				store_id: storeId,
 				product_id: productId,
 				quantity: count,
+				id: localStorage.getItem("user_id")
 			};
 			const response = await axios.post(
 				'http://127.0.0.1:8000/add_product_to_shopping_cart',
@@ -125,9 +135,6 @@ function Product({Products}) {
 				</p>
 			</div>
 		</div>
-		// <div>
-		// 	<h1>Product</h1>
-		// </div>
 	);
 }
 

@@ -15,7 +15,6 @@ import StoreHome from "../Stores/StoresHome";
 const Home = ({setLogin,isLogged,myId}) => {
 
     const [myStoreList,setMyStoreList] = useState([])   
-    const [products, setProducts] = useState([]) //{producdid: product} should get from database
 
     return (
         <div>
@@ -23,7 +22,7 @@ const Home = ({setLogin,isLogged,myId}) => {
             <Routes>
                 <Route path = '/' element = {<HomePage/>}/>
                 <Route path ='/MyStores' element= {<MyStores listItems={myStoreList} setListItems ={setMyStoreList} ip = {myId}/>}/>
-                <Route path ='/explore' element= {<Explore ip={myId} />}/>
+                <Route path ='/explore' element= {<Explore/>}/>
                 <Route path ='/shopping-cart' element= {<ShoppingCart/>}/>
                 <Route path ='/my-account/:userId' element= {<MyAccount/>}/>
                 <Route path="/stores/:storeId/*" element= {<StoreHome ip = {myId}/>}/>

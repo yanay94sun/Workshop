@@ -160,7 +160,16 @@ class Facade:
         :param quantity:
         :return:
         """
-        total_quantity = self.user_controller.get_shopping_cart(). \
+        # cart = self.user_controller.get_shopping_cart(user_id).value
+        # print(cart)
+        # print(cart.shopping_baskets)
+        # basket = cart.shopping_baskets[store_id]
+        # print(basket)
+        # list_of_prod = basket.get_products_and_quantities()
+        # print(list_of_prod)
+        # total_quantity = list_of_prod[product_id]
+        # print(total_quantity)
+        total_quantity = self.user_controller.get_shopping_cart(user_id). \
             value.shopping_baskets[store_id].get_products_and_quantities()[product_id]
         prod_pur_req_response = self.store_controller.create_product_purchase_request(store_id, product_id,
                                                                                       total_quantity + quantity)
@@ -235,7 +244,8 @@ class Facade:
             if not self.store_controller.valid_all_products_for_purchase(all_products):
                 return Response(msg="not enough quantities")
             # get prices
-            total_price = sum((self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
+            total_price = sum(
+                (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
             # remove products from inventories
             response = self.store_controller.remove_all_products_for_purchasing(all_products)
             if response.error_occurred():
@@ -693,19 +703,36 @@ class Facade:
         else:
             return Response(value=False)
 
+    def get_product_and_quantities(self, store_id, product_id):
+        return self.store_controller.get_product_and_quantities(store_id, product_id)
+
+    def get_permissions(self, store_id, user_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        if not self.user_controller.is_member(user_id):
+            permissions = {}
+            for i in range(0, 7):
+                permissions[i] = False
+            return Response(value=permissions)
+        member_id = self.user_controller.get_users_username(user_id)
+        return self.store_controller.get_permissions(store_id, member_id)
+
+
 
 # if __name__ == '__main__':
 #     fc = Facade()
 #     print(fc.enter_as_guest().msg)
 #     print(fc.register("1", {"username": "Tomer", "password": "123"}).value)
 #     print(fc.open_store("1", "theStore").msg)
+#     print(fc.get_permissions("1","1").value)
 #     print(fc.enter_as_guest().msg)
-#     # print(fc.login("2","Tomer","123").msg)
 #     print(fc.register("2", {"username": "Tal", "password": "123"}).msg)
-#     print(fc.open_store("2", "theStore2").msg)
-#     print(fc.add_new_product_to_inventory("1", "1", "apple", "", 2, "").msg)
-#     print(fc.add_store_manager("1", "1", "Tal").msg)
-#     print(fc.add_new_product_to_inventory("2", "1", "apple", "", 2, "").msg)
-#     print(fc.change_manager_permission("1", "1", "Tal", {1: True, 2: False,
-#                                                          3: False, 4: False, 5: False, 6: False, 7: False}).msg)
-#     print(fc.add_new_product_to_inventory("2", "1", "apple juice", "", 2, "").msg)
+#     # print(fc.open_store("2", "theStore2").msg)
+#     # print(fc.add_new_product_to_inventory("1", "1", "apple", "", 2, "").msg)
+#     print(fc.add_store_owner("1", "1", "Tal").msg)
+#     print(fc.get_permissions("1","2").value)
+
+    # print(fc.add_new_product_to_inventory("2", "1", "apple", "", 2, "").msg)
+    # print(fc.change_manager_permission("1", "1", "Tal", {1: True, 2: False,
+    #                                                      3: False, 4: False, 5: False, 6: False, 7: False}).msg)
+    # print(fc.add_new_product_to_inventory("2", "1", "apple juice", "", 2, "").msg)

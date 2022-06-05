@@ -35,16 +35,8 @@ class Register extends React.Component{
             
         } catch (err){
             console.log(err.response);
-            //this.handleSubmit()
-        }
-        // console.log(response.data)
-        
+        }        
     }
-
-    // handleClick = ()=>{
-    //     const navigate = useNavigate();
-    //     navigate('/')
-    // }
     render(){
         if(!this.props.logged)
         return (
@@ -53,7 +45,6 @@ class Register extends React.Component{
             <div>
                 <form onSubmit = {this.handleSubmit}>
                     <p style={{textAlign: "center"}}>Enter your email and password</p>
-                    {/* <input type = 'text' name = 'fullName' placeholder="fullName..." required onChange = {this.handleChange}/> */}
                     <input type = 'text' name = 'userName' placeholder="username..." required onChange = {this.handleChange}/>
                     <input type = 'password' name ='pwd' placeholder="password..." required onChange = {this.handleChange}/>
                     <button className="buttonS" style={{backgroundColor:'rgb(161, 28, 28)'}} onSubmit = {this.handleSubmit}>Register</button>
