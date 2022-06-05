@@ -13,6 +13,7 @@ class UserController:
         """
         self.__users: Dict[str, Visitor] = {}  # ip or other user identifier: user todo
         self.__members: Dict[str, MemberState] = {}  # username: member
+        self.__online_members = set()
         self.__id_counter = 0
 
     def init(self):

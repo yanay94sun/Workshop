@@ -38,7 +38,7 @@ class Visitor:
         """
         if self.is_logged_in():
             return Response.from_error("the user is already a member")
-        self.__status = MemberState(self.__status.get_shopping_cart(), member_info)
+        # self.__status = MemberState(self.__status.get_shopping_cart(), member_info)
         return Response(value=self.__status)
 
     def add_product_to_shopping_cart(self, product_info):
