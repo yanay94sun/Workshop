@@ -44,21 +44,23 @@ class DiscountPolicy:
                 lst.append(discount)
         return lst
 
-    def add_visible_discount(self, list_of_products_ids, discount_price, end_date, by_category, by_store):
+    def add_visible_discount(self, discount_price, end_date, discount_on, Type):
         if discount_price >= 1:
             raise ValueError("cant get discount over 100%")
         self.id_counter += 1
-        discount = VisibleDiscount(discount_price, end_date, list_of_products_ids, by_category, by_store)
+        discount = VisibleDiscount(discount_price, end_date, discount_on, Type)
         discount.set_id(self.id_counter)
         self.__discounts[self.id_counter] = discount
         return discount
 
-    def add_conditional_discount(self, list_of_products_ids, discount_price, end_date, by_category, by_store, dic_of_products_and_quantity,
+    def add_conditional_discount(self, discount_price, end_date, discount_on,
+                                 Type, dic_of_products_and_quantity,
                                  min_price_for_discount):
         if discount_price >= 1:
             raise ValueError("cant get discount over 100%")
         self.id_counter += 1
-        discount = ConditionalDiscount(discount_price, end_date, list_of_products_ids, by_category, by_store,
+        discount = ConditionalDiscount(discount_price, end_date, discount_on,
+                                       Type,
                                        dic_of_products_and_quantity,
                                        min_price_for_discount)
         discount.set_id(self.id_counter)

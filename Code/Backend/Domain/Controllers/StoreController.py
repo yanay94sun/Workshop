@@ -32,7 +32,7 @@ class StoreController:
             if products is None:
                 res["products"] = []
             else:
-                res["products"] = list(map(lambda x: x.get_ID(), products))
+                res["products"] = list(map(lambda x: x.__dict__, products))
             return Response(value=res)
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -71,8 +71,8 @@ class StoreController:
                 elif by_name:
                     if text in product.get_name():
                         res.append(product)
-        if filter_type is not None:
-            if filter_value is None:
+        if filter_type:
+            if filter_value:
                 res = search_filter(res, filter_type)
             else:
                 res = search_filter(res, filter_type, filter_value)
@@ -301,36 +301,105 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_visible_discount(self, store_id, list_of_products_ids,
-                             discount_price, end_date, by_category="", by_store=False):
+    def add_visible_discount_by_product(self, store_id,
+                                        discount_price, end_date, product_id):
         """
-          list_of_products_ids contains id of products that get this discount
-          if by category is not empty, the discount will be on all products with this category
-          if by store is True all products will get the discount
         """
         try:
             store = self.__get_store(store_id)
-            discount = store.get_discount_policy().add_visible_discount(list_of_products_ids,
-                                                                        discount_price, end_date, by_category, by_store)
+            discount = store.get_discount_policy(). \
+                add_visible_discount(discount_price, end_date, product_id, 1)
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_conditional_discount(self, store_id, list_of_products_ids, discount_price, end_date,
-                                 dic_of_products_and_quantity, min_price_for_discount=0, by_category="",
-                                 by_store=False):
+    def add_visible_discount_by_category(self, store_id,
+                                         discount_price, end_date, category_name):
         """
-               add to list_of_products_ids if the discount is on specific products "
-               add to by_category if the discount is on products by category"
-              add to by_store if the discount is on all products"
-
-               add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
-               add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
-               """
+        """
         try:
             store = self.__get_store(store_id)
-            discount = store.get_discount_policy().add_conditional_discount(list_of_products_ids, discount_price,
-                                                                            end_date, by_category, by_store,
+            discount = store.get_discount_policy(). \
+                add_visible_discount(discount_price, end_date, category_name, 2)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_visible_discount_by_store(self, store_id,
+                                      discount_price, end_date):
+        """
+        """
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy(). \
+                add_visible_discount(discount_price, end_date, "", 3)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    # def add_conditional_discount(self, store_id, list_of_products_ids, discount_price, end_date,
+    #                              dic_of_products_and_quantity, min_price_for_discount=0, by_category="",
+    #                              by_store=False):
+    #     """
+    #            add to list_of_products_ids if the discount is on specific products "
+    #            add to by_category if the discount is on products by category"
+    #           add to by_store if the discount is on all products"
+    #
+    #            add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
+    #            add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+    #            """
+    #     try:
+    #         store = self.__get_store(store_id)
+    #         discount = store.get_discount_policy().add_conditional_discount(list_of_products_ids, discount_price,
+    #                                                                         end_date, by_category, by_store,
+    #                                                                         dic_of_products_and_quantity,
+    #                                                                         min_price_for_discount)
+    #         return Response(value=discount)
+    #     except ValueError as e:
+    #         return Response(msg=e.args[0])
+
+    def add_conditional_discount_by_product(self, store_id, discount_price, end_date, product_id,
+                                            dic_of_products_and_quantity, min_price_for_discount=0):
+        """
+       add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
+       add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+        """
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_conditional_discount(discount_price,
+                                                                            end_date, product_id, 1,
+                                                                            dic_of_products_and_quantity,
+                                                                            min_price_for_discount)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_conditional_discount_by_category(self, store_id, discount_price, end_date, category_name,
+                                             dic_of_products_and_quantity, min_price_for_discount=0):
+        """
+       add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
+       add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+        """
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_conditional_discount(discount_price,
+                                                                            end_date, category_name, 2,
+                                                                            dic_of_products_and_quantity,
+                                                                            min_price_for_discount)
+            return Response(value=discount)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def add_conditional_discount_by_store(self, store_id, discount_price, end_date,
+                                          dic_of_products_and_quantity, min_price_for_discount=0):
+        """
+       add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
+       add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+        """
+        try:
+            store = self.__get_store(store_id)
+            discount = store.get_discount_policy().add_conditional_discount(discount_price,
+                                                                            end_date, "", 3,
                                                                             dic_of_products_and_quantity,
                                                                             min_price_for_discount)
             return Response(value=discount)
@@ -363,6 +432,7 @@ class StoreController:
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
+
     def add_sum_discount(self, store_id, first_discount_id, second_discount_id):
         try:
             store = self.__get_store(store_id)
@@ -413,6 +483,7 @@ class StoreController:
             return Response(value=purchase_rule)
         except ValueError as e:
             return Response(msg=e.args[0])
+
 
     def add_and_purchase_rule(self, store_id, first_rule_id, second_rule_id):
         try:
@@ -479,3 +550,30 @@ class StoreController:
 
     def valid_all_products_for_purchase(self, all_products: List[ProductPurchaseRequest]):
         return all(map(lambda p: self.stores[p.store_id].has_quantity(p.product_id, p.quantity), all_products))
+
+    def get_product_and_quantities(self,store_id,product_id):
+        try:
+            store = self.__get_store(store_id)
+            return Response(value=store.get_product_and_quantities(product_id))
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def get_permissions(self, store_id, user_id):
+        try:
+            store = self.__get_store(store_id)
+            officials = store.get_officials()
+            permissions = {}
+            for key, value in officials.items():
+                if key == user_id:
+                    permissions[1] = value.check_permission(Actions.INVENTORY_ACTION)
+                    permissions[2] = value.check_permission(Actions.ADD_STORE_OWNER)
+                    permissions[3] = value.check_permission(Actions.ADD_STORE_MANAGER)
+                    permissions[4] = value.check_permission(Actions.CHANGE_MANAGER_PERMISSION)
+                    permissions[5] = value.check_permission(Actions.CLOSE_STORE)
+                    permissions[6] = value.check_permission(Actions.GET_STORE_ROLES)
+                    permissions[7] = value.check_permission(Actions.GET_STORE_PURCHASE_HISTORY)
+                    break
+            return Response(value=permissions)
+
+        except ValueError as e:
+            return Response(msg=e.args[0])

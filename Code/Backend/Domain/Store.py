@@ -63,6 +63,8 @@ class Store:
         self.__quantities[product_id] += quantity
 
     def add_new_product(self, name, description, price, category):
+        if name in map(lambda x: x.get_name(),list(self.__products.values())):
+            raise ValueError("product name already exist")
         self.__id_counter += 1
         ID = str(self.__id_counter)
         self.__products[ID] = Product(ID, name, description, price, category, self.__store_info.ID)
@@ -161,3 +163,9 @@ class Store:
 
     def get_purchase_policy(self):
         return self.__purchase_policy
+
+    def get_product_and_quantities(self, product_id):
+        if product_id in self.__products.keys():
+            return {"product": self.__products[product_id].__dict__, "quantity": self.__quantities[product_id]}
+        else:
+            raise ValueError("no object with this id on this store")

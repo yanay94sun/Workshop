@@ -20,12 +20,11 @@ class Register extends React.Component{
         this.setState({[name]:value})
     }
     handleSubmit = async (e) =>{
-        //this.props.navigate('/')
         e.preventDefault()
         const signUp = {
             username: this.state.userName,
-            // email: this.state.email,
-            password: this.state.pwd
+            password: this.state.pwd,
+            id: this.props.myId
         }
         try{
         const response = await axios.post("http://127.0.0.1:8000/guests/register",signUp)
@@ -36,28 +35,19 @@ class Register extends React.Component{
             
         } catch (err){
             console.log(err.response);
-            //this.handleSubmit()
-        }
-        // console.log(response.data)
-        
+        }        
     }
-
-    // handleClick = ()=>{
-    //     const navigate = useNavigate();
-    //     navigate('/')
-    // }
     render(){
         if(!this.props.logged)
         return (
             <div className="div-register">
-                    <button type="button" className="button-header" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
+                    <button type="button" className="buttonS" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
             <div>
                 <form onSubmit = {this.handleSubmit}>
                     <p style={{textAlign: "center"}}>Enter your email and password</p>
-                    {/* <input type = 'text' name = 'fullName' placeholder="fullName..." required onChange = {this.handleChange}/> */}
                     <input type = 'text' name = 'userName' placeholder="username..." required onChange = {this.handleChange}/>
                     <input type = 'password' name ='pwd' placeholder="password..." required onChange = {this.handleChange}/>
-                    <button style={{backgroundColor:'rgb(161, 28, 28)'}} onSubmit = {this.handleSubmit}>Register</button>
+                    <button className="buttonS" style={{backgroundColor:'rgb(161, 28, 28)'}} onSubmit = {this.handleSubmit}>Register</button>
                 </form>
             </div>
         </div>
