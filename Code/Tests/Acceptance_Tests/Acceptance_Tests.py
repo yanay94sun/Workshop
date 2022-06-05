@@ -75,8 +75,9 @@ class AcceptanceTests(unittest.TestCase):
 
     def login(self, register_info):
         g_id = self.register(register_info)
-        # response = self.service.login(g_id, register_info["username"], register_info["password"])
-        # self.assertTrue(not is_error(response), "Should not be an error when login once with correct info")
+        response = self.service.login(g_id, register_info["username"], register_info["password"])
+        self.assertTrue(not is_error(response), "Should not be an error when login once with correct info")
+        return g_id
 
     def test_4_login(self):
         """
@@ -91,8 +92,8 @@ class AcceptanceTests(unittest.TestCase):
         response = self.service.login(g_id, username, wrong_password)
         self.assertTrue(is_error(response))
         # good login
-        # response = self.service.login(g_id, username, password)
-        # self.assertTrue(not is_error(response))
+        response = self.service.login(g_id, username, password)
+        self.assertTrue(not is_error(response))
 
         # already logged in
         response = self.service.login(g_id, username, password)
@@ -103,18 +104,18 @@ class AcceptanceTests(unittest.TestCase):
         II.3.2
 
         """
-        self.login(good_register_info)
+        g_id = self.login(good_register_info)
         # global store_id
         # check first there are no open stores yet
         response = self.service.get_stores_info()
         self.assertTrue(is_error(response))  # error if no stores
         # open the store
-        response = self.service.open_store(good_register_info["username"], store_name)
-        self.assertTrue(not is_error(response))
+        response = self.service.open_store(g_id, store_name)
+        self.assertTrue(not is_error(response), response.msg)
         self.assertIsNotNone(response.value, "Should return store's id")
         store_id = response.value
         # check if it is impossible to open an already opened store
-        response = self.service.open_store(good_register_info["username"], store_name)
+        response = self.service.open_store(g_id, store_name)
         self.assertTrue(is_error(response), "store already exists")
 
     def open_store(self, username, stores_name):
@@ -122,7 +123,7 @@ class AcceptanceTests(unittest.TestCase):
         Assumption: username already logged in
         """
         response = self.service.open_store(username, stores_name)
-        self.assertTrue(not is_error(response))
+        self.assertTrue(not is_error(response), response.msg)
         self.assertIsNotNone(response.value, "Should return store's id")
         return response.value
 
@@ -131,18 +132,19 @@ class AcceptanceTests(unittest.TestCase):
         II.4.1.1
 
         """
-        self.login(good_register_info)
+        g_id = self.login(good_register_info)
         username = good_register_info["username"]
         # open a store
-        store_id = self.open_store(username, store_name)
+        store_id = self.open_store(g_id, store_name)
         # assert the store is empty first
         self.__check_products_of_store(store_id, expected_products=[])
         # add a product
-        response = self.service.add_new_product_to_inventory(username, store_id, **add_new_product_args)
+        response = self.service.add_new_product_to_inventory(g_id, store_id, **add_new_product_args)
         self.assertTrue(not is_error(response), f"{response.msg}")
         self.assertIsNotNone(response.value)
-        response = self.service.add_products_to_inventory(username, store_id, response.value, 1)
-        self.__check_products_of_store(store_id, expected_products=[default_product_name])
+        p_id = response.value
+        response = self.service.add_products_to_inventory(g_id, store_id, p_id, 1)
+        self.__check_products_of_store(store_id, expected_products=[p_id])
 
     def __check_products_of_store(self, store_id, expected_products):
         response = self.service.get_store_info(store_id)
@@ -152,7 +154,11 @@ class AcceptanceTests(unittest.TestCase):
         # self.assertTrue(store_info["founder_id"] == guest_id)
         self.assertTrue(store_info["store_name"] == store_name)
         self.assertTrue(store_info["ID"] == store_id)
-        self.assertEqual(expected_products, store_info["products"])
+        if len(store_info["products"]) > 0:
+            products_in = [p_dict["_Product__ID"] for p_dict in store_info["products"]]
+            for product in expected_products:
+                self.assertTrue(product in products_in, f"expected product {product} not in products")
+        self.assertTrue(len(expected_products) == len(store_info["products"]))
 
     # def test_7_edit_product_info(self):
     #     """
@@ -209,8 +215,7 @@ class AcceptanceTests(unittest.TestCase):
 
         """
         g_id = self.enter_as_guest().value
-        self.login(good_register_info2)  # store opener
-        store_opener = good_register_info2["username"]
+        store_opener = self.login(good_register_info2)  # store opener
         store_id = self.open_store(store_opener, store_name)
         # add product that does'nt exist to shopping cart
         response = self.service.add_product_to_shopping_cart(g_id, store_id, product1_id, 1)

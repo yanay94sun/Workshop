@@ -68,7 +68,7 @@ class UserController:
         if res.error_occurred():
             return res
 
-        return self.__users[user_id].get_username()
+        return Response(self.__users[user_id].get_username())
 
     def add_product_to_shop_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:
