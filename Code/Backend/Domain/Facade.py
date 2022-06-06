@@ -223,8 +223,10 @@ class Facade:
             if not self.store_controller.valid_all_products_for_purchase(all_products):
                 return Response(msg="not enough quantities")
             # get prices
-            total_price = sum(
-                (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
+            prices = (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items())
+            if any((price.error_occurred() for price in prices)):
+                return Response.from_error("some error occurred while calculating a basket's price")
+            total_price = sum((price.value for price in prices))
             return Response(total_price)
 
     def purchase_shopping_cart(self, user_id: str, payment_info: DomainPaymentInfo):
@@ -253,8 +255,11 @@ class Facade:
             if not self.store_controller.valid_all_products_for_purchase(all_products):
                 return Response(msg="not enough quantities")
             # get prices
-            total_price = sum(
-                (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items()))
+            prices = (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in
+                      all_baskets.items())
+            if any((price.error_occurred() for price in prices)):
+                return Response.from_error("some error occurred while calculating a basket's price")
+            total_price = sum((price.value for price in prices))
             # remove products from inventories
             response = self.store_controller.remove_all_products_for_purchasing(all_products)
             if response.error_occurred():
