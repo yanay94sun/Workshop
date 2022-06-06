@@ -287,8 +287,10 @@ class Facade:
         """
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
-        member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.open_store(member_id, store_name)
+        response_member_id = self.user_controller.get_users_username(user_id)
+        if response_member_id.error_occurred():
+            return response_member_id
+        return self.store_controller.open_store(response_member_id.value, store_name)
 
     def review_product(self, user_id: str, product_info, review: str):
         """
@@ -400,7 +402,9 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.add_products_to_inventory(member_id, store_id, product_id, quantity)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_products_to_inventory(member_id.value, store_id, product_id, quantity)
 
     # new function in version 2
     def add_new_product_to_inventory(self, user_id: str, store_id: str,
@@ -409,7 +413,9 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.add_new_product_to_inventory(member_id,
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_new_product_to_inventory(member_id.value,
                                                                   store_id,
                                                                   product_name,
                                                                   product_description,
@@ -428,7 +434,9 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.remove_products_from_inventory(member_id, store_id, product_id, quantity)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.remove_products_from_inventory(member_id.value, store_id, product_id, quantity)
 
     def edit_product_info(self, user_id: str, store_id: str, product_id: str, name, description, rating
                           , price, category):
@@ -449,7 +457,9 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.edit_product_info(member_id, store_id, product_id, name, description, rating,
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.edit_product_info(member_id.value, store_id, product_id, name, description, rating,
                                                        price, category)
 
     def edit_store_policy(self, user_id: str, store_id: str):
@@ -497,7 +507,9 @@ class Facade:
         if not self.user_controller.is_member(new_owner_id):
             return Response(msg="New owner is not a member")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.add_store_owner(member_id, store_id, new_owner_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_store_owner(member_id.value, store_id, new_owner_id)
 
     def remove_store_owner(self, user_id: str, store_id: str, subject_username: str):
         """
@@ -528,7 +540,9 @@ class Facade:
         if not self.user_controller.is_member(new_manager_id):
             return Response(msg="New owner is not a member")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.add_store_manager(member_id, store_id, new_manager_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_store_manager(member_id.value, store_id, new_manager_id)
 
     def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission):
         """
@@ -543,8 +557,10 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
         return self.store_controller.change_manager_permission(
-            member_id, store_id, manager_id, new_permission)
+            member_id.value, store_id, manager_id, new_permission)
 
     def remove_store_manager(self, user_id: str, store_id: str, manager_id: str):
         """
@@ -589,7 +605,9 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.get_store_roles(member_id, store_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.get_store_roles(member_id.value, store_id)
         pass
 
     def get_users_messages(self, user_id: str, store_id: str):
@@ -624,7 +642,9 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.get_store_purchase_history(member_id, store_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.get_store_purchase_history(member_id.value, store_id)
         pass
 
     """ Nitzan: put responsibilities of the following methods in Market """
@@ -680,7 +700,9 @@ class Facade:
         if not self.market.check_if_admin(user_id):
             return Response(msg="Not admin")
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.get_store_purchase_history(member_id, store_id, is_admin=True)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.get_store_purchase_history(member_id.value, store_id, is_admin=True)
 
     def get_system_statistic_by_admin(self, user_id: str):
         """
@@ -694,7 +716,9 @@ class Facade:
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
-        res = self.store_controller.get_officials_stores(member_id)
+        if member_id.error_occurred():
+            return member_id
+        res = self.store_controller.get_officials_stores(member_id.value)
         return Response(value=res)
 
     def is_logged_in(self, user_id: str):
@@ -715,7 +739,9 @@ class Facade:
                 permissions[i] = False
             return Response(value=permissions)
         member_id = self.user_controller.get_users_username(user_id)
-        return self.store_controller.get_permissions(store_id, member_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.get_permissions(store_id, member_id.value)
 
 
 

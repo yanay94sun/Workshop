@@ -13,6 +13,8 @@ class UserController:
         """
         self.__users: Dict[str, Visitor] = {}  # ip or other user identifier: user todo
         self.__members: Dict[str, MemberState] = {}  # username: member
+        self.__online_members = set()  # we can use as dictionary with timestamp to set online validity
+                                       # and clear it from time to time
         self.__id_counter = 0
 
     def init(self):
@@ -37,10 +39,10 @@ class UserController:
         key = member_info["username"]
         if key in self.__members:
             return Response.from_error("username already exists")
-        new_status = self.__users[user_id].register(member_info)
-        if new_status.error_occurred():
-            return new_status
-        self.__members[key] = new_status.value
+        new_member = self.__users[user_id].register(member_info)
+        if new_member.error_occurred():
+            return new_member
+        self.__members[key] = new_member.value
         return Response()
 
     def login(self, user_id: str, username: str, password: str):
@@ -48,7 +50,10 @@ class UserController:
             return Response(msg="username doesn't exist")
         if user_id not in self.__users:
             return Response(msg="guest id doesn't exist")
-        return self.__users[user_id].login(self.__members[username], password)
+        res = self.__users[user_id].login(self.__members[username], password)
+        if not res.error_occurred():
+            self.__online_members.add(res.value)
+        return res
 
     def is_logged_in(self, user_id: str):
         if user_id not in self.__users:
@@ -63,7 +68,7 @@ class UserController:
         if res.error_occurred():
             return res
 
-        return self.__users[user_id].get_username()
+        return Response(self.__users[user_id].get_username())
 
     def add_product_to_shop_cart(self, user_id: str, ppr: ProductPurchaseRequest):
         if user_id not in self.__users:
@@ -83,7 +88,10 @@ class UserController:
     def logout(self, user_id: str):
         if user_id not in self.__users:
             return Response.from_error("user doesn't exist")
-        return self.__users[user_id].logout()
+        res = self.__users[user_id].logout()
+        if not res.error_occurred():
+            self.__online_members.remove(res.value)
+        return res
 
     def review_product(self, user_id: str, product_info, review: str):
         pass  # todo
@@ -99,3 +107,18 @@ class UserController:
 
     def edit_personal_info(self, user_id: str, new_personal_info):
         pass  # todo
+
+    def is_online(self, username):
+        if username not in self.__members:
+            return Response.from_error(f"member {username} does not exist in the context for some reason")
+        return self.__members[username] in self.__online_members
+
+    def add_message_to_member(self, username, message):
+        if username not in self.__members:
+            return Response.from_error(f"member {username} does not exist in the context for some reason")
+        self.__members[username].add_message(message)
+        return Response()
+
+    def pull_user_msgs(self, uid):
+        username = self.__users[uid].get_username()
+        return self.__members[username].pull_msgs()
