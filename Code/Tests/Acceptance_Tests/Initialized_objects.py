@@ -9,9 +9,9 @@ customer_id_nitzan = "205952971"
 nitzan = "Nitzan"
 lary = "Lary"
 default_product_name = "default name"
-credit_card = "1234123412341234"
+credit_card = "4580123456789123"
 store_name = "my_store"
-product1_id = {"product1_id"}
+product1_id = "product1_id"
 product1_name = "product1"
 product2_id = "product2_id"
 today = datetime.date.today()
@@ -36,13 +36,18 @@ next_year = today.replace(year=today.year + 1)
 last_year = today.replace(year=today.year - 1)
 
 
+def get_new_product_args(p_name: str):
+    add_new_product_args["product_name"] = p_name
+    return add_new_product_args
+
+
 def good_payment(amount):
     return PaymentInfo(
         **{
             "customer_id": customer_id_nitzan,
             "customer_name": nitzan,
             "credit_card": credit_card,
-            "cvv": 123,
+            "cvv": '123',
             "amount_to_pay": amount
         }
     )
