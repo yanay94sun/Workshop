@@ -128,7 +128,7 @@ def exit_site(user_id: UserID):  # Optional[str] = Cookie(None)):
 def login(
         user_info: User_info):  # ,        user_id: Optional[str] = Cookie(None),):
     hashed_password = hash_pass(user_info.password)
-    res = service.login(user_info.id, user_info.username, hashed_password)  # user_info.password)
+    res = service.login(user_info.id, user_info.username, user_info.password)  # user_info.password)
     print(user_info.id)
     print("PASS: " + hashed_password)
     if res.error_occurred():
@@ -147,8 +147,8 @@ def login(
 def register(user_info: User_info):  # , user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
     print(user_info)
-    hash_password = hash_pass(user_info.password)
-    user_info.password = hash_password
+    # hash_password = hash_pass(user_info.password)
+    # user_info.password = hash_password
     user_info_dict = user_info.dict()
     res = service.register(user_info.id, user_info_dict)
     if res.error_occurred():

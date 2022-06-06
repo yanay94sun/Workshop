@@ -28,9 +28,9 @@ class Register extends React.Component{
         }
         try{
         const response = await axios.post("http://127.0.0.1:8000/guests/register",signUp)
-        //this.setState({register:true})
-        this.props.handleLog(true);
-        localStorage.setItem("logged","true")
+        this.setState({register:true})
+        //this.props.handleLog(true);
+        //localStorage.setItem("logged","true")
         console.log(response)
             
         } catch (err){
@@ -38,7 +38,7 @@ class Register extends React.Component{
         }        
     }
     render(){
-        if(!this.props.logged)
+        if(!this.state.register)
         return (
             <div className="div-register">
                     <button type="button" className="buttonS" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
@@ -56,7 +56,7 @@ class Register extends React.Component{
             return(
                 <div className="div-register">
                     <h1 style={{textAlign:"center"}}>Registration complete :)</h1>
-                    <p style={{textAlign:"center"}}>Login <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/home')}>Here</span></p>
+                    <p style={{textAlign:"center"}}>sign in <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/')}>Here</span></p>
                 </div>
                 )
         }
