@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import './Store.css'
 
 
+
 function Store({storesProducts, setStoresProducts}){
     const [storeName, setStoreName] = useState('');
     const [storeRank, setRank] = useState('');
@@ -15,13 +16,19 @@ function Store({storesProducts, setStoresProducts}){
     const [description, setDecription]  = useState('')
     const [price, setPrice] = useState(0)
     const [category, setCategory] = useState('')
+    const [chosenProductiD, setChosenProduct]  = useState('1')
+    const [amount, setAmount]  = useState(0)
+    const [officalsName, setOfficalsName] = useState('')
+
     const params = useParams()
     const [options,setOptions] = useState([])
     const storeId = params.storeId
     const [permissions, setPermissions] = useState({})
+    const [errMsg, setErrMsg] = useState("")
     const Navigate = useNavigate() 
 
-    const addProduct = async (e) =>{
+    const addNewProduct = async (e) =>{
+        e.preventDefault()
         const newP = {
             store_id: storeId,
             name: productName,
@@ -33,10 +40,93 @@ function Store({storesProducts, setStoresProducts}){
         try{
         const response = await axios.post("http://127.0.0.1:8000/users/add_new_product_to_inventory",newP)
         console.log(response)
+        window.location.reload(false);
         } catch (err){
             console.log(err.response);
+            setErrMsg(err.response.data['detail'])
         }
     }
+
+    const addProductToInvetory = async (e) =>{
+        e.preventDefault()
+        const prod = {
+            store_id: storeId,
+            product_id: chosenProductiD,
+            quantity: amount , 
+            id: localStorage.getItem("user_id")
+        }
+        try{
+            const response = await axios.post("http://127.0.0.1:8000/users/add_products_to_inventory",prod)
+            console.log(response)
+            window.location.reload(false);
+       }catch (err){
+            console.log(err.response);
+            setErrMsg(err.response.data['detail'])
+    }
+    }
+
+    const removeProductFromInvetory = async (e) =>{
+        e.preventDefault()
+        const prod = {
+            store_id: storeId,
+            product_id: chosenProductiD,
+            quantity: amount , 
+            id: localStorage.getItem("user_id")
+        }
+        try{
+            const response = await axios.delete("http://127.0.0.1:8000/users/remove_products_from_inventory/"
+            +storeId+"/"+chosenProductiD+'/'+amount+'/'+localStorage.getItem("user_id"))
+            console.log(response)
+            window.location.reload(false);
+       }catch (err){
+            console.log(err.response);
+            setErrMsg(err.response.data['detail'])
+    }
+    }
+
+    const editProduct = async (e) =>{
+        e.preventDefault()
+        const prod = {
+            store_id: storeId,
+            product_id: chosenProductiD,
+            quantity: amount , 
+            id: localStorage.getItem("user_id")
+        }
+        const info = {
+            name: productName,
+            description: description,
+            rating: 0,
+            price: price,
+            category: category 
+        }
+        try{
+            const response = await axios.post("http://127.0.0.1:8000/users/edit_product_info",prod,info)
+            console.log(response)
+            window.location.reload(false);
+       }catch (err){
+            console.log(err.response);
+            setErrMsg(err.response.data['detail'])
+    }
+    }
+
+    const addStoreOwner = async (e) =>{
+        e.preventDefault()
+        const info = {
+            user_id: localStorage.getItem("user_id"),
+            store_id: storeId,
+            new_owner_name: officalsName 
+        }
+        console.log(info)
+        try{
+            const response = await axios.post("http://127.0.0.1:8000/users/add_store_owner" ,info)
+            console.log(response)
+            //window.location.reload(false);
+       }catch (err){
+            console.log(err.response);
+            setErrMsg(err.response.data['detail'])
+    }
+    }
+
 
     const getStoreInfo = async () =>{
         try{
@@ -66,10 +156,16 @@ function Store({storesProducts, setStoresProducts}){
     const hasPermition = (per) =>{
         return permissions[per];
     }
+
+    const reset = () =>{
+        setErrMsg("")
+        setChosenProduct("1")
+        setAmount("0")
+    }
+
     useEffect(() => {   
         getStoreInfo()
       }, []);
-
 
 return(
     <div>
@@ -88,90 +184,96 @@ return(
         </div>
         <div className='split right'>
             <h2>Actions:</h2>
-                {hasPermition(1) ? <li> <Popup  trigger={<button style={{margin:'5px'}}> Add new product</button>} position="right center">
+            {/* 1 */}
+                {hasPermition(1) ? <li> <Popup  onClose={reset} trigger={<button style={{margin:'5px'}}> Add new product</button>} position="right center">
                     <div>
                         please fill the information below:
-                        <form  onSubmit = {addProduct}>
+                        <form  onSubmit = {addNewProduct}>
+                             {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
                             <input type = 'text' name = 'name' placeholder="product name..." required onChange={(e)=> setProductName(e.target.value)}/>
                             <textarea style={{resize:'none'}} type = 'text' name = 'description' placeholder="description..."  onChange={(e)=> setDecription(e.target.value)}/>
                             <input type = 'number' name = 'price' placeholder="price..." required onChange={(e)=> setPrice(e.target.value)}/>
                             <input type = 'text' name = 'category' placeholder="category..." required onChange={(e)=> setCategory(e.target.value)}/>
-                            <button style={{marginLeft: '40%'}}  onSubmit = {addProduct}>add</button>
+                            <button style={{marginLeft: '40%'}}  onSubmit = {addNewProduct}>add</button>
                         </form>
                     </div> </Popup> </li>: ""}
-
-                {hasPermition(1) ? <li><Popup trigger={<button style={{margin:'5px'}}>Add products to inventory</button>} position="right center">
+            {/* 2 */}
+                {hasPermition(1) ? <li><Popup onClose={reset} trigger={<button style={{margin:'5px'}}>Add products to inventory</button>} position="right center">
                 <div>
                     please choose a product:
-                    <form  onSubmit = {addProduct}>
-                        <select>
+                    <form  onSubmit = {addProductToInvetory}>
+                        {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
+                        <select onChange={(e) => setChosenProduct(e.target.value)}>
                             {options.map((option) => (
                                 <option value={option.value}>{option.label}</option>))}
                          </select>
-                         <input type = 'number' name = 'amount' placeholder="amount..." required onChange={(e)=> setPrice(e.target.value)}/>
-                        <button style={{marginLeft: '40%'}}  onSubmit = {addProduct}>add</button>
+                         <input type = 'number' name = 'amount' placeholder="amount..." required onChange={(e)=> setAmount(e.target.value)}/>
+                        <button style={{marginLeft: '40%'}}  onSubmit = {addProductToInvetory}>add</button>
                     </form>
                 </div> </Popup></li>: ""}
-
-                {hasPermition(1) ? <li><Popup trigger={<button style={{margin:'5px'}}>Remove products from inventory</button>} position="right center">
+            {/* 3 */}
+                {hasPermition(1) ? <li><Popup onClose={reset} trigger={<button style={{margin:'5px'}}>Remove products from inventory</button>} position="right center">
                     <div>
                         please choose a product:
-                        <form  onSubmit = {addProduct}>
-                        <select>
+                        <form  onSubmit = {removeProductFromInvetory}>
+                        {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
+                        <select onChange={(e) => setChosenProduct(e.target.value)}>
                             {options.map((option) => (
                                 <option value={option.value}>{option.label}</option>))}
                          </select>
-                         <input type = 'number' name = 'amount' placeholder="amount..." required onChange={(e)=> setPrice(e.target.value)}/>
-                            <button style={{marginLeft: '40%'}}  onSubmit = {addProduct}>add</button>
+                         <input type = 'number' name = 'amount' placeholder="amount..." required onChange={(e)=> setAmount(e.target.value)}/>
+                            <button style={{marginLeft: '40%'}}  onSubmit = {removeProductFromInvetory}>add</button>
                         </form>
                     </div> </Popup></li>: ""}
-
-                {hasPermition(1) ? <li><Popup trigger={<button style={{margin:'5px'}}>edit product</button>} position="right center">
+            {/* 4 */}
+                {hasPermition(1) ? <li><Popup onClose={reset} trigger={<button style={{margin:'5px'}}>edit product</button>} position="right center">
                     <div>
                          please choose a product and fill the information that you want to change:
-                        <form  onSubmit = {addProduct}>
+                        <form  onSubmit = {editProduct}>
+                            {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
                             <select>
                                 {options.map((option) => (
                                     <option value={option.value}>{option.label}</option>))}
                             </select>                           
-                            <input type = 'text' name = 'name' placeholder="name..."  onChange={(e)=> setPrice(e.target.value)}/>
+                            <input type = 'text' name = 'name' placeholder="name..."  onChange={(e)=> setProductName(e.target.value)}/>
                             <textarea style={{resize:'none'}} type = 'text' name = 'description' placeholder="description..."  onChange={(e)=> setDecription(e.target.value)}/>
                             <input type = 'number' name = 'price' placeholder="price..."  onChange={(e)=> setPrice(e.target.value)}/>
                             <input type = 'text' name = 'category' placeholder="category..." onChange={(e)=> setCategory(e.target.value)}/>
-                            <button style={{marginLeft: '40%'}}  onSubmit = {addProduct}>add</button>
+                            <button style={{marginLeft: '40%'}}  onSubmit = {editProduct}>add</button>
                         </form>
                     </div> </Popup></li>: ""}
-
-                {hasPermition(2) ? <li><Popup trigger={<button style={{margin:'5px'}}>Add store owner</button>} position="right center">
+            {/* 5 */}
+                {hasPermition(2) ? <li><Popup onClose={reset} trigger={<button style={{margin:'5px'}}>Add store owner</button>} position="right center">
                 <div>
                     please fill the information below:
-                    <form  onSubmit = {addProduct}>
-                        <input type = 'text' name = 'name' placeholder="new owner name..." required onChange={(e)=> setProductName(e.target.value)}/>
-                        <button style={{marginLeft: '40%'}}  onSubmit = {addProduct}>add</button>
+                    <form  onSubmit = {addStoreOwner}>
+                        {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
+                        <input type = 'text' name = 'name' placeholder="new owner name..." required onChange={(e)=> setOfficalsName(e.target.value)}/>
+                        <button style={{marginLeft: '40%'}}  onSubmit = {addStoreOwner}>add</button>
                     </form>
                 </div> </Popup></li>: ""}
-
+            {/* 6  */}
                 {hasPermition(3) ? <li><Popup trigger={<button style={{margin:'5px'}}>Add store manager</button>} position="right center">
                 <div>
                     please fill the information below:
-                    <form  onSubmit = {addProduct}>
+                    <form  onSubmit = {addNewProduct}>
                         <input type = 'text' name = 'name' placeholder="new manager name..." required onChange={(e)=> setProductName(e.target.value)}/>
-                        <button style={{marginLeft: '40%'}}  onSubmit = {addProduct}>add</button>
+                        <button style={{marginLeft: '40%'}}  onSubmit = {addNewProduct}>add</button>
                     </form>
                 </div> </Popup></li>: ""}
-
+            {/* 7 */}
                 {hasPermition(4) ? <li><Popup trigger={<button style={{margin:'5px'}}>change manager permissions</button>} position="right center">
                 <div>
                     in the requminets?
-                    <form  onSubmit = {addProduct}>
+                    <form  onSubmit = {addNewProduct}>
                         <input type = 'text' name = 'name' placeholder="in the requminets?..." required onChange={(e)=> setProductName(e.target.value)}/>
-                        <button style={{marginLeft: '40%'}}  onSubmit = {addProduct}>add</button>
+                        <button style={{marginLeft: '40%'}}  onSubmit = {addNewProduct}>add</button>
                     </form>
                 </div> </Popup></li>: ""}
-
+            {/* 8 */}
                 {hasPermition(6) ? <li><Popup trigger={<button style={{margin:'5px'}}>Get store's roles</button>} position="right center">
                 <div>
-                    <form  onSubmit = {addProduct}>
+                    <form  onSubmit = {addNewProduct}>
                         {storesProducts}
                     </form>
                 </div> </Popup></li>: ""}

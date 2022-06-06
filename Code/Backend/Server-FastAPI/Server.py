@@ -12,6 +12,7 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Service.Objects.NewOfficial import newOfficial
 from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.NewProudct import NewProduct
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
@@ -293,11 +294,10 @@ def get_permissions(store_id: str, user_id: str):
 
 
 # @TODO not working
-@app.delete("/users/remove_products_from_inventory")
-def remove_products_from_inventory(
-        add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
+@app.delete("/users/remove_products_from_inventory/{store_id}/{product_id}/{quantity}/{id}")
+def remove_products_from_inventory(store_id: str, product_id: str, quantity: int, id: str):
     res = service.remove_products_from_inventory(
-        add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
+        id, store_id, product_id, quantity
     )
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=res.msg)
@@ -307,6 +307,14 @@ def remove_products_from_inventory(
 @app.put("/users/edit_product_info")
 def edit_product_info(add_product: AddProduct, product_info: ProductInfo):  # , user_id: Optional[str] = Cookie(None)):
     res = service.edit_product_info(add_product.id, add_product.store_id, add_product.product_id, product_info)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/add_store_owner")
+def add_store_owner(official: newOfficial):
+    res = service.add_store_owner(official.user_id, official.store_id, official.new_owner_name)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
