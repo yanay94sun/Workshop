@@ -12,6 +12,7 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Service.Objects.NewOfficial import newOfficial
 from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.NewProudct import NewProduct
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
@@ -127,7 +128,7 @@ def exit_site(user_id: UserID):  # Optional[str] = Cookie(None)):
 def login(
         user_info: User_info):  # ,        user_id: Optional[str] = Cookie(None),):
     hashed_password = hash_pass(user_info.password)
-    res = service.login(user_info.id, user_info.username, hashed_password)  # user_info.password)
+    res = service.login(user_info.id, user_info.username, user_info.password)  # user_info.password)
     print(user_info.id)
     print("PASS: " + hashed_password)
     if res.error_occurred():
@@ -146,8 +147,8 @@ def login(
 def register(user_info: User_info):  # , user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
     print(user_info)
-    hash_password = hash_pass(user_info.password)
-    user_info.password = hash_password
+    # hash_password = hash_pass(user_info.password)
+    # user_info.password = hash_password
     user_info_dict = user_info.dict()
     res = service.register(user_info.id, user_info_dict)
     if res.error_occurred():
@@ -172,8 +173,7 @@ def get_stores_info():
 
 
 @app.post("/add_product_to_shopping_cart")
-def add_product_to_shopping_cart(
-        add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
+def add_product_to_shopping_cart(add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
     res = service.add_product_to_shopping_cart(
         add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
@@ -190,9 +190,25 @@ def get_shopping_cart(user_id: UserID):  #: Optional[str] = Cookie(None)):
     return res.value
 
 
-@app.get("/products/search")
-def get_store_info(product_search_filters: ProductSearchFilters):
+@app.post("/products/search")
+def search_product(product_search_filters: ProductSearchFilters):
     res = service.search_product(product_search_filters)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/product/{store_id}/{product_id}")
+def get_product_and_his_quantities(store_id: str, product_id: str):
+    res = service.get_product_and_quantities(store_id, product_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/users/{user_id}")
+def get_users_stores(user_id: str):
+    res = service.get_users_stores(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
@@ -231,7 +247,7 @@ Member's purchase actions
 
 
 @app.post("/users/logout")
-def logout(user_id:UserID):  #: Optional[str] = Cookie(None)):
+def logout(user_id: UserID):  #: Optional[str] = Cookie(None)):
     res = service.logout(user_id.id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
@@ -245,11 +261,12 @@ def open_store(store_name: Store_name):  # , user_id: Optional[str] = Cookie(Non
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
+
 @app.post("/users/add_new_product_to_inventory")
 def add_new_product_to_inventory(
         new_product: NewProduct):  # , user_id: Optional[str] = Cookie(None)):
     res = service.add_new_product_to_inventory(
-        new_product.id,new_product.store_id,new_product.name,new_product.description,new_product.price,
+        new_product.id, new_product.store_id, new_product.name, new_product.description, new_product.price,
         new_product.category
     )
     if res.error_occurred():
@@ -268,12 +285,19 @@ def add_products_to_inventory(
     return res.value
 
 
+@app.get("/permission/{store_id}/{user_id}")
+def get_permissions(store_id: str, user_id: str):
+    res = service.get_permissions(store_id, user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
 # @TODO not working
-@app.delete("/users/remove_products_from_inventory")
-def remove_products_from_inventory(
-        add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
+@app.delete("/users/remove_products_from_inventory/{store_id}/{product_id}/{quantity}/{id}")
+def remove_products_from_inventory(store_id: str, product_id: str, quantity: int, id: str):
     res = service.remove_products_from_inventory(
-        add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
+        id, store_id, product_id, quantity
     )
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=res.msg)
@@ -283,6 +307,14 @@ def remove_products_from_inventory(
 @app.put("/users/edit_product_info")
 def edit_product_info(add_product: AddProduct, product_info: ProductInfo):  # , user_id: Optional[str] = Cookie(None)):
     res = service.edit_product_info(add_product.id, add_product.store_id, add_product.product_id, product_info)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/add_store_owner")
+def add_store_owner(official: newOfficial):
+    res = service.add_store_owner(official.user_id, official.store_id, official.new_owner_name)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value

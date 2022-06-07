@@ -71,8 +71,8 @@ class StoreController:
                 elif by_name:
                     if text in product.get_name():
                         res.append(product)
-        if filter_type is not None:
-            if filter_value is None:
+        if filter_type:
+            if filter_value:
                 res = search_filter(res, filter_type)
             else:
                 res = search_filter(res, filter_type, filter_value)
@@ -550,3 +550,30 @@ class StoreController:
 
     def valid_all_products_for_purchase(self, all_products: List[ProductPurchaseRequest]):
         return all(map(lambda p: self.stores[p.store_id].has_quantity(p.product_id, p.quantity), all_products))
+
+    def get_product_and_quantities(self,store_id,product_id):
+        try:
+            store = self.__get_store(store_id)
+            return Response(value=store.get_product_and_quantities(product_id))
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def get_permissions(self, store_id, user_id):
+        try:
+            store = self.__get_store(store_id)
+            officials = store.get_officials()
+            permissions = {}
+            for key, value in officials.items():
+                if key == user_id:
+                    permissions[1] = value.check_permission(Actions.INVENTORY_ACTION)
+                    permissions[2] = value.check_permission(Actions.ADD_STORE_OWNER)
+                    permissions[3] = value.check_permission(Actions.ADD_STORE_MANAGER)
+                    permissions[4] = value.check_permission(Actions.CHANGE_MANAGER_PERMISSION)
+                    permissions[5] = value.check_permission(Actions.CLOSE_STORE)
+                    permissions[6] = value.check_permission(Actions.GET_STORE_ROLES)
+                    permissions[7] = value.check_permission(Actions.GET_STORE_PURCHASE_HISTORY)
+                    break
+            return Response(value=permissions)
+
+        except ValueError as e:
+            return Response(msg=e.args[0])

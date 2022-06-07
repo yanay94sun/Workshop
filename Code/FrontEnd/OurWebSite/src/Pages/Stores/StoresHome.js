@@ -6,11 +6,14 @@ import Product from "../Product/Product";
 
 
 const StoreHome = ({myId}) => {
-    // TODO need to replace logic in store and place it in here (calling axios)
+    // need to replace logic in store and place it in here (calling axios)
+
+    const [storesProducts, setStoresProducts] = useState([])
+
     return (
         <div>
             <Routes>
-                <Route path = '/' element = {<Store ip = {myId}/>}/>
+                <Route path = '/' element = {<Store storesProducts = {storesProducts} setStoresProducts = {setStoresProducts}/>}/>
                 <Route path ='/:productId' element= {<Product/>}/>
             </Routes>
             
