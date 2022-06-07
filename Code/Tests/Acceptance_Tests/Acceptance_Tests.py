@@ -1,6 +1,5 @@
 import threading
 import unittest
-# login-> fill-> log out  ->log in-> purchase
 from typing import List
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
@@ -291,7 +290,7 @@ class AcceptanceTests(unittest.TestCase):
     def test_A5_purchase_shop_cart(self):
         """
         II.2.5
-        TODO: test product race condition, (test bad payment as well?)
+        TODO test bad payment as well?
         """
         g_id = self.enter_as_guest().value
         store_opener = self.login(good_register_info2)  # store opener client id
@@ -305,7 +304,9 @@ class AcceptanceTests(unittest.TestCase):
         response = self.service.get_cart_price(g_id)
         self.assertTrue(not is_error(response))
         self.assertIsNotNone(response.value)
-        payment = good_payment(response.value)
+        price = response.value
+        payment = good_payment(price)
+        self.assertEquals(price, add_new_product_args["price"])
         # purchase
         response = self.service.purchase_shopping_cart(g_id, payment)
         self.assertTrue(not is_error(response), response.msg)
@@ -490,12 +491,47 @@ class AcceptanceTests(unittest.TestCase):
         II.4.4
 
         """
-        g_id = self.enter_as_guest()
+        g_id = self.enter_as_guest().value
         store_opener = self.login(good_register_info)
         store_id = self.open_store(store_opener, store_name)
         # bad assign
-        response = self.service.add_store_owner(store_opener, store_id, "nobody")
+        response = self.service.add_store_owner(store_opener, store_id, g_id)
         self.assertTrue(is_error(response))
+        # good assign
+        g_id = self.register(good_register_info2)
+        response = self.service.add_store_owner(store_opener, store_id, good_register_info2["username"])
+        self.assertTrue(not is_error(response), response.msg)
+        # bad assign - reassign
+        response = self.service.add_store_owner(store_opener, store_id, good_register_info2["username"])
+        self.assertTrue(is_error(response), response.msg)
+
+    def test_A8_add_store_owner_concurrently(self):
+        """
+        II.4.4
+
+        """
+        store_opener = self.login(good_register_info)
+        store_id = self.open_store(store_opener, store_name)
+        # another store owner
+        g_id = self.register(good_register_info2)
+        store_opener2 = good_register_info2["username"]
+        response = self.service.add_store_owner(store_opener, store_id, store_opener2)
+        self.assertTrue(not is_error(response), response.msg)
+        # the one who they will fight for
+        new_owner = self.register(good_register_info3)
+        err_list = [False, False]
+
+        def func_to_thread_add_store_owner(username, idx):
+            r = self.service.add_store_owner(username, store_id, good_register_info3["username"])
+            err_list[idx] = is_error(r)
+
+        t1 = threading.Thread(target=func_to_thread_add_store_owner, args=[store_opener, 0])
+        t2 = threading.Thread(target=func_to_thread_add_store_owner, args=[store_opener2, 1])
+        t1.start()
+        t2.start()
+        t1.join()
+        t2.join()
+        self.assertTrue(err_list[0] != err_list[1], err_list)
 
     # # def test_remove_store_owner(self):
     # #     """
