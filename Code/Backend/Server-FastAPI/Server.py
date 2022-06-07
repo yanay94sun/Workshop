@@ -174,6 +174,7 @@ def get_stores_info():
 
 @app.post("/add_product_to_shopping_cart")
 def add_product_to_shopping_cart(add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
+    print(add_product)
     res = service.add_product_to_shopping_cart(
         add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
