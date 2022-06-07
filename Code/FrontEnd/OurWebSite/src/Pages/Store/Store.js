@@ -19,6 +19,7 @@ function Store({storesProducts, setStoresProducts}){
     const [chosenProductiD, setChosenProduct]  = useState('1')
     const [amount, setAmount]  = useState(0)
     const [officalsName, setOfficalsName] = useState('')
+    const [roles, setRoles] = useState([])
 
     const params = useParams()
     const [options,setOptions] = useState([])
@@ -116,16 +117,50 @@ function Store({storesProducts, setStoresProducts}){
             store_id: storeId,
             new_owner_name: officalsName 
         }
-        console.log(info)
         try{
             const response = await axios.post("http://127.0.0.1:8000/users/add_store_owner" ,info)
             console.log(response)
-            //window.location.reload(false);
+            window.location.reload(false);
        }catch (err){
             console.log(err.response);
             setErrMsg(err.response.data['detail'])
     }
     }
+
+    const addStoreManager= async (e) =>{
+        e.preventDefault()
+        const info = {
+            user_id: localStorage.getItem("user_id"),
+            store_id: storeId,
+            new_owner_name: officalsName 
+        }
+        try{
+            const response = await axios.post("http://127.0.0.1:8000/users/add_store_manager" ,info)
+            console.log(response)
+            window.location.reload(false);
+       }catch (err){
+            console.log(err.response);
+            setErrMsg(err.response.data['detail'])
+    }
+    }
+
+    const getStoreRoles= async (e) =>{
+        e.preventDefault()
+        const info = {
+            store_name: storeId, 
+            id: localStorage.getItem("user_id"),
+        }
+        try{
+            const response = await axios.post("http://127.0.0.1:8000/users/get_store_roles" ,info)
+            console.log(response.data)
+            //console.log(response.data)
+
+       }catch (err){
+            console.log(err.response);
+            setErrMsg(err.response.data['detail'])
+    }
+    }
+
 
 
     const getStoreInfo = async () =>{
@@ -253,12 +288,13 @@ return(
                     </form>
                 </div> </Popup></li>: ""}
             {/* 6  */}
-                {hasPermition(3) ? <li><Popup trigger={<button style={{margin:'5px'}}>Add store manager</button>} position="right center">
+                {hasPermition(3) ? <li><Popup onClose={reset} trigger={<button style={{margin:'5px'}}>Add store manager</button>} position="right center">
                 <div>
                     please fill the information below:
-                    <form  onSubmit = {addNewProduct}>
-                        <input type = 'text' name = 'name' placeholder="new manager name..." required onChange={(e)=> setProductName(e.target.value)}/>
-                        <button style={{marginLeft: '40%'}}  onSubmit = {addNewProduct}>add</button>
+                    <form  onSubmit = {addStoreManager}>
+                        {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
+                        <input type = 'text' name = 'name' placeholder="new manager name..." required onChange={(e)=> setOfficalsName(e.target.value)}/>
+                        <button style={{marginLeft: '40%'}}  onSubmit = {addStoreManager}>add</button>
                     </form>
                 </div> </Popup></li>: ""}
             {/* 7 */}
@@ -271,11 +307,9 @@ return(
                     </form>
                 </div> </Popup></li>: ""}
             {/* 8 */}
-                {hasPermition(6) ? <li><Popup trigger={<button style={{margin:'5px'}}>Get store's roles</button>} position="right center">
+                {hasPermition(6) ? <li><Popup onOpen={getStoreRoles} trigger={<button style={{margin:'5px'}}>Get store's roles</button>} position="right center">
                 <div>
-                    <form  onSubmit = {addNewProduct}>
-                        {storesProducts}
-                    </form>
+                    {roles}
                 </div> </Popup></li>: ""}
             
                 

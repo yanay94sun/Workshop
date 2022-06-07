@@ -321,6 +321,22 @@ def add_store_owner(official: newOfficial):
     return res.value
 
 
+@app.post("/users/add_store_manager")
+def add_store_manager(official: newOfficial):
+    res = service.add_store_manager(official.user_id, official.store_id, official.new_owner_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/get_store_roles")
+def get_store_roles(store: Store_name):
+    res = service.get_store_roles(store.id, store.store_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
 """
 ------------------------------------------------------------------------
                                     Utils
