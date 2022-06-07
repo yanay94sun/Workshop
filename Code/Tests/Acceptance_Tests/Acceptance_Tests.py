@@ -294,7 +294,6 @@ class AcceptanceTests(unittest.TestCase):
         TODO: test product race condition, (test bad payment as well?)
         """
         g_id = self.enter_as_guest().value
-        g_id2 = self.enter_as_guest().value
         store_opener = self.login(good_register_info2)  # store opener client id
         store_id = self.open_store(store_opener, store_name)
         # add products to inventory (1 of p1, 2 of p2)
@@ -311,10 +310,37 @@ class AcceptanceTests(unittest.TestCase):
         response = self.service.purchase_shopping_cart(g_id, payment)
         self.assertTrue(not is_error(response), response.msg)
 
-    def test_A5_purchase_shop_cart_concurrently(self):
+    def test_purchase_shop_cart_complex(self):
         """
         II.2.5
-        TODO: test product race condition, (test bad payment as well?)
+        login-> fill-> log out  ->log in-> purchase
+        """
+        g_id = self.login(good_register_info)
+        store_opener = self.login(good_register_info2)  # store opener client id
+        store_id = self.open_store(store_opener, store_name)
+        # add products to inventory (1 of p1, 2 of p2)
+        p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
+        # add product p1 with 1 quantity to shopping cart for g_id
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
+        self.assertTrue(not is_error(response))
+        # logout
+        response = self.service.logout(g_id)
+        self.assertTrue(not is_error(response), response.msg)
+        # login
+        response = self.service.login(g_id, good_register_info["username"], good_register_info["password"])
+        self.assertTrue(not is_error(response), response.msg)
+        # purchase -> get cart price
+        response = self.service.get_cart_price(g_id)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        payment = good_payment(response.value)
+        # purchase
+        response = self.service.purchase_shopping_cart(g_id, payment)
+        self.assertTrue(not is_error(response), response.msg)
+
+    def test_purchase_shop_cart_concurrently(self):
+        """
+        II.2.5
         """
         g_id = self.enter_as_guest().value
         g_id2 = self.enter_as_guest().value
@@ -337,7 +363,7 @@ class AcceptanceTests(unittest.TestCase):
         self.assertTrue(not is_error(response))
         self.assertIsNotNone(response.value)
         payment2 = good_payment(response.value)
-        
+
         # start race
         error_list: List[Response, Response] = [None, None]
         t1 = threading.Thread(target=self.func_to_thread, args=[g_id, error_list, 0, payment1])
@@ -348,61 +374,24 @@ class AcceptanceTests(unittest.TestCase):
         t2.join()
         error_list = [is_error(response) for response in error_list]
         self.assertTrue(error_list[0] != error_list[1])
-        # add product to shopping cart for g_id2
-        # service.add_product_to_shoppping_cart(guest_id, store_id, product1_id, 1)
-        # response = service.purchase_shopping_cart(guest_id, good_payment_info)
-        # self.assertTrue(not is_error(response))
-        # self.__check_products_of_store(expected_products=[])
-        # response = service.get_shopping_cart(guest_id)
-        # self.assertTrue(not is_error(response))
-        # self.assertIsNotNone(response.value)
-        # cart = response.value
-        # with self.assertRaises(KeyError):
-        #     cart[store_id]
 
     def func_to_thread(self, g_id, error_list: List, idx, payment):
         response = self.service.purchase_shopping_cart(g_id, payment)
         error_list[idx] = response
 
-    # def test_A51_purchase_shop_cart(self):
-    #     l = [0, 0]
-    #
-    #     def to_thread(id, payment, idx):
-    #         r = service.purchase_shopping_cart(id, payment)
-    #         l[idx] = r
-    #
-    #     """
-    #     II.2.5
-    #     rece condition
-    #     """
-    #
-    #     import threading
-    #     service.add_products_to_inventory(guest_id, store_id, product1_id, 1)
-    #     guest2 = self.enter()
-    #     guest3 = self.enter()
-    #     service.add_product_to_shoppping_cart(guest2, store_id, product1_id, 1)
-    #     service.add_product_to_shoppping_cart(guest3, store_id, product1_id, 1)
-    #     thread1 = threading.Thread(target=to_thread, args=(guest2, good_payment_info, 0))
-    #     thread2 = threading.Thread(target=to_thread, args=(guest3, good_payment_info, 1))
-    #     thread1.start()
-    #     thread2.start()
-    #     # self.assertTrue((is_error(l[0]) and not is_error(l[1])) or (not is_error(l[0]) and is_error(l[1])))
-    #
-    # """Member's purchase actions"""
-    #
-    # def test_A6_logout(self):
-    #     """
-    #     II.3.1
-    #
-    #     """
-    #     # prepare shopping cart
-    #     response = service.add_products_to_inventory(guest_id, store_id, product1_id, 1)
-    #     self.assertTrue(not is_error(response))
-    #     response = service.add_product_to_shoppping_cart(guest_id, store_id, product1_id, 1)
-    #     self.assertTrue(not is_error(response))
-    #     # TODO finish
-    #     pass
-    #
+    """Member's purchase actions"""
+
+    def test_A6_logout(self):
+        """
+        II.3.1
+
+        """
+        g_id = self.login(good_register_info)
+        response = self.service.logout(g_id)
+        self.assertTrue(not is_error(response), response.msg)
+        response = self.service.open_store(g_id, 'stores_name')
+        self.assertTrue(is_error(response))
+
     # def test_A7_exit(self):
     #     """
     #     II.1.2
@@ -496,29 +485,18 @@ class AcceptanceTests(unittest.TestCase):
     # #     """
     # #     pass
     #
-    # def test_A8_add_store_owner(self):
-    #     """
-    #     II.4.4
-    #
-    #     """
-    #     # prepare new member
-    #     new_owner_id = self.register_new_guest()
-    #     # check precondition
-    #     response = service.get_store_roles(guest_id, store_id)
-    #     self.assertTrue(not is_error(response), "Should not be an error")
-    #     self.assertIsNotNone(response.value)
-    #     officials = response.value
-    #     self.assertTrue(len(officials) == 1 and officials[guest_id])  # fooya!
-    #     # test
-    #     response = service.add_store_owner(guest_id, store_id, new_owner_id)
-    #     self.assertTrue(not is_error(response), "Should not be an error")
-    #     response = service.get_store_roles(guest_id, store_id)
-    #     self.assertTrue(not is_error(response), "Should not be an error")
-    #     self.assertIsNotNone(response.value)
-    #     officials = response.value
-    #     self.assertTrue(len(officials) == 2 and officials[guest_id] and officials[new_owner_id])  # bad! really bad
-    #     pass
-    #
+    def test_A8_add_store_owner(self):
+        """
+        II.4.4
+
+        """
+        g_id = self.enter_as_guest()
+        store_opener = self.login(good_register_info)
+        store_id = self.open_store(store_opener, store_name)
+        # bad assign
+        response = self.service.add_store_owner(store_opener, store_id, "nobody")
+        self.assertTrue(is_error(response))
+
     # # def test_remove_store_owner(self):
     # #     """
     # #     II.4.5
