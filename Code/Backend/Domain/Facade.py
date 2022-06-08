@@ -270,13 +270,21 @@ class Facade:
                 if p.error_occurred():
                     return Response.from_error("some error occurred while calculating a basket's price")
                 total_price += p.value
-            # remove products from inventories
-            response = self.store_controller.remove_all_products_for_purchasing(all_products)
-            if response.error_occurred():
-                return response
             if total_price != payment_info.amount_to_pay:
                 return Response(msg="You little piece of shit, trying to steal aha?")
-            return self.market.contact_payment_service(payment_info)
+            # good pay, remove products from shopping cart
+            if self.market.contact_payment_service(payment_info):
+                for p in all_products:
+                    response = self.remove_product_from_shopping_cart(user_id, p)
+                    if response.error_occurred():
+                        return response
+                # remove products from inventories
+                response = self.store_controller.remove_all_products_for_purchasing(all_products)
+                if response.error_occurred():
+                    return response
+            else:
+                return Response.from_error("unsuccessfully payment")
+
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)

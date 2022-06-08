@@ -222,3 +222,35 @@ CRITICAL:root:New owner is not a member
 CRITICAL:root:User is already an Owner of this store
 CRITICAL:root:user isn't logged in
 CRITICAL:root:not enough quantities
+CRITICAL:root:product isn't in the basket
+CRITICAL:root:not enough quantities
+CRITICAL:root:username already exists
+CRITICAL:root:invalid password
+CRITICAL:root:user is already logged in
+CRITICAL:root:No stores in the System
+CRITICAL:root:Store name already exists
+CRITICAL:root:Got None from get_product
+CRITICAL:root:Got None from get_product
+CRITICAL:root:product isn't in the basket
+CRITICAL:root:You little piece of shit, trying to steal aha?
+CRITICAL:root:guest doesnt have username
+CRITICAL:root:New owner is not a member
+CRITICAL:root:User is already an Owner of this store
+CRITICAL:root:user isn't logged in
+CRITICAL:root:not enough quantities
+CRITICAL:root:username already exists
+CRITICAL:root:invalid password
+CRITICAL:root:user is already logged in
+CRITICAL:root:No stores in the System
+CRITICAL:root:Store name already exists
+CRITICAL:root:Got None from get_product
+CRITICAL:root:Got None from get_product
+CRITICAL:root:product isn't in the basket
+CRITICAL:root:You little piece of shit, trying to steal aha?
+CRITICAL:root:guest doesnt have username
+CRITICAL:root:New owner is not a member
+CRITICAL:root:User is already an Owner of this store
+CRITICAL:root:user isn't logged in
+CRITICAL:root:not enough quantities
+CRITICAL:root:product isn't in the basket
+CRITICAL:root:You little piece of shit, trying to steal aha?
