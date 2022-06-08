@@ -1,6 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import NavBar from './components/navbar';
-import Counters from './components/counters.jsx';
+import Counters from './components/counter';
+
 
 class ShoppingCart extends Component {
 	state = {

@@ -13,7 +13,9 @@ class Register extends React.Component{
         userName:'',
         email:'',
         pwd:'',
-        register:false 
+        register:false,
+        errMsg:''
+        
     }
     handleChange = (e) =>{
         const {name,value} = e.target
@@ -32,9 +34,11 @@ class Register extends React.Component{
         //this.props.handleLog(true);
         //localStorage.setItem("logged","true")
         console.log(response)
+        this.setState({errMsg:""}) 
             
         } catch (err){
             console.log(err.response);
+            this.setState({errMsg:err.response.data['detail']}) 
         }        
     }
     render(){
@@ -45,6 +49,7 @@ class Register extends React.Component{
             <div>
                 <form onSubmit = {this.handleSubmit}>
                     <p style={{textAlign: "center"}}>Enter your email and password</p>
+                    {this.state.errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{this.state.errMsg}</p> : <br />}
                     <input type = 'text' name = 'userName' placeholder="username..." required onChange = {this.handleChange}/>
                     <input type = 'password' name ='pwd' placeholder="password..." required onChange = {this.handleChange}/>
                     <button className="buttonS" style={{backgroundColor:'rgb(161, 28, 28)'}} onSubmit = {this.handleSubmit}>Register</button>

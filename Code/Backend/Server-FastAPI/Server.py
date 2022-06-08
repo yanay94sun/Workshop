@@ -12,6 +12,7 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Service.Objects.EditProduct import EditProduct
 from Code.Backend.Service.Objects.NewOfficial import newOfficial
 from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.NewProudct import NewProduct
@@ -295,19 +296,21 @@ def get_permissions(store_id: str, user_id: str):
 
 
 # @TODO not working
-@app.delete("/users/remove_products_from_inventory/{store_id}/{product_id}/{quantity}/{id}")
-def remove_products_from_inventory(store_id: str, product_id: str, quantity: int, id: str):
+@app.post("/users/remove_products_from_inventory")
+def remove_products_from_inventory(add_product: AddProduct):
     res = service.remove_products_from_inventory(
-        id, store_id, product_id, quantity
+        add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
     if res.error_occurred():
-        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=res.msg)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
-@app.put("/users/edit_product_info")
-def edit_product_info(add_product: AddProduct, product_info: ProductInfo):  # , user_id: Optional[str] = Cookie(None)):
-    res = service.edit_product_info(add_product.id, add_product.store_id, add_product.product_id, product_info)
+@app.post("/users/edit_product_info")
+def edit_product_info(edit_product: EditProduct):
+    info = ProductInfo(name=edit_product.name, description=edit_product.description,
+                       rating=edit_product.rating, price=edit_product.price, category=edit_product.category)
+    res = service.edit_product_info(edit_product.id, edit_product.store_id, edit_product.product_id, info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value

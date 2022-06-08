@@ -1061,3 +1061,268 @@ INFO:uvicorn.error:Shutting down
 INFO:uvicorn.error:Waiting for application shutdown.
 INFO:uvicorn.error:Application shutdown complete.
 INFO:uvicorn.error:Finished server process [4616]
+INFO:uvicorn.error:Started server process [11652]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username already exists
+CRITICAL:root:username doesn't exist
+CRITICAL:root:username doesn't exist
+INFO:uvicorn.error:Started server process [23756]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [22164]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+INFO:uvicorn.error:Started server process [12452]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+INFO:uvicorn.error:Started server process [12676]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+INFO:uvicorn.error:Started server process [11084]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user isn't logged in
+CRITICAL:root:user isn't logged in
+CRITICAL:root:user isn't logged in
+INFO:uvicorn.error:Started server process [16068]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [22556]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+INFO:uvicorn.error:Started server process [4624]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [19692]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [9548]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [4932]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user isn't logged in
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+INFO:uvicorn.error:Started server process [23932]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [16392]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+INFO:uvicorn.error:Started server process [11568]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [25256]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+INFO:uvicorn.error:Started server process [9932]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username doesn't exist
+CRITICAL:root:invalid password
+CRITICAL:root:Attempt to remove more Items then the existing quantity
+CRITICAL:root:username already exists
+INFO:uvicorn.error:Started server process [13728]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [12192]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [8416]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [17016]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user isn't logged in
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:invalid password
+INFO:uvicorn.error:Started server process [1684]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:member is not logged in
+INFO:uvicorn.error:Started server process [13232]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [24412]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user isn't logged in
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:user isn't logged in
+CRITICAL:root:Store id does not exist or is inactive
+INFO:uvicorn.error:Started server process [17116]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [16588]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [10564]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [18304]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [9248]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user doesn't exist
+INFO:uvicorn.error:Started server process [24760]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user isn't logged in
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:user isn't logged in
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:user isn't logged in
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 313, in edit_product_info
+    res = service.edit_product_info(edit_product.id, edit_product.store_id, edit_product.product_id, info)
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Service\Service.py", line 427, in edit_product_info
+    response = Response(self.facade.edit_product_info(user_id, store_id, product_id, new_product_info.name,
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\Facade.py", line 473, in edit_product_info
+    member_id = self.user_controller.get_users_username(user_id)
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 71, in get_users_username
+    return Response(self.__users[user_id].get_username())
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\Visitor.py", line 55, in get_username
+    return self.__status.get_username()
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\VisitorStates\GuestState.py", line 19, in get_username
+    raise Exception("guest doesnt have username")
+Exception: guest doesnt have username
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\tomer\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Server-FastAPI\Server.py", line 213, in get_users_stores
+    res = service.get_users_stores(user_id)
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Service\Service.py", line 661, in get_users_stores
+    response = Response(self.facade.get_users_stores(user_id))
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\Facade.py", line 732, in get_users_stores
+    member_id = self.user_controller.get_users_username(user_id)
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\Controllers\UserController.py", line 71, in get_users_username
+    return Response(self.__users[user_id].get_username())
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\Visitor.py", line 55, in get_username
+    return self.__status.get_username()
+  File "C:\Users\tomer\Desktop\sadna\Workshop\.\Code\Backend\Domain\VisitorStates\GuestState.py", line 19, in get_username
+    raise Exception("guest doesnt have username")
+Exception: guest doesnt have username
+INFO:uvicorn.error:Started server process [8356]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [8520]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [10536]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [4976]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user doesn't exist
+INFO:uvicorn.error:Started server process [22184]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:username doesn't exist
+INFO:uvicorn.error:Started server process [23480]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [23480]

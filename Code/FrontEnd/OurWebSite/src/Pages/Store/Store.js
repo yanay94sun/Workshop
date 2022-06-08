@@ -10,14 +10,14 @@ import './Store.css'
 
 function Store({storesProducts, setStoresProducts}){
     const [storeName, setStoreName] = useState('');
-    const [storeRank, setRank] = useState('');
+    const [storeRank, setRank] = useState(-1);
     const [founderName, setFounderName] = useState('')
     const [productName, setProductName] = useState('')
     const [description, setDecription]  = useState('')
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState(-1)
     const [category, setCategory] = useState('')
     const [chosenProductiD, setChosenProduct]  = useState('1')
-    const [amount, setAmount]  = useState(0)
+    const [amount, setAmount]  = useState(-1)
     const [officalsName, setOfficalsName] = useState('')
     const [roles, setRoles] = useState([])
 
@@ -75,8 +75,7 @@ function Store({storesProducts, setStoresProducts}){
             id: localStorage.getItem("user_id")
         }
         try{
-            const response = await axios.delete("http://127.0.0.1:8000/users/remove_products_from_inventory/"
-            +storeId+"/"+chosenProductiD+'/'+amount+'/'+localStorage.getItem("user_id"))
+            const response = await axios.post("http://127.0.0.1:8000/users/remove_products_from_inventory",prod)
             console.log(response)
             window.location.reload(false);
        }catch (err){
@@ -90,18 +89,16 @@ function Store({storesProducts, setStoresProducts}){
         const prod = {
             store_id: storeId,
             product_id: chosenProductiD,
-            quantity: amount , 
-            id: localStorage.getItem("user_id")
-        }
-        const info = {
+            id: localStorage.getItem("user_id"),
             name: productName,
             description: description,
             rating: 0,
             price: price,
             category: category 
         }
+        console.log(prod)
         try{
-            const response = await axios.post("http://127.0.0.1:8000/users/edit_product_info",prod,info)
+            const response = await axios.post("http://127.0.0.1:8000/users/edit_product_info",prod)
             console.log(response)
             window.location.reload(false);
        }catch (err){
@@ -153,7 +150,7 @@ function Store({storesProducts, setStoresProducts}){
         try{
             const response = await axios.post("http://127.0.0.1:8000/users/get_store_roles" ,info)
             console.log(response.data)
-            //console.log(response.data)
+            setRoles(roles => [Object.values(response.data).map( x => <li key={x}>{x['appointed']}</li>)])
 
        }catch (err){
             console.log(err.response);
@@ -266,7 +263,7 @@ return(
                          please choose a product and fill the information that you want to change:
                         <form  onSubmit = {editProduct}>
                             {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
-                            <select>
+                            <select onChange={(e) => setChosenProduct(e.target.value)}>
                                 {options.map((option) => (
                                     <option value={option.value}>{option.label}</option>))}
                             </select>                           
