@@ -114,7 +114,7 @@ def enter_as_guest(response: Response):
     return res
 
 
-@app.get("/exit")
+@app.post("/exit")
 def exit_site(user_id: UserID):  # Optional[str] = Cookie(None)):
     res = service.exit(user_id.id)
     if res.error_occurred():
@@ -134,7 +134,7 @@ def login(
     print("PASS: " + hashed_password)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="wrong details")
 
     # create a token
     # return token
