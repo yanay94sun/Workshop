@@ -144,7 +144,6 @@ class StoreController:
 
             # check if product exists
             product = store.get_product(product_id, quantity)
-
             # check if there is enough products to remove
             if product is None:
                 return Response(msg="Attempt to remove more Items then the existing quantity")
