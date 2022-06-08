@@ -108,9 +108,9 @@ class StoreControllerTests(unittest.TestCase):
 
     def test_add_store_owner(self):
         self.sc.open_store(USER_ID, "The_Store")
-        new_user_id = '111'
+        new_user_id = 'newOwner'
         response = self.sc.add_store_owner(USER_ID, STORE_ID, new_user_id)
-        self.assertEqual(response.value, "Made User with id: 111 an owner")
+        self.assertEqual(response.value, "Made User with id: newOwner an owner")
         response = self.sc.add_store_owner(USER_ID, STORE_ID, USER_ID)
         # can not add store owner that is already store owner
         self.assertEqual(response.msg, "User is already an Owner of this store")
@@ -157,9 +157,9 @@ class StoreControllerTests(unittest.TestCase):
         self.sc.add_products_to_inventory(USER_ID, STORE_ID, PRODUCT_ID, 9)
         basket = ShoppingBasket(STORE_ID)
         basket.add_to_basket(PRODUCT_ID, 3)
-        discount1 = self.sc.add_visible_discount(STORE_ID, [], 0.4, "24/5/2022", by_category="Fruits").value.get_id()
-        discount2 = self.sc.add_conditional_discount(STORE_ID, [PRODUCT_ID], 0.3, "24/5/2022", {PRODUCT_ID: 2},
-                                                     0).value.get_id()
+        discount1 = self.sc.add_visible_discount_by_category(STORE_ID, 0.4, "24/5/2022", "Fruits").value.get_id()
+        discount2 = self.sc.add_conditional_discount_by_product(STORE_ID, 0.3, "24/5/2022",
+                                                                PRODUCT_ID, {PRODUCT_ID: 2}).value.get_id()
         discount3 = self.sc.add_and_discount(STORE_ID, discount1, discount2).value.get_id()
         response = self.sc.get_basket_price(STORE_ID, basket)
         self.assertEqual(response.value, 90)
@@ -168,7 +168,7 @@ class StoreControllerTests(unittest.TestCase):
         self.sc.add_products_to_inventory(USER_ID, STORE_ID, "2", 9)
         basket.add_to_basket("2", 5)
 
-        discount4 = self.sc.add_conditional_discount(STORE_ID, ["2"], 0.2, "bla", {"2": 2}).value.get_id()
+        discount4 = self.sc.add_conditional_discount_by_product(STORE_ID, 0.2, "bla", "2", {"2": 2}).value.get_id()
         self.sc.add_or_discount(STORE_ID, discount3, discount4)
         response = self.sc.get_basket_price(STORE_ID, basket)
         self.assertEqual(response.value, 180)
@@ -205,6 +205,23 @@ class StoreControllerTests(unittest.TestCase):
         self.assertTrue(response.value == "Store was successfully closed")
         response = self.sc.get_store_info(STORE_ID)
         self.assertTrue(response.msg == "Store id does not exist or is inactive")
+
+    # def test_a_15_remove_store_owner(self):
+    #     sc.open_store("123", "1")
+    #     sc.add_store_owner("123", "1", "123456789")
+    #     sc.add_store_owner("123", "1", "1234")
+    #     sc.add_store_owner("1234", "1", "12345")
+    #     sc.add_store_owner("1234", "1", "12346")
+    #     sc.add_store_owner("12345", "1", "123456")
+    #     sc.add_store_owner("123456", "1", "1234567")
+    #
+    #     self.assertEqual(len(sc.stores["1"].get_officials()), 7)
+    #
+    #     sc.remove_store_owner("123", "1", "1234")
+    #
+    #     self.assertEqual(len(sc.stores["1"].get_officials()), 2)
+
+
 
 
 if __name__ == '__main__':

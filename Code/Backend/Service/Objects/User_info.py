@@ -8,3 +8,4 @@ from random import randrange
 class User_info(BaseModel):
     username: str
     password: str
+    id: str

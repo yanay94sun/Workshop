@@ -25,13 +25,16 @@ function withRouter(Component) {
     return ComponentWithRouterProp;
   }
 
-function Header({handleLogin, checkLogged }){
+function Header({handleLogin, checkLogged, ip }){
     const navigate = useNavigate();
 
     const logout = async ()=>{
+      const ID = {
+        id: ip
+      }
       if (checkLogged){
         try{
-        const response = await axios.post('http://127.0.0.1:8000/users/logout')
+        const response = await axios.post('http://127.0.0.1:8000/users/logout',ID)
         console.log(response)
         handleLogin(false)
         localStorage.setItem("logged","false")
@@ -41,7 +44,13 @@ function Header({handleLogin, checkLogged }){
         }
       }
       else{
-        navigate('/')
+        try{
+         // const response = await axios.get('http://127.0.0.1:8000/exit',ID)
+          //console.log(response)
+          navigate('/')
+        } catch (err){
+          console.log(err.response);
+        }
       }
     }
     return(
@@ -54,12 +63,22 @@ function Header({handleLogin, checkLogged }){
 
                 </div>
                 <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                    <NavLink to ='/home/MyStores' activeclassname='active'><MyStoreIcon className="div-svg"/></NavLink>
-                    <NavLink to ='/home/explore'activeclassname='active'><SearchIcon className="div-svg"/></NavLink>
-                    <NavLink to ='/home/shopping-cart'activeclassname='active'><CartIcon className="div-svg"/></NavLink>
+                    <NavLink to ='/home/MyStores' activeclassname='active' className='img__wrap'>
+                      <MyStoreIcon className="div-svg"/>
+                    <p className="img__description">My stores</p>
+                    </NavLink>
+                    <NavLink to ='/home/explore'activeclassname='active' className='img__wrap'>
+                      <SearchIcon className="div-svg"/>
+                      <p className="img__description">Search</p>
+                    </NavLink>
+                    <NavLink to ='/home/shopping-cart'activeclassname='active' className='img__wrap'>
+                      <CartIcon className="div-svg"/>
+                      <p className="img__description">Shopping cart</p>
+
+                    </NavLink>
 
 
-                    <button className="button-header" onClick={logout} style={{ cursor:'pointer'}}>{formatExit(checkLogged)}</button>
+                    <button className="buttonS" onClick={logout} style={{ cursor:'pointer'}}>{formatExit(checkLogged)}</button>
                 </div>
             </div>
         </nav>
