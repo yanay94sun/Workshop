@@ -273,7 +273,11 @@ class Facade:
             if total_price != payment_info.amount_to_pay:
                 return Response(msg="You little piece of shit, trying to steal aha?")
             # good pay, remove products from shopping cart
-            if self.market.contact_payment_service(payment_info):
+            response = self.market.contact_payment_service(payment_info)
+            if response.error_occurred():
+                return response
+            success = response.value
+            if success:
                 for p in all_products:
                     response = self.remove_product_from_shopping_cart(user_id, p)
                     if response.error_occurred():
