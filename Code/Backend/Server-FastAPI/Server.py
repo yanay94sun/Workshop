@@ -163,6 +163,14 @@ def get_store_info(store_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
+@app.get("/get_cart_price/{user_id}")
+def get_cart_price(user_id: str):
+    res = service.get_cart_price(user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
 
 @app.get("/stores")
 def get_stores_info():
@@ -183,9 +191,9 @@ def add_product_to_shopping_cart(add_product: AddProduct):  # , user_id: Optiona
     return res.value
 
 
-@app.get("/cart")
-def get_shopping_cart(user_id: UserID):  #: Optional[str] = Cookie(None)):
-    res = service.get_shopping_cart(user_id.id)
+@app.get("/cart/{user_id}")
+def get_shopping_cart(user_id: str):  #: Optional[str] = Cookie(None)):
+    res = service.get_shopping_cart(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value

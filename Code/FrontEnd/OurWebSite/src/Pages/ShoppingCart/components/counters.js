@@ -1,29 +1,29 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Counter from './counter';
 
-class Counters extends Component {
-	render() {
+function Counters({counters, onDelete, onIncrement, onDicrement, onReset}) {
+	// render() {
 		return (
 			<div className='container'>
-				{this.props.counters.map((counter) => (
+				{counters.map((counter) => (
 					<Counter
 						key={counter.id}
-						onDelete={this.props.onDelete}
-						onIncrement={this.props.onIncrement}
-						onDicrement={this.props.onDicrement}
+						onDelete={onDelete}
+						onIncrement={onIncrement}
+						onDicrement={onDicrement}
 						counter={counter} //
 					/>
 				))}
 				<br />
 				<button
 					className='btn btn-primary m-2'
-					onClick={this.props.onReset}
+					onClick={onReset}
 					style={{ cursor: 'pointer' }}>
 					Reset
 				</button>
 			</div>
 		);
-	}
+	// }
 }
 
 export default Counters;
