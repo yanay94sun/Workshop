@@ -94,3 +94,10 @@ good_register_info2 = dict(
         "password": "AsafPass"
     }
 )
+
+good_register_info3 = dict(
+    {
+        "username": "Refael",
+        "password": "RefaelPass"
+    }
+)
