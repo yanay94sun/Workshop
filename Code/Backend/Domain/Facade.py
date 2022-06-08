@@ -224,9 +224,14 @@ class Facade:
                 return Response(msg="not enough quantities")
             # get prices
             prices = (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items())
-            if any((price.error_occurred() for price in prices)):
-                return Response.from_error("some error occurred while calculating a basket's price")
-            total_price = sum((price.value for price in prices))
+            total_price = 0
+            for p in prices:
+                if p.error_occurred():
+                    return Response.from_error("some error occurred while calculating a basket's price")
+                total_price += p.value
+            # if any((price.error_occurred() for price in prices)):
+            #     return Response.from_error("some error occurred while calculating a basket's price")
+            # total_price = sum((price.value for price in prices))
             return Response(total_price)
 
     def purchase_shopping_cart(self, user_id: str, payment_info: DomainPaymentInfo):
@@ -257,14 +262,19 @@ class Facade:
             # get prices
             prices = (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in
                       all_baskets.items())
-            if any((price.error_occurred() for price in prices)):
-                return Response.from_error("some error occurred while calculating a basket's price")
-            total_price = sum((price.value for price in prices))
+            # if any((price.error_occurred() for price in prices)):
+            #     return Response.from_error("some error occurred while calculating a basket's price")
+            # total_price = sum((price.value for price in prices))
+            total_price = 0
+            for p in prices:
+                if p.error_occurred():
+                    return Response.from_error("some error occurred while calculating a basket's price")
+                total_price += p.value
             # remove products from inventories
             response = self.store_controller.remove_all_products_for_purchasing(all_products)
             if response.error_occurred():
                 return response
-            if not total_price == payment_info.amount_to_pay:
+            if total_price != payment_info.amount_to_pay:
                 return Response(msg="You little piece of shit, trying to steal aha?")
             return self.market.contact_payment_service(payment_info)
 
