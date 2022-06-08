@@ -286,6 +286,13 @@ class AcceptanceTests(unittest.TestCase):
         response = self.service.remove_product_from_shopping_cart(g_id,
                                                                   ProductPurchaseRequest(store_id, p1_id, 1))
         self.assertTrue(not is_error(response))
+        # check in the shopping cart
+        response = self.service.get_shopping_cart(g_id)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        cart = response.value.shopping_baskets
+        basket = cart[store_id].get_products_and_quantities()
+        self.assertTrue(p1_id not in basket)
 
     def test_A5_purchase_shop_cart(self):
         """
@@ -306,10 +313,21 @@ class AcceptanceTests(unittest.TestCase):
         self.assertIsNotNone(response.value)
         price = response.value
         payment = good_payment(price)
-        self.assertEquals(price, add_new_product_args["price"])
+        # assert correctness of price
+        self.assertEqual(price, add_new_product_args["price"])
         # purchase
         response = self.service.purchase_shopping_cart(g_id, payment)
         self.assertTrue(not is_error(response), response.msg)
+        # repurchase
+        response = self.service.purchase_shopping_cart(g_id, payment)
+        self.assertTrue(is_error(response), response.msg)
+        # check in the shopping cart
+        response = self.service.get_shopping_cart(g_id)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        cart = response.value.shopping_baskets
+        basket = cart[store_id].get_products_and_quantities()
+        self.assertTrue(p1_id not in basket)
 
     def test_purchase_shop_cart_complex(self):
         """
