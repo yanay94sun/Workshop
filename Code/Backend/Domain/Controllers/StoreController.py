@@ -465,9 +465,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_simple_purchase_rule(self, store_id, products_to_have_for_purchase,
-                                 min_price_to_have_for_purchase=0,
-                                 by_category="", by_store=False):
+    def add_simple_purchase_rule_by_category(self, store_id, by_category):
         """
            add to products_to_have_for_purchase if the condition is "at least x of product y"
            add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
@@ -476,13 +474,44 @@ class StoreController:
            """
         try:
             store = self.__get_store(store_id)
-            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule(products_to_have_for_purchase,
-                                                                                 min_price_to_have_for_purchase,
-                                                                                 by_category, by_store)
+            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule([], 0, by_category, None)
             return Response(value=purchase_rule)
         except ValueError as e:
             return Response(msg=e.args[0])
+        # /////
 
+    def add_simple_purchase_rule_by_product(self, store_id, products_to_have_for_purchase):
+        """
+           add to products_to_have_for_purchase if the condition is "at least x of product y"
+           add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+           add to by_category if the condition is "the cart should have at least one product of category x"
+           by store i don't know...
+           """
+        try:
+            store = self.__get_store(store_id)
+            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule(
+                products_to_have_for_purchase, 0, "",
+                None)
+            return Response(value=purchase_rule)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+        # ///
+
+    def add_simple_purchase_rule_by_min_price(self, store_id, min_price_to_have_for_purchase):
+        """
+           add to products_to_have_for_purchase if the condition is "at least x of product y"
+           add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+           add to by_category if the condition is "the cart should have at least one product of category x"
+           by store i don't know...
+           """
+        try:
+            store = self.__get_store(store_id)
+            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule([],
+                                                                                 min_price_to_have_for_purchase, "",
+                                                                                 None)
+            return Response(value=purchase_rule)
+        except ValueError as e:
+            return Response(msg=e.args[0])
 
     def add_and_purchase_rule(self, store_id, first_rule_id, second_rule_id):
         try:
@@ -550,7 +579,7 @@ class StoreController:
     def valid_all_products_for_purchase(self, all_products: List[ProductPurchaseRequest]):
         return all(map(lambda p: self.stores[p.store_id].has_quantity(p.product_id, p.quantity), all_products))
 
-    def get_product_and_quantities(self,store_id,product_id):
+    def get_product_and_quantities(self, store_id, product_id):
         try:
             store = self.__get_store(store_id)
             return Response(value=store.get_product_and_quantities(product_id))

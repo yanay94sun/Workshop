@@ -189,14 +189,14 @@ class StoreControllerTests(unittest.TestCase):
         basket = ShoppingBasket(STORE_ID)
         basket.add_to_basket(PRODUCT_ID, 3)
 
-        rule1 = self.sc.add_simple_purchase_rule(STORE_ID, {PRODUCT_ID: 50}).value.get_id()
-        rule2 = self.sc.add_simple_purchase_rule(STORE_ID, {}, min_price_to_have_for_purchase=50).value.get_id()
+        rule1 = self.sc.add_simple_purchase_rule_by_product(STORE_ID, {PRODUCT_ID: 50}).value.get_id()
+        rule2 = self.sc.add_simple_purchase_rule_by_min_price(STORE_ID, 50).value.get_id()
         self.sc.add_or_purchase_rule(STORE_ID, rule1, rule2)
         response = self.sc.check_purchase_policy(STORE_ID, basket)
         self.assertTrue(response.value)
 
-        self.sc.add_simple_purchase_rule(STORE_ID,{}, by_category="PlayStation")
-        response = self.sc.check_purchase_policy(STORE_ID,basket)
+        self.sc.add_simple_purchase_rule_by_category(STORE_ID, "PlayStation")
+        response = self.sc.check_purchase_policy(STORE_ID, basket)
         self.assertTrue(not response.value)
 
     def test_close_store(self):

@@ -757,7 +757,10 @@ class Facade:
     def get_permissions(self, store_id, user_id):
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
-        if not self.user_controller.is_member(user_id):
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        if not self.user_controller.is_member(member_id.value):
             permissions = {}
             for i in range(0, 7):
                 permissions[i] = False

@@ -45,8 +45,8 @@ function Header({handleLogin, checkLogged, ip }){
       }
       else{
         try{
-         const response = await axios.post('http://127.0.0.1:8000/exit',localStorage.getItem('user_id'));
-          console.log(response)
+        //  const response = await axios.post('http://127.0.0.1:8000/exit',localStorage.getItem('user_id'));
+        //   console.log(response)
           navigate('/')
         } catch (err){
           console.log(err.response);
