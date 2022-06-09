@@ -313,9 +313,13 @@ class AcceptanceTests(unittest.TestCase):
         self.assertIsNotNone(response.value)
         price = response.value
         payment = good_payment(price)
+        bad_payment = good_payment(-1)
         # assert correctness of price
         self.assertEqual(price, add_new_product_args["price"])
-        # purchase
+        # bad purchase - bad payment
+        response = self.service.purchase_shopping_cart(g_id, bad_payment)
+        self.assertTrue(is_error(response), response.msg)
+        # good purchase
         response = self.service.purchase_shopping_cart(g_id, payment)
         self.assertTrue(not is_error(response), response.msg)
         # repurchase
