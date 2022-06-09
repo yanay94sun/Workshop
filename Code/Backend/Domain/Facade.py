@@ -276,6 +276,14 @@ class Facade:
                 return response
             if total_price != payment_info.amount_to_pay:
                 return Response(msg="You little piece of shit, trying to steal aha?")
+
+            #preparing notification
+            if self.user_controller.is_logged_in(user_id).error_occurred():
+                visitor_state_id = user_id
+            else:
+                visitor_state_id = self.user_controller.get_users_username(user_id).value
+            self.market.notify_purchase(all_baskets, visitor_state_id)
+
             return self.market.contact_payment_service(payment_info)
 
         # pay, if error occured revert
@@ -314,7 +322,10 @@ class Facade:
         response_member_id = self.user_controller.get_users_username(user_id)
         if response_member_id.error_occurred():
             return response_member_id
-        return self.store_controller.open_store(response_member_id.value, store_name)
+        res_from_sc = self.store_controller.open_store(response_member_id.value, store_name)
+        if res_from_sc.error_occurred():
+            return res_from_sc
+        self.market.register_store(store_name, response_member_id.value)
 
     def review_product(self, user_id: str, product_info, review: str):
         """

@@ -1,4 +1,5 @@
 from Code.Backend.Domain.PaymentServiceAdapter import PaymentServiceAdapter
+from Code.Backend.Domain.Publisher.NotificationController import NotificationController, Activities
 from Code.Backend.Domain.SupplyServiceAdapter import SupplyServiceAdapter
 
 # from Code.Backend.Domain.ShoppingCart import ShoppingCart
@@ -19,6 +20,7 @@ class Market:
         self.__supply_service = None
         self.__payment_service_adapter = None
         self.__supply_service_adapter = None
+        self.__notification_controller: NotificationController = None
 
     def init(self, admin_id, admin_pwd, payment_service, supply_service):
         self.__admins_ids = [admin_id]
@@ -27,6 +29,7 @@ class Market:
         self.__supply_service = supply_service
         self.__payment_service_adapter = PaymentServiceAdapter()
         self.__supply_service_adapter = SupplyServiceAdapter()
+        self.__notification_controller = NotificationController()
 
         payment_service_res = self.connect_payment_service(payment_service)
         if payment_service_res.error_occurred():
@@ -113,3 +116,14 @@ class Market:
 
     def check_if_admin(self,user_id:str):
         return user_id in self.__admins_ids
+
+    def notify_purchase(self, all_baskets, visitor_state_id):
+        for basket in all_baskets:
+            store_id = basket.get_store()
+            product_and_quantities = basket.get_products_and_quantities()
+            product_format = [f"{q} {p}" for p, q in product_and_quantities.items()]
+            msg = f"{visitor_state_id} purchased {'|'.join(product_format)}"
+            self.__notification_controller.notify_all(store_id, Activities.PURCHASE_IN_STORE, msg)
+
+    def register_store(self, store_name, owner_username):
+        self.__notification_controller.register_store(store_name, owner_username)
