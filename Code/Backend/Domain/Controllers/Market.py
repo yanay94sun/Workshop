@@ -125,5 +125,19 @@ class Market:
             msg = f"{visitor_state_id} purchased {'|'.join(product_format)}"
             self.__notification_controller.notify_all(store_id, Activities.PURCHASE_IN_STORE, msg)
 
+    def notify_activity(self, store_id, activity: Activities, msg):
+        self.__notification_controller.notify_all(store_id, activity, msg)
+
     def register_store(self, store_name, owner_username):
         self.__notification_controller.register_store(store_name, owner_username)
+
+    def subscribe_to_store(self, store_id, new_owner_id):
+        [self.__notification_controller.subscribe(new_owner_id, store_id, act) for act in Activities]
+
+    def remove_store_official(self, store_id, remover_username, subject_username):
+        self.__notification_controller.notify_all(store_id,
+                                                  Activities.OFFICIAL_REMOVED,
+                                                  f"{remover_username} discharged {subject_username} from its duties")
+        [self.__notification_controller.unsubscribe(subject_username, store_id, act) for act in Activities]
+
+
