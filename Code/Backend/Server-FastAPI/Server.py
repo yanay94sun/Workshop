@@ -13,6 +13,8 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Service.Objects.Discount import Discount
+from Code.Backend.Service.Objects.DiscountCompose import DiscountCompose
 from Code.Backend.Service.Objects.EditProduct import EditProduct
 from Code.Backend.Service.Objects.NewOfficial import newOfficial
 from Code.Backend.Service.Objects.AddProduct import AddProduct
@@ -91,9 +93,9 @@ async def handle_client_connect_event(sid, *args, **kwargs):  # (!)
 
 
 @socket_manager.on('client_start_event')
-async def handle_client_start_event(sid, *args, **kwargs): # (!)
+async def handle_client_start_event(sid, *args, **kwargs):  # (!)
     print('Server says: start_event worked')
-    await socket_manager.emit('server_antwort01',{'data':'start event worked'})
+    await socket_manager.emit('server_antwort01', {'data': 'start event worked'})
 
 
 """
@@ -267,6 +269,118 @@ def contact_supply_service(package_info: PackageInfo):
     return res.value
 
 
+@app.post("/discount/visible/product")
+def add_visible_discount_by_product(discount: Discount):
+    res = service.add_visible_discount_by_product(discount.user_id, discount.store_id, discount.discount_price,
+                                                  discount.end_date, discount.product_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/visible/category")
+def add_visible_discount_by_category(discount: Discount):
+    res = service.add_visible_discount_by_category(discount.user_id, discount.store_id, discount.discount_price,
+                                                   discount.end_date, discount.category_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/visible/store")
+def add_visible_discount_by_store(discount: Discount):
+    res = service.add_visible_discount_by_store(discount.user_id, discount.store_id, discount.discount_price,
+                                                discount.end_date)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/conditional/product")
+def add_conditional_discount_by_product(discount: Discount):
+    res = service.add_conditional_discount_by_product(discount.user_id, discount.store_id, discount.discount_price,
+                                                      discount.end_date,
+                                                      discount.product_id,
+                                                      discount.dic_of_products_and_quantity,
+                                                      discount.min_price_for_discount)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/conditional/category")
+def add_conditional_discount_by_category(discount: Discount):
+    res = service.add_conditional_discount_by_category(discount.user_id, discount.store_id, discount.discount_price,
+                                                       discount.end_date,
+                                                       discount.category_name,
+                                                       discount.dic_of_products_and_quantity,
+                                                       discount.min_price_for_discount)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/conditional/store")
+def add_conditional_discount_by_store(discount: Discount):
+    res = service.add_conditional_discount_by_store(discount.user_id, discount.store_id, discount.discount_price,
+                                                    discount.end_date,
+                                                    discount.dic_of_products_and_quantity,
+                                                    discount.min_price_for_discount)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/or")
+def add_or_discount(discount: DiscountCompose):
+    res = service.add_or_discount(discount.user_id,
+                                  discount.store_id, discount.first_discount_id,
+                                  discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/and")
+def add_and_discount(discount: DiscountCompose):
+    res = service.add_and_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/xor")
+def add_xor_discount(discount: DiscountCompose):
+    res = service.add_xor_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/sum")
+def add_sum_discount(discount: DiscountCompose):
+    res = service.add_sum_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/max")
+def add_max_discount(discount: DiscountCompose):
+    res = service.add_max_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
 """
 --------------------------------------
 Member's purchase actions
@@ -364,8 +478,6 @@ def get_store_roles(store: Store_name):
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
-
-
 
 
 """

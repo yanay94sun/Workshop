@@ -351,29 +351,8 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    # def add_conditional_discount(self, store_id, list_of_products_ids, discount_price, end_date,
-    #                              dic_of_products_and_quantity, min_price_for_discount=0, by_category="",
-    #                              by_store=False):
-    #     """
-    #            add to list_of_products_ids if the discount is on specific products "
-    #            add to by_category if the discount is on products by category"
-    #           add to by_store if the discount is on all products"
-    #
-    #            add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
-    #            add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
-    #            """
-    #     try:
-    #         store = self.__get_store(store_id)
-    #         discount = store.get_discount_policy().add_conditional_discount(list_of_products_ids, discount_price,
-    #                                                                         end_date, by_category, by_store,
-    #                                                                         dic_of_products_and_quantity,
-    #                                                                         min_price_for_discount)
-    #         return Response(value=discount)
-    #     except ValueError as e:
-    #         return Response(msg=e.args[0])
-
     def add_conditional_discount_by_product(self, user_id, store_id, discount_price, end_date, product_id,
-                                            dic_of_products_and_quantity, min_price_for_discount=0):
+                                            dic_of_products_and_quantity, min_price_for_discount):
         """
        add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
        add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
@@ -394,7 +373,7 @@ class StoreController:
             return Response(msg=e.args[0])
 
     def add_conditional_discount_by_category(self, user_id, store_id, discount_price, end_date, category_name,
-                                             dic_of_products_and_quantity, min_price_for_discount=0):
+                                             dic_of_products_and_quantity, min_price_for_discount):
         """
        add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
        add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
@@ -415,7 +394,7 @@ class StoreController:
             return Response(msg=e.args[0])
 
     def add_conditional_discount_by_store(self, user_id, store_id, discount_price, end_date,
-                                          dic_of_products_and_quantity, min_price_for_discount=0):
+                                          dic_of_products_and_quantity, min_price_for_discount):
         """
        add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
        add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
@@ -680,6 +659,8 @@ class StoreController:
                     permissions[5] = value.check_permission(Actions.CLOSE_STORE)
                     permissions[6] = value.check_permission(Actions.GET_STORE_ROLES)
                     permissions[7] = value.check_permission(Actions.GET_STORE_PURCHASE_HISTORY)
+                    permissions[8] = value.check_permission(Actions.DISCOUNT_MANAGEMENT)
+                    permissions[9] = value.check_permission(Actions.PURCHASE_MANAGEMENT)
                     break
             return Response(value=permissions)
 
