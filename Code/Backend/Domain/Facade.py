@@ -805,8 +805,155 @@ class Facade:
         member_id = self.user_controller.get_users_username(user_id)
         if member_id.error_occurred():
             return member_id
-        return self.store_controller.add_visible_discount_by_product(user_id, store_id, discount_price, end_date,
+        return self.store_controller.add_visible_discount_by_product(member_id.value, store_id, discount_price, end_date,
                                                                      product_id)
+
+    def add_visible_discount_by_category(self, user_id, store_id,
+                                         discount_price, end_date, category_name):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_visible_discount_by_category(member_id.value, store_id,
+                                                                      discount_price, end_date, category_name)
+
+    def add_visible_discount_by_store(self, user_id, store_id,
+                                      discount_price, end_date):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_visible_discount_by_store(member_id.value, store_id, discount_price, end_date)
+
+    def add_conditional_discount_by_product(self, user_id, store_id, discount_price, end_date, product_id,
+                                            dic_of_products_and_quantity, min_price_for_discount):
+        """
+        add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
+        add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+         """
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_conditional_discount_by_product(member_id.value, store_id, discount_price,
+                                                                         end_date, product_id,
+                                                                         dic_of_products_and_quantity,
+                                                                         min_price_for_discount)
+
+    def add_conditional_discount_by_category(self, user_id, store_id, discount_price, end_date, category_name,
+                                             dic_of_products_and_quantity, min_price_for_discount):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_conditional_discount_by_category(member_id.value, store_id,
+                                                                          discount_price,
+                                                                          end_date, category_name,
+                                                                          dic_of_products_and_quantity,
+                                                                          min_price_for_discount)
+
+    def add_conditional_discount_by_store(self, user_id, store_id, discount_price, end_date,
+                                          dic_of_products_and_quantity, min_price_for_discount):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_conditional_discount_by_store(member_id.value, store_id, discount_price, end_date,
+                                                                       dic_of_products_and_quantity,
+                                                                       min_price_for_discount)
+
+    def add_or_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_or_discount(member_id.value, store_id, first_discount_id, second_discount_id)
+
+    def add_and_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_and_discount(member_id.value, store_id, first_discount_id, second_discount_id)
+
+    def add_xor_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_xor_discount(member_id.value, store_id, first_discount_id, second_discount_id)
+
+    def add_sum_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_sum_discount(member_id.value, store_id, first_discount_id, second_discount_id)
+
+    def add_max_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_max_discount(member_id.value, store_id, first_discount_id, second_discount_id)
+
+    def add_simple_purchase_rule_by_category(self, user_id, store_id, by_category):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_simple_purchase_rule_by_category(member_id.value, store_id, by_category)
+
+    def add_simple_purchase_rule_by_product(self, user_id, store_id, products_to_have_for_purchase):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_simple_purchase_rule_by_product(member_id.value, store_id,
+                                                                         products_to_have_for_purchase)
+
+    def add_simple_purchase_rule_by_min_price(self, user_id, store_id, min_price_to_have_for_purchase):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_simple_purchase_rule_by_min_price(member_id.value,
+                                                                           store_id,
+                                                                           min_price_to_have_for_purchase)
+
+    def add_and_purchase_rule(self, user_id, store_id, first_rule_id, second_rule_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_and_purchase_rule(member_id.value, store_id, first_rule_id, second_rule_id)
+
+    def add_or_purchase_rule(self, user_id, store_id, first_rule_id, second_rule_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_or_purchase_rule(member_id.value, store_id, first_rule_id, second_rule_id)
+
+
+
+
+
 # if __name__ == '__main__':
 #     fc = Facade()
 #     print(fc.enter_as_guest().msg)

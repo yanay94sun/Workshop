@@ -668,6 +668,110 @@ class Service:
         """
         pass
 
+    def add_visible_discount_by_product(self, user_id, store_id,
+                                        discount_price, end_date, product_id):
+        response = Response(self.facade.add_visible_discount_by_product(user_id, store_id,
+                                                                        discount_price, end_date, product_id))
+        write_to_log(response, "successfully added visible discount by product")
+        return response
+
+    def add_visible_discount_by_category(self, user_id, store_id,
+                                         discount_price, end_date, category_name):
+        response = Response(self.facade.add_visible_discount_by_category(user_id, store_id,
+                                                                         discount_price, end_date, category_name))
+        write_to_log(response, "successfully added visible discount by category")
+        return response
+
+    def add_visible_discount_by_store(self, user_id, store_id,
+                                      discount_price, end_date):
+        response = Response(self.facade.add_visible_discount_by_store(user_id, store_id,
+                                                                      discount_price, end_date))
+        write_to_log(response, "successfully added visible discount by store")
+        return response
+
+    def add_conditional_discount_by_product(self, user_id, store_id, discount_price, end_date, product_id,
+                                            dic_of_products_and_quantity, min_price_for_discount):
+        response = Response(
+            self.facade.add_conditional_discount_by_product(user_id, store_id, discount_price, end_date, product_id,
+                                                            dic_of_products_and_quantity, min_price_for_discount))
+        write_to_log(response, "successfully added conditional discount by product")
+        return response
+
+    def add_conditional_discount_by_category(self, user_id, store_id, discount_price, end_date, category_name,
+                                             dic_of_products_and_quantity, min_price_for_discount):
+        response = Response(
+            self.facade.add_conditional_discount_by_category(user_id, store_id, discount_price, end_date, category_name,
+                                                             dic_of_products_and_quantity, min_price_for_discount))
+        write_to_log(response, "successfully added conditional discount by category")
+        return response
+
+    def add_conditional_discount_by_store(self, user_id, store_id, discount_price, end_date,
+                                          dic_of_products_and_quantity, min_price_for_discount):
+        response = Response(
+            self.facade.add_conditional_discount_by_store(user_id, store_id, discount_price, end_date,
+                                                          dic_of_products_and_quantity, min_price_for_discount))
+        write_to_log(response, "successfully added conditional discount by store")
+        return response
+
+    def add_or_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        response = Response(
+            self.facade.add_or_discount(user_id, store_id, first_discount_id, second_discount_id))
+        write_to_log(response, "successfully added or discount")
+        return response
+
+    def add_and_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        response = Response(
+            self.facade.add_and_discount(user_id, store_id, first_discount_id, second_discount_id))
+        write_to_log(response, "successfully added and discount")
+        return response
+
+    def add_xor_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        response = Response(
+            self.facade.add_xor_discount(user_id, store_id, first_discount_id, second_discount_id))
+        write_to_log(response, "successfully added xor discount")
+        return response
+
+    def add_sum_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        response = Response(
+            self.facade.add_sum_discount(user_id, store_id, first_discount_id, second_discount_id))
+        write_to_log(response, "successfully added sum discount")
+        return response
+
+    def add_max_discount(self, user_id, store_id, first_discount_id, second_discount_id):
+        response = Response(
+            self.facade.add_max_discount(user_id, store_id, first_discount_id, second_discount_id))
+        write_to_log(response, "successfully added max discount")
+        return response
+
+    def add_simple_purchase_rule_by_category(self, user_id, store_id, by_category):
+        response = Response(
+            self.facade.add_simple_purchase_rule_by_category(user_id, store_id, by_category))
+        write_to_log(response, "successfully added purchase rule by category")
+        return response
+
+    def add_simple_purchase_rule_by_product(self, user_id, store_id, products_to_have_for_purchase):
+        response = Response(
+            self.facade.add_simple_purchase_rule_by_product(user_id, store_id, products_to_have_for_purchase))
+        write_to_log(response, "successfully added purchase rule by product")
+        return response
+
+    def add_simple_purchase_rule_by_min_price(self, user_id, store_id, min_price_to_have_for_purchase):
+        response = Response(
+            self.facade.add_simple_purchase_rule_by_product(user_id, store_id, min_price_to_have_for_purchase))
+        write_to_log(response, "successfully added purchase rule by min price")
+        return response
+
+    def add_and_purchase_rule(self, user_id, store_id, first_rule_id, second_rule_id):
+        response = Response(
+            self.facade.add_and_purchase_rule(user_id, store_id, first_rule_id, second_rule_id))
+        write_to_log(response, "successfully added and purchase rule")
+        return response
+
+    def add_or_purchase_rule(self, user_id, store_id, first_rule_id, second_rule_id):
+        response = Response(
+            self.facade.add_or_purchase_rule(user_id, store_id, first_rule_id, second_rule_id))
+        write_to_log(response, "successfully added or purchase rule")
+        return response
 
 
     ##################################################################

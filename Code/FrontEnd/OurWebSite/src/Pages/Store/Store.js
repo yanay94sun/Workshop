@@ -20,9 +20,16 @@ function Store({storesProducts, setStoresProducts}){
     const [amount, setAmount]  = useState(-1)
     const [officalsName, setOfficalsName] = useState('')
     const [roles, setRoles] = useState([])
+    const [newDiscountType, setnewDiscountType] = useState('visible') 
+    const [discountOn, setDiscountOn] = useState('product')
+    const [discount_price, setDiscount_price] = useState('0')
+    const [end_date, setEnd_date] = useState('')
+    const [dic_of_products_and_quantity, setDic_of_products_and_quantity] = useState('')
+    const [min_price_for_discount, setMin_price_for_discount] = useState(0)
 
     const params = useParams()
     const [options,setOptions] = useState([])
+    const [categoryOptions, setCategoryOptions] = useState([])
     const storeId = params.storeId
     const [permissions, setPermissions] = useState({})
     const [errMsg, setErrMsg] = useState("")
@@ -180,7 +187,37 @@ function Store({storesProducts, setStoresProducts}){
                 return {label:x["_Product__name"],
                         value:x["_Product__ID"]}
         }))
+            const catgs = [... new Set(response.data["products"].map(item => item["_Product__category"]))]
+            setCategoryOptions(categryOptions => catgs.map(function(x){
+                return {label:x,
+                        value:x}
+                
+            }))
+            if (categoryOptions.length >0)
+                setCategory(categoryOptions[0].value)
         } catch (err){
+            console.log(err.response);
+        }
+    }
+
+    const addNewDiscount = async (e)=>{
+        e.preventDefault()
+        try{
+            const discount = {
+                user_id: localStorage.getItem("user_id"),
+                store_id: storeId,
+                discount_price:discount_price,
+                end_date: end_date,
+                product_id: chosenProductiD,
+                category_name: category,
+                dic_of_products_and_quantity: dic_of_products_and_quantity,
+                min_price_for_discount: min_price_for_discount
+            }
+            console.log(discount)
+            const response = await axios.post("http://127.0.0.1:8000/discount/"+newDiscountType+"/"+discountOn,discount)         
+            console.log(response)
+        }
+        catch (err){
             console.log(err.response);
         }
     }
@@ -189,10 +226,20 @@ function Store({storesProducts, setStoresProducts}){
         return permissions[per];
     }
 
+    const disablePastDate = () => {
+        const today = new Date();
+        const dd = String(today.getDate() + 1).padStart(2, "0");
+        const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+        const yyyy = today.getFullYear();
+        return yyyy + "-" + mm + "-" + dd;
+    };
+
     const reset = () =>{
         setErrMsg("")
         setChosenProduct("1")
         setAmount("0")
+        if (categoryOptions.length >0)
+            setCategory(categoryOptions[0].value)
     }
 
     useEffect(() => {   
@@ -295,19 +342,54 @@ return(
                     </form>
                 </div> </Popup></li>: ""}
             {/* 7 */}
-                {hasPermition(4) ? <li><Popup trigger={<button style={{margin:'5px'}}>change manager permissions</button>} position="right center">
+                {hasPermition(4) ? <li><Popup  onClose={reset} trigger={<button style={{margin:'5px'}}>change manager permissions</button>} position="right center">
                 <div>
                     in the requminets?
                     <form  onSubmit = {addNewProduct}>
+                    {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
                         <input type = 'text' name = 'name' placeholder="in the requminets?..." required onChange={(e)=> setProductName(e.target.value)}/>
                         <button style={{marginLeft: '40%'}}  onSubmit = {addNewProduct}>add</button>
                     </form>
                 </div> </Popup></li>: ""}
             {/* 8 */}
-                {hasPermition(6) ? <li><Popup onOpen={getStoreRoles} trigger={<button style={{margin:'5px'}}>Get store's roles</button>} position="right center">
+                {hasPermition(6) ? <li><Popup  onClose={reset} onOpen={getStoreRoles} trigger={<button style={{margin:'5px'}}>Get store's roles</button>} position="right center">
                 <div>
                     {roles}
                 </div> </Popup></li>: ""}
+            {/* 9 */}
+                {hasPermition(8) ? <li><Popup  onClose={reset} onOpen={reset} trigger={<button style={{margin:'5px'}}>add new discount</button>} position="right center">
+                    <div>
+                        <form  onSubmit = {addNewDiscount}>
+                            {errMsg !== "" ?<p >{errMsg}</p> : <br />}
+                            <p>choose discount type:</p>
+                            <select onChange={(e) => setnewDiscountType(e.target.value)}>
+                                <option value = 'visible'>visible</option>
+                                <option value = 'conditional'>conditional</option>
+                            </select> 
+                            <p>choose discount by:</p>   
+                            <select onChange={(e) => setDiscountOn(e.target.value)}>
+                                <option value = 'product'>product</option>
+                                <option value = 'category'>category</option>
+                                <option value = 'store'>store</option>
+                            </select>          
+                            {discountOn === 'product' ? <div><p>choose product to have discount on</p><select onChange={(e) => setChosenProduct(e.target.value)}>
+                                {options.map((option) => (
+                                    <option value={option.value}>{option.label}</option>))}
+                            </select> 
+                            </div>:""}  
+                            {discountOn === 'category' ? <div><p>choose category to have discount on</p> <select onChange={(e) => setCategory(e.target.value)}>
+                                {categoryOptions.map((option) => (
+                                    <option value={option.value}>{option.label}</option>))}
+                            </select> </div> :""} 
+                            <p>choose end date</p>
+                            <input type = 'date'min={disablePastDate()} name = 'price' placeholder="discount price..."  onChange={(e)=> setDiscount_price(e.target.value)}/> 
+                            <p>discount price:</p>
+                            <input type = 'number' step="0.01" name = 'price' placeholder="discount price..."  onChange={(e)=> setDiscount_price(e.target.value)}/>
+                            
+                            <button style={{marginLeft: '40%'}}  onSubmit = {addNewDiscount}>add</button>
+            
+                        </form>
+                    </div> </Popup></li>: ""}
             
                 
         </div>

@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Response, status, HTTPException, WebSocket, Depends, Cookie
-import random
+from fastapi import FastAPI, Response, status, HTTPException, Depends, Cookie
 from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
@@ -14,6 +13,8 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Service.Objects.Discount import Discount
+from Code.Backend.Service.Objects.DiscountCompose import DiscountCompose
 from Code.Backend.Service.Objects.EditProduct import EditProduct
 from Code.Backend.Service.Objects.NewOfficial import newOfficial
 from Code.Backend.Service.Objects.AddProduct import AddProduct
@@ -29,7 +30,7 @@ from Code.Backend.Service.Objects.TokenData import TokenData
 from Code.Backend.Service.Objects.UserID import UserID
 from Code.Backend.Service.Objects.User_info import User_info
 from Code.Backend.Service.Service import Service
-from Code.Backend import oauth2
+# from Code.Backend import oauth2
 
 """
                                      IMPORTANT!!!
@@ -80,22 +81,11 @@ app.add_middleware(
     #     "Set-Cookie",
     # ],  # include additional headers as per the application demand
 )
-# resfaf dsplm
+
 """
 WebSocket - SocketIO
 """
-# socket_manager = SocketManager(app=app)
-#
-# @socket_manager.on('client_connect_event')
-# async def handle_client_connect_event(sid, *args, **kwargs):  # (!)
-#     await socket_manager.emit('server_antwort01', {'data': 'connection was successful'})
-#
-#
-# @socket_manager.on('client_start_event')
-# async def handle_client_start_event(sid, *args, **kwargs): # (!)
-#     print('Server says: start_event worked')
-#     await socket_manager.emit('server_antwort01',{'data':'start event worked'})
-#
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -116,6 +106,11 @@ async def websocket_endpoint(websocket: WebSocket):
     print('Bye..')
 
 
+@socket_manager.on('client_start_event')
+async def handle_client_start_event(sid, *args, **kwargs): # (!)
+    print('Server says: start_event worked')
+    await socket_manager.emit('server_antwort01',{'data':'start event worked'})
+
 
 """
 main page aka root
@@ -134,6 +129,8 @@ General guest actions
 ---------------------------------------------------
 """
 
+
+#
 
 
 @app.get("/guests/enter")
@@ -176,9 +173,9 @@ def login(
     # create a token
     # return token
 
-    access_token = oauth2.create_access_token(data={"user_id": user_info.id})
+    # access_token = oauth2.create_access_token(data={"user_id": user_info.id})
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"response": res, "token_type": "bearer"}
 
 
 @app.post("/guests/register")
@@ -191,7 +188,7 @@ def register(user_info: User_info):  # , user_id: Optional[str] = Cookie(None)):
     res = service.register(user_info.id, user_info_dict)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
-    return {"data": user_info_dict}
+    return {"data": res.value}
 
 
 @app.get("/stores/{store_id}")
@@ -283,6 +280,118 @@ def contact_supply_service(package_info: PackageInfo):
     res = service.contact_supply_service(package_info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/visible/product")
+def add_visible_discount_by_product(discount: Discount):
+    res = service.add_visible_discount_by_product(discount.user_id, discount.store_id, discount.discount_price,
+                                                  discount.end_date, discount.product_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/visible/category")
+def add_visible_discount_by_category(discount: Discount):
+    res = service.add_visible_discount_by_category(discount.user_id, discount.store_id, discount.discount_price,
+                                                   discount.end_date, discount.category_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/visible/store")
+def add_visible_discount_by_store(discount: Discount):
+    res = service.add_visible_discount_by_store(discount.user_id, discount.store_id, discount.discount_price,
+                                                discount.end_date)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/conditional/product")
+def add_conditional_discount_by_product(discount: Discount):
+    res = service.add_conditional_discount_by_product(discount.user_id, discount.store_id, discount.discount_price,
+                                                      discount.end_date,
+                                                      discount.product_id,
+                                                      discount.dic_of_products_and_quantity,
+                                                      discount.min_price_for_discount)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/conditional/category")
+def add_conditional_discount_by_category(discount: Discount):
+    res = service.add_conditional_discount_by_category(discount.user_id, discount.store_id, discount.discount_price,
+                                                       discount.end_date,
+                                                       discount.category_name,
+                                                       discount.dic_of_products_and_quantity,
+                                                       discount.min_price_for_discount)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/conditional/store")
+def add_conditional_discount_by_store(discount: Discount):
+    res = service.add_conditional_discount_by_store(discount.user_id, discount.store_id, discount.discount_price,
+                                                    discount.end_date,
+                                                    discount.dic_of_products_and_quantity,
+                                                    discount.min_price_for_discount)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/or")
+def add_or_discount(discount: DiscountCompose):
+    res = service.add_or_discount(discount.user_id,
+                                  discount.store_id, discount.first_discount_id,
+                                  discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/and")
+def add_and_discount(discount: DiscountCompose):
+    res = service.add_and_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/xor")
+def add_xor_discount(discount: DiscountCompose):
+    res = service.add_xor_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/sum")
+def add_sum_discount(discount: DiscountCompose):
+    res = service.add_sum_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/discount/max")
+def add_max_discount(discount: DiscountCompose):
+    res = service.add_max_discount(discount.user_id,
+                                   discount.store_id, discount.first_discount_id,
+                                   discount.second_discount_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
 

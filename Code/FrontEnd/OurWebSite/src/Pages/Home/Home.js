@@ -10,8 +10,7 @@ import Store from "../Store/Store"
 import axios from "axios";
 import HomePage from "../HomePage/HomePage";
 import StoreHome from "../Stores/StoresHome";
-import Payment from "../Payment/Payment";
-
+import Payment from "../Payment/Payment"
 
 const Home = ({setLogin,isLogged,myId}) => {
 

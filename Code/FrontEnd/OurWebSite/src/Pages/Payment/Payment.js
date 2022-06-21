@@ -53,7 +53,7 @@ function Payment(){
                 <input type = 'text' name = 'customer_name' placeholder="customer name..." required onChange={(e)=> SetCustomer_name(e.target.value)}/>
                 <input  type = 'text' name = 'credit_card' placeholder="credit_card..."  onChange={(e)=> SetCredit_card(e.target.value)}/>
                 <input type = 'number' name = 'cvv' placeholder="cvv..." required onChange={(e)=> SetCvv(e.target.value)}/>
-                <h4>Your total amount is: {amount_to_pay}</h4>
+                <h4>Your total amount after discounts is: {amount_to_pay}$</h4>
                 <button style={{marginLeft: '40%'}}  onSubmit = {handlePayment}>Pay</button>
             </form>
         </div> 
