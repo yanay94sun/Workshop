@@ -1,21 +1,15 @@
-import threading
-from typing import Dict
-from typing import Dict, List
 import logging
+from typing import Dict
 
-from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
-from Code.Backend.Domain.Facade import Facade
-from Code.Backend.Service.Objects.PackageInfo import PackageInfo
-
-from Code.Backend.Domain.Controllers.Market import Market
-from Code.Backend.Domain.Controllers.StoreController import StoreController
-from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
-from Code.Backend.Domain.DM_product_info import DM_product_info
+from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
-from Code.Backend.Service.Objects import Shopcart_info
+from Code.Backend.Domain.Facade import Facade
+from Code.Backend.Service import helper
+from Code.Backend.Service.Objects.Configuration import *
 from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PersonalInfo import PersonalInfo
 from Code.Backend.Service.Objects.Personal_purchase_history import Personal_purchase_history
@@ -23,7 +17,9 @@ from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
 from Code.Backend.Service.Objects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
-from Code.Backend.Service.Objects.Store_info import Store_info
+import configparser
+
+from state import state
 
 logging.basicConfig(filename="SystemLog.log")
 
@@ -52,6 +48,27 @@ class Service:
         """
         response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
         write_to_log(response, "The system initialized successfully")
+
+        # this is how you add information to config file:
+
+        # # CREATE OBJECT
+        # config_file = configparser.ConfigParser()
+        #
+        # # READ CONFIG FILE
+        # config_file.read("configurations.ini")
+        #
+        # # UPDATE A FIELD VALUE
+        # config_file["Logger"]["LogLevel"] = "Debug"
+        #
+        # # ADD A NEW FIELD UNDER A SECTION
+        # config_file["Logger"].update({"Format": "(message)"})
+        #
+        # # SAVE THE SETTINGS TO THE FILE
+        # with open("configurations.ini", "w") as file_object:
+        #     config_file.write(file_object)
+
+        self.__config()
+
         return response
 
     def contact_payment_service(self, payment_info: PaymentInfo) -> Response:
@@ -651,6 +668,8 @@ class Service:
         """
         pass
 
+
+
     ##################################################################
     # functions for frontend
     ##############################################################
@@ -677,4 +696,35 @@ class Service:
         write_to_log(response, "successfully got permissions")
         return response
 
+    def __short_register(self, user):
+        uid = self.enter_as_guest()
+        if uid.error_occurred():
+            raise Exception(uid.msg)
+            return uid
+        r = self.register(uid.value, user)
+        if r.error_occurred():
+            raise Exception(r.msg)
+            return r
+        return uid.value
 
+    def __short_login(self, user):
+        uid = self.__short_register(user)
+        r = self.login(uid, user["username"], user["password"])
+        if r.error_occurred():
+            raise Exception(r.msg)
+            return r
+        return uid
+
+    def __short_open_store(self, user_id, store_name):
+        store_id = self.open_store(user_id, store_name)
+        if store_id.error_occurred():
+            raise Exception(store_id.msg)
+            return store_id
+        return store_id.value
+
+    def __config(self):
+        config = helper.read_config()
+        userName = config['Admin']['userName']
+        password = config['Admin']['password']
+        admin_id = self.enter_as_guest().value
+        self.register(admin_id, {"username": userName, 'password': password})

@@ -25,7 +25,6 @@ function MyStores({listItems, setListItems, ip }){
     } catch (err){
         console.log(err.response);
         setErrMsg(err.response.data['detail'])
-        console.log(errMsg);
 
     }  
     }
@@ -51,7 +50,7 @@ function MyStores({listItems, setListItems, ip }){
     return(
         <div>
             <h3 style={{textAlign:'center'}}>{welomeText(listItems)}</h3>
-            {errMsg != "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <p>{'\n'}</p>}
+            {errMsg != "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
             <form className="div-list" onSubmit = {handleSumbit}>
                 <input type="text" placeholder="please enter store name" required onChange = {(e) => setStoreName(e.target.value)}/> 
                 <button className="buttonS" style={{ cursor:'pointer'}} onSubmit={handleSumbit}>add</button>

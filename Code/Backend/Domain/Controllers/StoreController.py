@@ -144,7 +144,6 @@ class StoreController:
 
             # check if product exists
             product = store.get_product(product_id, quantity)
-
             # check if there is enough products to remove
             if product is None:
                 return Response(msg="Attempt to remove more Items then the existing quantity")
@@ -301,36 +300,51 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_visible_discount_by_product(self, store_id,
+    def add_visible_discount_by_product(self, user_id, store_id,
                                         discount_price, end_date, product_id):
         """
         """
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy(). \
                 add_visible_discount(discount_price, end_date, product_id, 1)
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_visible_discount_by_category(self, store_id,
+    def add_visible_discount_by_category(self, user_id, store_id,
                                          discount_price, end_date, category_name):
         """
         """
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy(). \
                 add_visible_discount(discount_price, end_date, category_name, 2)
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_visible_discount_by_store(self, store_id,
+    def add_visible_discount_by_store(self, user_id, store_id,
                                       discount_price, end_date):
         """
         """
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy(). \
                 add_visible_discount(discount_price, end_date, "", 3)
             return Response(value=discount)
@@ -358,7 +372,7 @@ class StoreController:
     #     except ValueError as e:
     #         return Response(msg=e.args[0])
 
-    def add_conditional_discount_by_product(self, store_id, discount_price, end_date, product_id,
+    def add_conditional_discount_by_product(self, user_id, store_id, discount_price, end_date, product_id,
                                             dic_of_products_and_quantity, min_price_for_discount=0):
         """
        add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
@@ -366,6 +380,11 @@ class StoreController:
         """
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_conditional_discount(discount_price,
                                                                             end_date, product_id, 1,
                                                                             dic_of_products_and_quantity,
@@ -374,7 +393,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_conditional_discount_by_category(self, store_id, discount_price, end_date, category_name,
+    def add_conditional_discount_by_category(self, user_id, store_id, discount_price, end_date, category_name,
                                              dic_of_products_and_quantity, min_price_for_discount=0):
         """
        add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
@@ -382,6 +401,11 @@ class StoreController:
         """
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_conditional_discount(discount_price,
                                                                             end_date, category_name, 2,
                                                                             dic_of_products_and_quantity,
@@ -390,7 +414,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_conditional_discount_by_store(self, store_id, discount_price, end_date,
+    def add_conditional_discount_by_store(self, user_id, store_id, discount_price, end_date,
                                           dic_of_products_and_quantity, min_price_for_discount=0):
         """
        add to dic_of_products_and_quantity if the condition is "at least x of product y" {id:quantity}
@@ -398,6 +422,11 @@ class StoreController:
         """
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_conditional_discount(discount_price,
                                                                             end_date, "", 3,
                                                                             dic_of_products_and_quantity,
@@ -406,45 +435,70 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_or_discount(self, store_id, first_discount_id, second_discount_id):
+    def add_or_discount(self, user_id, store_id, first_discount_id, second_discount_id):
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_or_discount(first_discount_id, second_discount_id)
 
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_and_discount(self, store_id, first_discount_id, second_discount_id):
+    def add_and_discount(self, user_id, store_id, first_discount_id, second_discount_id):
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_and_discount(first_discount_id, second_discount_id)
 
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_xor_discount(self, store_id, first_discount_id, second_discount_id):
+    def add_xor_discount(self, user_id, store_id, first_discount_id, second_discount_id):
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_xor_discount(first_discount_id, second_discount_id)
 
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_sum_discount(self, store_id, first_discount_id, second_discount_id):
+    def add_sum_discount(self, user_id, store_id, first_discount_id, second_discount_id):
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_sum_discount(first_discount_id, second_discount_id)
 
             return Response(value=discount)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_max_discount(self, store_id, first_discount_id, second_discount_id):
+    def add_max_discount(self, user_id, store_id, first_discount_id, second_discount_id):
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.DISCOUNT_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             discount = store.get_discount_policy().add_max_discount(first_discount_id, second_discount_id)
 
             return Response(value=discount)
@@ -466,9 +520,7 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_simple_purchase_rule(self, store_id, products_to_have_for_purchase,
-                                 min_price_to_have_for_purchase=0,
-                                 by_category="", by_store=False):
+    def add_simple_purchase_rule_by_category(self, user_id, store_id, by_category):
         """
            add to products_to_have_for_purchase if the condition is "at least x of product y"
            add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
@@ -477,25 +529,81 @@ class StoreController:
            """
         try:
             store = self.__get_store(store_id)
-            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule(products_to_have_for_purchase,
-                                                                                 min_price_to_have_for_purchase,
-                                                                                 by_category, by_store)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.PURCHASE_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
+            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule([], 0, by_category, None)
+            return Response(value=purchase_rule)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+        # /////
+
+    def add_simple_purchase_rule_by_product(self, user_id, store_id, products_to_have_for_purchase):
+        """
+           add to products_to_have_for_purchase if the condition is "at least x of product y"
+           add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+           add to by_category if the condition is "the cart should have at least one product of category x"
+           by store i don't know...
+           """
+        try:
+            store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.PURCHASE_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
+            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule(
+                products_to_have_for_purchase, 0, "",
+                None)
+            return Response(value=purchase_rule)
+        except ValueError as e:
+            return Response(msg=e.args[0])
+        # ///
+
+    def add_simple_purchase_rule_by_min_price(self, user_id, store_id, min_price_to_have_for_purchase):
+        """
+           add to products_to_have_for_purchase if the condition is "at least x of product y"
+           add to min_price_to_have_for_purchase if the condition is "at least x of total cart price"
+           add to by_category if the condition is "the cart should have at least one product of category x"
+           by store i don't know...
+           """
+        try:
+            store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.PURCHASE_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
+            purchase_rule = store.get_purchase_policy().add_simple_purchase_rule([],
+                                                                                 min_price_to_have_for_purchase, "",
+                                                                                 None)
             return Response(value=purchase_rule)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-
-    def add_and_purchase_rule(self, store_id, first_rule_id, second_rule_id):
+    def add_and_purchase_rule(self, user_id, store_id, first_rule_id, second_rule_id):
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.PURCHASE_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             purchase_rule = store.get_purchase_policy().add_and_purchase_rule(first_rule_id, second_rule_id)
             return Response(value=purchase_rule)
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def add_or_purchase_rule(self, store_id, first_rule_id, second_rule_id):
+    def add_or_purchase_rule(self, user_id, store_id, first_rule_id, second_rule_id):
         try:
             store = self.__get_store(store_id)
+
+            # check if user has access to this action
+            if not store.has_access(user_id, Actions.PURCHASE_MANAGEMENT):
+                return Response(msg="User does not have access to this action")
+
             purchase_rule = store.get_purchase_policy().add_or_purchase_rule(first_rule_id, second_rule_id)
             return Response(value=purchase_rule)
         except ValueError as e:
@@ -551,7 +659,7 @@ class StoreController:
     def valid_all_products_for_purchase(self, all_products: List[ProductPurchaseRequest]):
         return all(map(lambda p: self.stores[p.store_id].has_quantity(p.product_id, p.quantity), all_products))
 
-    def get_product_and_quantities(self,store_id,product_id):
+    def get_product_and_quantities(self, store_id, product_id):
         try:
             store = self.__get_store(store_id)
             return Response(value=store.get_product_and_quantities(product_id))
