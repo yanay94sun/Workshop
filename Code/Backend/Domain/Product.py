@@ -10,7 +10,6 @@ class Product:
         self.__category = category
         self.store_ID = store_ID
 
-
     def change_name(self, new_name):
         self.__name = new_name
 

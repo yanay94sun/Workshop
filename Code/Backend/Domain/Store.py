@@ -1,6 +1,8 @@
 from typing import Dict, List
 
 from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Domain.StoreOfficials.Permissions import Permissions, Actions
 from Code.Backend.Domain.Product import Product
 from Code.Backend.Domain.Purchase import Purchase
 from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
@@ -61,6 +63,8 @@ class Store:
         self.__quantities[product_id] += quantity
 
     def add_new_product(self, name, description, price, category):
+        if name in map(lambda x: x.get_name(),list(self.__products.values())):
+            raise ValueError("product name already exist")
         self.__id_counter += 1
         ID = str(self.__id_counter)
         self.__products[ID] = Product(ID, name, description, price, category, self.__store_info.ID)
@@ -69,15 +73,15 @@ class Store:
 
     def edit_product(self, product_id, name, description, rating, price, category):
         product = self.__products[product_id]
-        if name is not None:
+        if name is not None and name != "":
             product.change_name(name)
-        if description is not None:
+        if description is not None and description != "":
             product.change_description(description)
-        if rating is not None:
+        if rating is not None and rating != -1:
             product.change_rating(rating)
-        if price is not None:
+        if price is not None and price != -1:
             product.change_price(price)
-        if category is not None:
+        if category is not None and category != "":
             product.change_category(category)
 
     def add_owner(self, user_id: str, new_user_id: str):
@@ -109,5 +113,59 @@ class Store:
     def get_discount_policy(self):
         return self.__discount_policy
 
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them(self,
+                                                                                                     remover_username,
+                                                                                                     subject_username):
+        if remover_username not in self.__officials:
+            raise Exception("isn't official")
+        if isinstance(self.__officials[remover_username], StoreManager):
+            raise Exception("isn't store owner or founder")
+        if subject_username not in self.__officials:
+            raise Exception("subject isn't official")
+        if self.__officials[subject_username].appointee.appointed != remover_username:
+            raise Exception("subject wasn't appointed by remover")
+        self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(
+            subject_username
+        )
+
+    def remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(self,
+                                                                                                                subject_username):
+        all_my_children = list(filter(lambda official:
+                                      official.appointee and
+                                      official.appointee.appointed == subject_username,
+                                      self.__officials.values()))
+        for child in all_my_children:
+            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(child.appointed)
+        self.__officials.pop(subject_username)
+
+    def remove_products_by_id(self, product_id, quantity):
+        if product_id in self.__products:
+            if self.__quantities[product_id] >= quantity:
+                self.__quantities[product_id] -= quantity
+
+    def has_quantity(self, product_id, quantity):
+        if product_id in self.__products:
+            return self.__quantities[product_id] >= quantity
+        raise BufferError("store does not exist")
+
+    def purchase_single_product(self, ppr: ProductPurchaseRequest):
+        if ppr.product_id not in self.__products:
+            raise Exception(f"product {ppr.product_id} doesnt appear in store {ppr.store_id}")
+        with self.__products[ppr.product_id]:
+            if self.has_quantity(ppr.product_id, ppr.quantity):
+                self.remove_products_by_id(ppr.product_id, ppr.quantity)
+            else:
+                raise Exception(f"quantity of {ppr.product_id} is not enough")
+
+    def revert_purchase_single_product(self, ppr):
+        with self.__products[ppr.product_id]:
+            self.__quantities[ppr.product_id] += ppr.quantity
+
     def get_purchase_policy(self):
         return self.__purchase_policy
+
+    def get_product_and_quantities(self, product_id):
+        if product_id in self.__products.keys():
+            return {"product": self.__products[product_id].__dict__, "quantity": self.__quantities[product_id]}
+        else:
+            raise ValueError("no object with this id on this store")

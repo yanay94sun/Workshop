@@ -1,4 +1,6 @@
 # from plistlib import Dict
+from passlib.exc import UnknownHashError
+
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.VisitorStates.VisitorState import State
 
@@ -16,21 +18,32 @@ class MemberState(State):
         State.__init__(self, shopping_cart)
         self.__username = member_info["username"]
         self.__password = member_info["password"]
+        self.__waiting_messages = []
         self.__member_info = member_info
 
     def is_logged_in(self):
         return True
 
     # # TODO yanay changed to hashing verfy
-    # def password_confirmed(self, password: str) -> bool:
-    #     return self.__password == password
+    def password_confirmed(self, password: str) -> bool:
+        return self.__password == password
 
-    def password_confirmed(self, plain_password):
-        return pwd_context.verify(plain_password, self.__password)
-
+    # def password_confirmed(self, plain_password):
+    #     try:
+    #         return pwd_context.verify(plain_password, self.__password)
+    #     except UnknownHashError:
+    #         return False
 
     def get_username(self):
         return self.__username
+
+    def add_message(self, msg):
+        self.__waiting_messages.append(msg)
+
+    def pull_msgs(self):
+        tmp = self.__waiting_messages
+        self.__waiting_messages = []
+        return tmp
 
 
 

@@ -3,6 +3,7 @@ from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_socketio import SocketManager
 
 # from Code.Backend.FastAPI import utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
@@ -12,7 +13,10 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Service.Objects.EditProduct import EditProduct
+from Code.Backend.Service.Objects.NewOfficial import newOfficial
 from Code.Backend.Service.Objects.AddProduct import AddProduct
+from Code.Backend.Service.Objects.NewProudct import NewProduct
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PaymentService import PaymentService
@@ -21,6 +25,7 @@ from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilte
 from Code.Backend.Service.Objects.StoreName import Store_name
 from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Objects.TokenData import TokenData
+from Code.Backend.Service.Objects.UserID import UserID
 from Code.Backend.Service.Objects.User_info import User_info
 from Code.Backend.Service.Service import Service
 from Code.Backend import oauth2
@@ -46,6 +51,7 @@ service.initial_system(payment_service=PaymentService(), supply_service=SupplySe
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
+socket_manager = SocketManager(app=app)
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -73,6 +79,22 @@ app.add_middleware(
     #     "Set-Cookie",
     # ],  # include additional headers as per the application demand
 )
+
+"""
+WebSocket - SocketIO
+"""
+
+
+@socket_manager.on('client_connect_event')
+async def handle_client_connect_event(sid, *args, **kwargs):  # (!)
+    await socket_manager.emit('server_antwort01', {'data': 'connection was successful'})
+
+
+@socket_manager.on('client_start_event')
+async def handle_client_start_event(sid, *args, **kwargs): # (!)
+    print('Server says: start_event worked')
+    await socket_manager.emit('server_antwort01',{'data':'start event worked'})
+
 
 """
 main page aka root
@@ -110,9 +132,9 @@ def enter_as_guest(response: Response):
     return res
 
 
-@app.get("/exit")
-def exit_site(user_id: Optional[str] = Cookie(None)):
-    res = service.exit(user_id)
+@app.post("/exit")
+def exit_site(user_id: UserID):  # Optional[str] = Cookie(None)):
+    res = service.exit(user_id.id)
     if res.error_occurred():
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -123,39 +145,47 @@ def exit_site(user_id: Optional[str] = Cookie(None)):
 
 @app.post("/guests/login")
 def login(
-        user_info: User_info,
-        user_id: Optional[str] = Cookie(None),
-):
-    # hashed_password = hash_pass(user_info.password)
-    res = service.login(user_id, user_info.username, user_info.password)
-    print(user_id)
+        user_info: User_info):  # ,        user_id: Optional[str] = Cookie(None),):
+    hashed_password = hash_pass(user_info.password)
+    res = service.login(user_info.id, user_info.username, user_info.password)  # user_info.password)
+    print(user_info.id)
+    print("PASS: " + hashed_password)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="wrong details")
 
     # create a token
     # return token
 
-    access_token = oauth2.create_access_token(data={"user_id": user_id})
+    access_token = oauth2.create_access_token(data={"user_id": user_info.id})
 
     return {"access_token": access_token, "token_type": "bearer"}
 
 
 @app.post("/guests/register")
-def register(user_info: User_info, user_id: Optional[str] = Cookie(None)):
+def register(user_info: User_info):  # , user_id: Optional[str] = Cookie(None)):
     # hash the password - user.password
-    hash_password = hash_pass(user_info.password)
-    user_info.password = hash_password
+    print(user_info)
+    # hash_password = hash_pass(user_info.password)
+    # user_info.password = hash_password
     user_info_dict = user_info.dict()
-    res = service.register(user_id, user_info_dict)
+    res = service.register(user_info.id, user_info_dict)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return {"data": user_info_dict}
 
 
-@app.get("/stores/{store_id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.get("/stores/{store_id}")
 def get_store_info(store_id: str):
     res = service.get_store_info(store_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/get_cart_price/{user_id}")
+def get_cart_price(user_id: str):
+    res = service.get_cart_price(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
@@ -170,28 +200,43 @@ def get_stores_info():
 
 
 @app.post("/add_product_to_shopping_cart")
-def add_product_to_shopping_cart(
-        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
-):
+def add_product_to_shopping_cart(add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
+    print(add_product)
     res = service.add_product_to_shopping_cart(
-        user_id, add_product.store_id, add_product.product_id, add_product.quantity
+        add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
 
 
-@app.get("/cart")
-def get_shopping_cart(user_id: Optional[str] = Cookie(None)):
+@app.get("/cart/{user_id}")
+def get_shopping_cart(user_id: str):  #: Optional[str] = Cookie(None)):
     res = service.get_shopping_cart(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
-@app.get("/products/search")
-def get_store_info(product_search_filters: ProductSearchFilters):
+@app.post("/products/search")
+def search_product(product_search_filters: ProductSearchFilters):
     res = service.search_product(product_search_filters)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/product/{store_id}/{product_id}")
+def get_product_and_his_quantities(store_id: str, product_id: str):
+    res = service.get_product_and_quantities(store_id, product_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/users/{user_id}")
+def get_users_stores(user_id: str):
+    res = service.get_users_stores(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
@@ -207,8 +252,8 @@ def get_store_info(product_search_filters: ProductSearchFilters):
 
 
 @app.post("/pay")
-def contact_payment_service(payment_info: PaymentInfo):
-    res = service.contact_payment_service(payment_info)
+def purchase_shopping_cart(payment_info: PaymentInfo):
+    res = service.purchase_shopping_cart(payment_info.customer_id, payment_info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
@@ -230,16 +275,28 @@ Member's purchase actions
 
 
 @app.post("/users/logout")
-def logout(user_id: Optional[str] = Cookie(None)):
-    res = service.logout(user_id)
+def logout(user_id: UserID):  #: Optional[str] = Cookie(None)):
+    res = service.logout(user_id.id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return Response(status_code=status.HTTP_200_OK)
 
 
 @app.post("/users/open_store")
-def open_store(store_name: Store_name, user_id: Optional[str] = Cookie(None)):
-    res = service.open_store(user_id, store_name.store_name)
+def open_store(store_name: Store_name):  # , user_id: Optional[str] = Cookie(None)):
+    res = service.open_store(store_name.id, store_name.store_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/add_new_product_to_inventory")
+def add_new_product_to_inventory(
+        new_product: NewProduct):  # , user_id: Optional[str] = Cookie(None)):
+    res = service.add_new_product_to_inventory(
+        new_product.id, new_product.store_id, new_product.name, new_product.description, new_product.price,
+        new_product.category
+    )
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
@@ -247,35 +304,68 @@ def open_store(store_name: Store_name, user_id: Optional[str] = Cookie(None)):
 
 @app.post("/users/add_products_to_inventory")
 def add_products_to_inventory(
-        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
-):
+        add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
     res = service.add_products_to_inventory(
-        user_id, add_product.store_id, add_product.product_id, add_product.quantity
+        add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.get("/permission/{store_id}/{user_id}")
+def get_permissions(store_id: str, user_id: str):
+    res = service.get_permissions(store_id, user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
 # @TODO not working
-@app.delete("/users/remove_products_from_inventory")
-def remove_products_from_inventory(
-        add_product: AddProduct, user_id: Optional[str] = Cookie(None)
-):
+@app.post("/users/remove_products_from_inventory")
+def remove_products_from_inventory(add_product: AddProduct):
     res = service.remove_products_from_inventory(
-        user_id, add_product.store_id, add_product.product_id, add_product.quantity
+        add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
     if res.error_occurred():
-        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=res.msg)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
-@app.put("/users/edit_product_info")
-def edit_product_info(add_product: AddProduct, product_info: ProductInfo, user_id: Optional[str] = Cookie(None)):
-    res = service.edit_product_info(user_id, add_product.store_id, add_product.product_id, product_info)
+@app.post("/users/edit_product_info")
+def edit_product_info(edit_product: EditProduct):
+    info = ProductInfo(name=edit_product.name, description=edit_product.description,
+                       rating=edit_product.rating, price=edit_product.price, category=edit_product.category)
+    res = service.edit_product_info(edit_product.id, edit_product.store_id, edit_product.product_id, info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
+
+
+@app.post("/users/add_store_owner")
+def add_store_owner(official: newOfficial):
+    res = service.add_store_owner(official.user_id, official.store_id, official.new_owner_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/add_store_manager")
+def add_store_manager(official: newOfficial):
+    res = service.add_store_manager(official.user_id, official.store_id, official.new_owner_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
+@app.post("/users/get_store_roles")
+def get_store_roles(store: Store_name):
+    res = service.get_store_roles(store.id, store.store_name)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
 
 
 """

@@ -8,6 +8,7 @@ class Login extends React.Component{
     state ={
         username:'',
         password:'',
+        errMsg:''
     }
     handleChange = (e) =>{
         const {name,value} = e.target
@@ -18,7 +19,8 @@ class Login extends React.Component{
         const {name,value} = e.target
         const signIn = {
             username: this.state.username,
-            password: this.state.password
+            password: this.state.password,
+            id: this.props.myId
         }
         try{
             console.log(signIn)
@@ -27,8 +29,10 @@ class Login extends React.Component{
             localStorage.setItem("logged","true")
             console.log(response)
             this.props.navigate('/home')
+            this.setState({errMsg:""}) 
             } catch (err){
                 console.log(err.response);
+                this.setState({errMsg:err.response.data['detail']}) 
             }
     }
     handleGuestSubmit = (e) =>{
@@ -41,12 +45,14 @@ class Login extends React.Component{
             {this.props.isLogged ? this.props.navigate('/home'):""}
             <div className="div-login">
                 <div className="div-login-logo">
-                </div>
+                </div> 
                 <div>
                     <form onSubmit = {this.handleSubmit}>
+                    {this.state.errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{this.state.errMsg}</p> : <br />}
+
                         <input type = 'text' name = 'username' placeholder="username..." required onChange = {this.handleChange}/>
                         <input type = 'password' name ='password' placeholder="password..." required onChange = {this.handleChange}/>
-                        <button onSubmit = {this.handleSubmit}>Log in</button>
+                        <button className="buttonS" onSubmit = {this.handleSubmit}>Log in</button>
                     </form>
                     <form onSubmit={this.handleGuestSubmit}>
                     <button className="btnGuest" onSubmit = {this.handleGuestSubmit}>Enter as guest</button>

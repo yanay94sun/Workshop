@@ -37,7 +37,7 @@ class UserControllerTests(unittest.TestCase):
         res = self.uc.login(self.visitor2_id, "v2", "11")
         self.assertTrue(res.error_occurred(), "login unregistered user")
         self.uc.register(self.visitor2_id, {"username": "v2", "password": "11"})
-        self.uc.logout(self.visitor2_id)
+        # self.uc.logout(self.visitor2_id)
         res = self.uc.login(self.visitor1_id, "v2", "11")
         self.assertTrue(res.error_occurred(), "user was already logged in to another member")
         res = self.uc.login(self.visitor2_id, "v2", "12")

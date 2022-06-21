@@ -5,16 +5,15 @@ from Code.Backend.Domain.Product import Product
 
 class Discount:
 
-    def __init__(self, discount, end_date, products_ids, by_category, by_store):
+    def __init__(self, discount, end_date, discount_on, Type):
         """
         as default, no rules are made and every product get the discount
         """
         self.discount_id = -1
-        self.products_ids = products_ids
+        self.discount_on = discount_on
         self.my_discount: float = discount
         self.end_date = end_date
-        self.by_category = by_category
-        self.by_store = by_store
+        self.Type = Type   #  1: = by product, 2: by category, 3: by store
 
     def calculate_price(self, quantity_dict: Dict[str, int], products: List[Product], dic_to_update):
         pass

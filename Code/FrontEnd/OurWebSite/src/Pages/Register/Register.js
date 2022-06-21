@@ -13,51 +13,46 @@ class Register extends React.Component{
         userName:'',
         email:'',
         pwd:'',
-        register:false 
+        register:false,
+        errMsg:''
+        
     }
     handleChange = (e) =>{
         const {name,value} = e.target
         this.setState({[name]:value})
     }
     handleSubmit = async (e) =>{
-        //this.props.navigate('/')
         e.preventDefault()
         const signUp = {
             username: this.state.userName,
-            // email: this.state.email,
-            password: this.state.pwd
+            password: this.state.pwd,
+            id: this.props.myId
         }
         try{
         const response = await axios.post("http://127.0.0.1:8000/guests/register",signUp)
-        //this.setState({register:true})
-        this.props.handleLog(true);
-        localStorage.setItem("logged","true")
+        this.setState({register:true})
+        //this.props.handleLog(true);
+        //localStorage.setItem("logged","true")
         console.log(response)
+        this.setState({errMsg:""}) 
             
         } catch (err){
             console.log(err.response);
-            //this.handleSubmit()
-        }
-        // console.log(response.data)
-        
+            this.setState({errMsg:err.response.data['detail']}) 
+        }        
     }
-
-    // handleClick = ()=>{
-    //     const navigate = useNavigate();
-    //     navigate('/')
-    // }
     render(){
-        if(!this.props.logged)
+        if(!this.state.register)
         return (
             <div className="div-register">
-                    <button type="button" className="button-header" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
+                    <button type="button" className="buttonS" onClick={() => this.props.navigate("/")} style={{ cursor:'pointer', position: 'fixed',width: 50, right: '10px', top: '5px'}}>Back</button>
             <div>
                 <form onSubmit = {this.handleSubmit}>
                     <p style={{textAlign: "center"}}>Enter your email and password</p>
-                    {/* <input type = 'text' name = 'fullName' placeholder="fullName..." required onChange = {this.handleChange}/> */}
+                    {this.state.errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{this.state.errMsg}</p> : <br />}
                     <input type = 'text' name = 'userName' placeholder="username..." required onChange = {this.handleChange}/>
                     <input type = 'password' name ='pwd' placeholder="password..." required onChange = {this.handleChange}/>
-                    <button style={{backgroundColor:'rgb(161, 28, 28)'}} onSubmit = {this.handleSubmit}>Register</button>
+                    <button className="buttonS" style={{backgroundColor:'rgb(161, 28, 28)'}} onSubmit = {this.handleSubmit}>Register</button>
                 </form>
             </div>
         </div>
@@ -66,7 +61,7 @@ class Register extends React.Component{
             return(
                 <div className="div-register">
                     <h1 style={{textAlign:"center"}}>Registration complete :)</h1>
-                    <p style={{textAlign:"center"}}>Login <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/home')}>Here</span></p>
+                    <p style={{textAlign:"center"}}>sign in <span style={{color:'dodgerblue', cursor:'pointer'}} onClick={() => this.props.navigate('/')}>Here</span></p>
                 </div>
                 )
         }

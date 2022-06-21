@@ -32,3 +32,22 @@ nav{
 .active{
     border-bottom: 2px solid firebrick;
 }
+
+.img__description {
+    position: fixed;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    background: rgba(248, 214, 120, 0.767);
+    color: rgb(0, 0, 0);
+    visibility: hidden;
+    opacity: 0;  
+    /* transition effect. not necessary */
+    transition: opacity .2s, visibility .2s;
+  }
+
+  .img__wrap:hover .img__description {
+    visibility: visible;
+    opacity: 100;
+  }

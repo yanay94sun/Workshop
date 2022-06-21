@@ -1,21 +1,15 @@
-import threading
-from typing import Dict
-from typing import Dict, List
 import logging
+from typing import Dict
 
-from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
-from Code.Backend.Domain.Facade import Facade
-from Code.Backend.Service.Objects.PackageInfo import PackageInfo
-
-from Code.Backend.Domain.Controllers.Market import Market
-from Code.Backend.Domain.Controllers.StoreController import StoreController
-from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
-from Code.Backend.Domain.DM_product_info import DM_product_info
+from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
-from Code.Backend.Service.Objects import Shopcart_info
+from Code.Backend.Domain.Facade import Facade
+from Code.Backend.Service import helper
+from Code.Backend.Service.Objects.Configuration import *
 from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
+from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.PersonalInfo import PersonalInfo
 from Code.Backend.Service.Objects.Personal_purchase_history import Personal_purchase_history
@@ -23,7 +17,9 @@ from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
 from Code.Backend.Service.Objects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
-from Code.Backend.Service.Objects.Store_info import Store_info
+import configparser
+
+from state import state
 
 logging.basicConfig(filename="SystemLog.log")
 
@@ -52,6 +48,27 @@ class Service:
         """
         response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
         write_to_log(response, "The system initialized successfully")
+
+        # this is how you add information to config file:
+
+        # # CREATE OBJECT
+        # config_file = configparser.ConfigParser()
+        #
+        # # READ CONFIG FILE
+        # config_file.read("configurations.ini")
+        #
+        # # UPDATE A FIELD VALUE
+        # config_file["Logger"]["LogLevel"] = "Debug"
+        #
+        # # ADD A NEW FIELD UNDER A SECTION
+        # config_file["Logger"].update({"Format": "(message)"})
+        #
+        # # SAVE THE SETTINGS TO THE FILE
+        # with open("configurations.ini", "w") as file_object:
+        #     config_file.write(file_object)
+
+        self.__config()
+
         return response
 
     def contact_payment_service(self, payment_info: PaymentInfo) -> Response:
@@ -166,11 +183,6 @@ class Service:
         return response
 
     def get_stores_info(self) -> Response:
-        """
-        II.2.1.2
-        when a user request for all stores info.
-        return: List of all store info
-        """
         response = Response(self.facade.get_stores_info())
         write_to_log(response, "successfully got stores info")
         return response
@@ -229,8 +241,15 @@ class Service:
         write_to_log(response, "successfully removed product from shopping cart")
         return response
 
+    def get_cart_price(self, user_id):
+        """
+
+        """
+        response = Response(self.facade.get_cart_price(user_id))
+        write_to_log(response, "successfully purchased shopping cart")
+        return response
+
     def purchase_shopping_cart(self, user_id: str, payment_info):
-        # TODO not implemented
         """
         II.2.5
         gets user's shopping cart and applies discount policies on each basket, then decrease the quantity of the
@@ -460,16 +479,16 @@ class Service:
 
     """ Nitzan: put responsibilities the next methods in Store Controller, until II.4.12.2"""
 
-    def add_store_owner(self, user_id: str, store_id: str, new_owner_id: str):
+    def add_store_owner(self, user_id: str, store_id: str, new_owner_name: str):
         """
         TODO: follow specification
         II.4.4
         :param user_id:
         :param store_id:
-        :param new_owner_id:
+        :param new_owner_name:
         :return:
         """
-        response = Response(self.facade.add_store_owner(user_id, store_id, new_owner_id))
+        response = Response(self.facade.add_store_owner(user_id, store_id, new_owner_name))
         write_to_log(response, "successfully added store owner")
         return response
 
@@ -498,18 +517,18 @@ class Service:
         write_to_log(response, "successfully added store manager")
         return response
 
-    def change_manager_permission(self, user_id: str, store_id: str, manager_id: str, new_permission: Dict):
+    def change_manager_permission(self, user_id: str, store_id: str, manager_name: str, new_permission: Dict):
         """
         replaces the permissions of the manager with manager_id with the new permissions.
         II.4.7
         :param user_id:
         :param store_id:
-        :param manager_id:
+        :param manager_name:
         :param new_permission:
         :return:
         """
         response = Response(self.store_controller.change_manager_permission(
-            user_id, store_id, manager_id, new_permission))
+            user_id, store_id, manager_name, new_permission))
         write_to_log(response, "successfully changed manager permissions")
         return response
 
@@ -649,6 +668,8 @@ class Service:
         """
         pass
 
+
+
     ##################################################################
     # functions for frontend
     ##############################################################
@@ -664,3 +685,46 @@ class Service:
         response = Response(self.facade.is_logged_in(user_id))
         write_to_log(response, "successfully checked if logged in")
         return response
+
+    def get_product_and_quantities(self, store_id, product_id):
+        response = Response(self.facade.get_product_and_quantities(store_id, product_id))
+        write_to_log(response, "successfully got product and quantities")
+        return response
+
+    def get_permissions(self, store_id, user_id):
+        response = Response(self.facade.get_permissions(store_id, user_id))
+        write_to_log(response, "successfully got permissions")
+        return response
+
+    def __short_register(self, user):
+        uid = self.enter_as_guest()
+        if uid.error_occurred():
+            raise Exception(uid.msg)
+            return uid
+        r = self.register(uid.value, user)
+        if r.error_occurred():
+            raise Exception(r.msg)
+            return r
+        return uid.value
+
+    def __short_login(self, user):
+        uid = self.__short_register(user)
+        r = self.login(uid, user["username"], user["password"])
+        if r.error_occurred():
+            raise Exception(r.msg)
+            return r
+        return uid
+
+    def __short_open_store(self, user_id, store_name):
+        store_id = self.open_store(user_id, store_name)
+        if store_id.error_occurred():
+            raise Exception(store_id.msg)
+            return store_id
+        return store_id.value
+
+    def __config(self):
+        config = helper.read_config()
+        userName = config['Admin']['userName']
+        password = config['Admin']['password']
+        admin_id = self.enter_as_guest().value
+        self.register(admin_id, {"username": userName, 'password': password})
