@@ -7,8 +7,9 @@ from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 
 class Activities(Enum):
     PURCHASE_IN_STORE = 0
-    OFFICIAL_ADDED = 1
-    OFFICIAL_REMOVED = 2
+    STORE_CLOSED = 1
+    STORE_REOPENED = 2
+    OFFICIAL_REMOVED = 3
 
 
 
@@ -17,20 +18,20 @@ class NotificationController:
         self.__uc = user_controller
         self.__stores_activity: Dict[str, List[List[str]]] = {}  # store_id, list<list<str usernames>>
 
-    def subscribe(self, username: str, store_id: str, activity: int):
-        self.__stores_activity[store_id][activity].append(username)
+    def subscribe(self, username: str, store_id: str, activity: Activities):
+        self.__stores_activity[store_id][activity.value].append(username)
 
-    def unsubscribe(self, username: str, store_id: str, activity: int):
-        self.__stores_activity[store_id][activity].remove(username)
+    def unsubscribe(self, username: str, store_id: str, activity: Activities):
+        self.__stores_activity[store_id][activity.value].remove(username)
 
-    def register_store(self, sid):
+    def register_store(self, sid, owner_username):
         if sid in self.__stores_activity:
             raise Exception("store already registered in the notifications service")
 
-        self.__stores_activity[sid] = [[] for _ in Activities]
+        self.__stores_activity[sid] = [[owner_username] for _ in Activities]
 
-    def notify_all(self, store_id: str, activity: int, msg: str):
-        for username in self.__stores_activity[store_id][activity]:
+    def notify_all(self, store_id: str, activity: Activities, msg: str):
+        for username in self.__stores_activity[store_id][activity.value]:
             if self.__uc.is_online(username):
                 pass  # todo: server.push_notification
             else:
