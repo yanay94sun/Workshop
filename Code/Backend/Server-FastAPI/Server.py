@@ -1,4 +1,6 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends, Cookie
+from random import random
+
+from fastapi import FastAPI, Response, status, HTTPException, WebSocket, Depends, Cookie
 from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
@@ -106,10 +108,10 @@ async def websocket_endpoint(websocket: WebSocket):
     print('Bye..')
 
 
-@socket_manager.on('client_start_event')
-async def handle_client_start_event(sid, *args, **kwargs): # (!)
-    print('Server says: start_event worked')
-    await socket_manager.emit('server_antwort01',{'data':'start event worked'})
+# @socket_manager.on('client_start_event')
+# async def handle_client_start_event(sid, *args, **kwargs): # (!)
+#     print('Server says: start_event worked')
+#     await socket_manager.emit('server_antwort01',{'data':'start event worked'})
 
 
 """
