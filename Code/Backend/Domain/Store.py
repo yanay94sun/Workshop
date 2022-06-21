@@ -73,15 +73,15 @@ class Store:
 
     def edit_product(self, product_id, name, description, rating, price, category):
         product = self.__products[product_id]
-        if name is not None:
+        if name is not None and name != "":
             product.change_name(name)
-        if description is not None:
+        if description is not None and description != "":
             product.change_description(description)
-        if rating is not None:
+        if rating is not None and rating != -1:
             product.change_rating(rating)
-        if price is not None:
+        if price is not None and price != -1:
             product.change_price(price)
-        if category is not None:
+        if category is not None and category != "":
             product.change_category(category)
 
     def add_owner(self, user_id: str, new_user_id: str):

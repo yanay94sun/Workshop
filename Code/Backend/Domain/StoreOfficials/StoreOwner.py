@@ -12,7 +12,9 @@ class StoreOwner(StoreOfficial):
                                         Actions.ADD_STORE_OWNER.value: True,
                                         Actions.GET_STORE_PURCHASE_HISTORY.value: True,
                                         Actions.CLOSE_STORE.value: False,
-                                        Actions.GET_STORE_ROLES.value: True})
+                                        Actions.GET_STORE_ROLES.value: True,
+                                        Actions.DISCOUNT_MANAGEMENT: True,
+                                        Actions.PURCHASE_MANAGEMENT: True})
 
     def check_permission(self, action):
         return self.permissions.check_permission(action)
