@@ -1391,3 +1391,266 @@ INFO:uvicorn.error:connection open
 INFO:uvicorn.error:Started server process [14292]
 INFO:uvicorn.error:Waiting for application startup.
 INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [17180]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [14904]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:('127.0.0.1', 55164) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 55826) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 55841) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 55926) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 55989) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:user isn't logged in
+CRITICAL:root:user isn't logged in
+CRITICAL:root:user doesn't exist
+CRITICAL:root:user doesn't exist
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:('127.0.0.1', 56235) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [14904]
+INFO:uvicorn.error:Started server process [16404]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:('127.0.0.1', 56599) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+INFO:uvicorn.error:connection closed
+CRITICAL:root:username already exists
+CRITICAL:root:username already exists
+INFO:uvicorn.error:('127.0.0.1', 56911) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 56965) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 56995) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 366, in add_store_owner
+    res = service.add_store_owner(official.user_id, official.store_id, official.new_owner_name)
+  File ".\Code\Backend\Service\Service.py", line 491, in add_store_owner
+    response = Response(self.facade.add_store_owner(user_id, store_id, new_owner_name))
+  File ".\Code\Backend\Domain\Facade.py", line 554, in add_store_owner
+    if not sc_res.error_occured():
+AttributeError: 'Response' object has no attribute 'error_occured'
+INFO:uvicorn.error:Started server process [15872]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Finished server process [15872]
+ERROR:uvicorn.error:Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 624, in lifespan
+    await receive()
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\lifespan\on.py", line 135, in receive
+    return await self.receive_queue.get()
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\asyncio\queues.py", line 166, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:uvicorn.error:Started server process [20152]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:('127.0.0.1', 57523) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+INFO:uvicorn.error:connection closed
+CRITICAL:root:username already exists
+CRITICAL:root:username already exists
+INFO:uvicorn.error:('127.0.0.1', 57750) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 57768) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 57782) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 92, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 147, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File ".\Code\Backend\Server-FastAPI\Server.py", line 366, in add_store_owner
+    res = service.add_store_owner(official.user_id, official.store_id, official.new_owner_name)
+  File ".\Code\Backend\Service\Service.py", line 491, in add_store_owner
+    response = Response(self.facade.add_store_owner(user_id, store_id, new_owner_name))
+  File ".\Code\Backend\Domain\Facade.py", line 555, in add_store_owner
+    self.market.subscribe_to_store(store_id, new_owner_id)
+  File ".\Code\Backend\Domain\Controllers\Market.py", line 137, in subscribe_to_store
+    [self.__notification_controller.subscribe(new_owner_id, store_id, act) for act in Activities]
+  File ".\Code\Backend\Domain\Controllers\Market.py", line 137, in <listcomp>
+    [self.__notification_controller.subscribe(new_owner_id, store_id, act) for act in Activities]
+  File ".\Code\Backend\Domain\Publisher\NotificationController.py", line 22, in subscribe
+    self.__stores_activity[store_id][activity.value].append(username)
+KeyError: '1'
+INFO:uvicorn.error:Started server process [22352]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user isn't logged in
+CRITICAL:root:user isn't logged in
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:user doesn't exist
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Started server process [18996]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:('127.0.0.1', 63894) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:user doesn't exist
+INFO:uvicorn.error:('127.0.0.1', 64002) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:Store id does not exist or is inactive
+CRITICAL:root:Store id does not exist or is inactive
+INFO:uvicorn.error:('127.0.0.1', 64034) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 64071) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 64092) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:('127.0.0.1', 64111) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 64181) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 64199) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:('127.0.0.1', 64269) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:('127.0.0.1', 64358) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:('127.0.0.1', 64377) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:('127.0.0.1', 64413) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:Got None from get_product
+INFO:uvicorn.error:('127.0.0.1', 64459) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:Got None from get_product
+INFO:uvicorn.error:('127.0.0.1', 64500) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:('127.0.0.1', 64524) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+CRITICAL:root:2
+CRITICAL:root:You little piece of shit, trying to steal aha?
+CRITICAL:root:Cannot make payment with the service
+CRITICAL:root:Cannot make payment with the service
+CRITICAL:root:2
+INFO:uvicorn.error:('127.0.0.1', 49246) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open

@@ -116,7 +116,7 @@ class Market:
         """
         pass
 
-    def check_if_admin(self,user_id:str):
+    def check_if_admin(self, user_id: str):
         return user_id in self.__admins_ids
 
     def notify_purchase(self, all_baskets, visitor_state_id):
@@ -130,8 +130,8 @@ class Market:
     def notify_activity(self, store_id, activity: Activities, msg):
         self.__notification_controller.notify_all(store_id, activity, msg)
 
-    def register_store(self, store_name, owner_username):
-        self.__notification_controller.register_store(store_name, owner_username)
+    def register_store(self, store_id, owner_username):
+        self.__notification_controller.register_store(store_id, owner_username)
 
     def subscribe_to_store(self, store_id, new_owner_id):
         [self.__notification_controller.subscribe(new_owner_id, store_id, act) for act in Activities]

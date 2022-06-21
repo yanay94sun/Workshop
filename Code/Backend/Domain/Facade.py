@@ -331,7 +331,7 @@ class Facade:
         res_from_sc = self.store_controller.open_store(response_member_id.value, store_name)
         if res_from_sc.error_occurred():
             return res_from_sc
-        self.market.register_store(store_name, response_member_id.value)
+        self.market.register_store(res_from_sc.value, response_member_id.value)
 
     def review_product(self, user_id: str, product_info, review: str):
         """
@@ -551,7 +551,7 @@ class Facade:
         if member_id.error_occurred():
             return member_id
         sc_res = self.store_controller.add_store_owner(member_id.value, store_id, new_owner_id)
-        if not sc_res.error_occured():
+        if not sc_res.error_occurred():
             self.market.subscribe_to_store(store_id, new_owner_id)
         return sc_res
 
@@ -569,7 +569,7 @@ class Facade:
         if remover_username.error_occurred():
             return remover_username
         sc_res = self.store_controller.remove_store_owner(remover_username.value, store_id, subject_username)
-        if not sc_res.error_occured():
+        if not sc_res.error_occurred():
             self.market.remove_store_official(store_id, remover_username.value, subject_username)
         return sc_res
 
