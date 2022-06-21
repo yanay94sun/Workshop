@@ -3,6 +3,7 @@ from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_socketio import SocketManager
 
 # from Code.Backend.FastAPI import utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
@@ -50,6 +51,7 @@ service.initial_system(payment_service=PaymentService(), supply_service=SupplySe
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
+socket_manager = SocketManager(app=app)
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -77,6 +79,22 @@ app.add_middleware(
     #     "Set-Cookie",
     # ],  # include additional headers as per the application demand
 )
+
+"""
+WebSocket - SocketIO
+"""
+
+
+@socket_manager.on('client_connect_event')
+async def handle_client_connect_event(sid, *args, **kwargs):  # (!)
+    await socket_manager.emit('server_antwort01', {'data': 'connection was successful'})
+
+
+@socket_manager.on('client_start_event')
+async def handle_client_start_event(sid, *args, **kwargs): # (!)
+    print('Server says: start_event worked')
+    await socket_manager.emit('server_antwort01',{'data':'start event worked'})
+
 
 """
 main page aka root
@@ -164,13 +182,13 @@ def get_store_info(store_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
+
 @app.get("/get_cart_price/{user_id}")
 def get_cart_price(user_id: str):
     res = service.get_cart_price(user_id)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
-
 
 
 @app.get("/stores")
