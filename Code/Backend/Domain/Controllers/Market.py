@@ -29,7 +29,6 @@ class Market:
         self.__supply_service = supply_service
         self.__payment_service_adapter = PaymentServiceAdapter()
         self.__supply_service_adapter = SupplyServiceAdapter()
-        self.__notification_controller = NotificationController()
 
         payment_service_res = self.connect_payment_service(payment_service)
         if payment_service_res.error_occurred():
@@ -45,6 +44,9 @@ class Market:
 
     def contact_supply_service(self, supply_info):
         return self.__supply_service_adapter.supply(supply_info)
+
+    def set_notification_controller(self, controller: NotificationController):
+        self.__notification_controller = controller
 
     # def purchase_shop_cart(self, user_id: str, shopping_cat: ShoppingCart):
     #     pass
