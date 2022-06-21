@@ -45,6 +45,7 @@ class Facade:
             self.market = marketResponse.value
             self.user_controller = UserController()
             self.store_controller = StoreController()
+            self.market.set_notification_controller(NotificationController(self.user_controller))
         return marketResponse
 
     def contact_payment_service(self, payment_info: DomainPaymentInfo) -> Response:
