@@ -5,6 +5,7 @@ from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import Product
 from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
 from Code.Backend.Domain.Facade import Facade
+from Code.Backend.Service import helper
 from Code.Backend.Service.Objects.Configuration import *
 from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.DiscountPolicy import DiscountPolicy
@@ -16,6 +17,9 @@ from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
 from Code.Backend.Service.Objects.PurchasePolicy import PurchasePolicy
 from Code.Backend.Service.Response import Response
+import configparser
+
+from state import state
 
 logging.basicConfig(filename="SystemLog.log")
 
@@ -44,7 +48,27 @@ class Service:
         """
         response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
         write_to_log(response, "The system initialized successfully")
+
+        # this is how you add information to config file:
+
+        # # CREATE OBJECT
+        # config_file = configparser.ConfigParser()
+        #
+        # # READ CONFIG FILE
+        # config_file.read("configurations.ini")
+        #
+        # # UPDATE A FIELD VALUE
+        # config_file["Logger"]["LogLevel"] = "Debug"
+        #
+        # # ADD A NEW FIELD UNDER A SECTION
+        # config_file["Logger"].update({"Format": "(message)"})
+        #
+        # # SAVE THE SETTINGS TO THE FILE
+        # with open("configurations.ini", "w") as file_object:
+        #     config_file.write(file_object)
+
         self.__config()
+
         return response
 
     def contact_payment_service(self, payment_info: PaymentInfo) -> Response:
@@ -644,6 +668,8 @@ class Service:
         """
         pass
 
+
+
     ##################################################################
     # functions for frontend
     ##############################################################
@@ -697,25 +723,8 @@ class Service:
         return store_id.value
 
     def __config(self):
-        u1id = self.__short_login(u1)
-        u2id = self.__short_login(u2)
-        u3id = self.__short_login(u3)
-        u4id = self.__short_login(u4)
-        u5id = self.__short_login(u5)
-        store_name = "s1"
-        store_id = self.__short_open_store(u2id, store_name)
-        Bamba = "Bamba"
-        p_bamba = add_new_product_args(Bamba, 30)
-        r = self.add_new_product_to_inventory(u2id, store_id, **p_bamba)
-        if r.error_occurred(): raise Exception(r.msg)
-        bamba_id = r.value
-        quantity = 30
-        r = self.add_products_to_inventory(u2id, store_id, bamba_id, quantity)
-        if r.error_occurred(): raise Exception(r.msg)
-        r1 = self.add_store_owner(u2id, store_id, u3["username"])
-        r2 = self.add_store_owner(u2id, store_id, u4["username"])
-        r3 = self.add_store_owner(u2id, store_id, u5["username"])
-        if r1.error_occurred() or r2.error_occurred() or r3.error_occurred(): raise Exception("Error in add store owner")
-        r = self.logout(u5id)
-        if r.error_occurred(): raise Exception(r.msg)
-
+        config = helper.read_config()
+        userName = config['Admin']['userName']
+        password = config['Admin']['password']
+        admin_id = self.enter_as_guest().value
+        self.register(admin_id, {"username": userName, 'password': password})

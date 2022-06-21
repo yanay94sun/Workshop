@@ -62,3 +62,6 @@ pip~=22.0.4
 Pillow~=8.1.0
 setuptools~=41.2.0
 jose~=1.0.0
+future~=0.18.2
+attrs~=20.3.0
+packaging~=21.3
