@@ -7,8 +7,9 @@ from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 
 class Activities(Enum):
     PURCHASE_IN_STORE = 0
-    OFFICIAL_ADDED = 1
-    OFFICIAL_REMOVED = 2
+    STORE_CLOSED = 1
+    STORE_REOPENED = 2
+    OFFICIAL_REMOVED = 3
 
 
 
