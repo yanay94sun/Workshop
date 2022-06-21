@@ -223,7 +223,8 @@ class Facade:
             if not self.store_controller.valid_all_products_for_purchase(all_products):
                 return Response(msg="not enough quantities")
             # get prices
-            prices = (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in all_baskets.items())
+            prices = (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in
+                      all_baskets.items())
             total_price = 0
             for p in prices:
                 if p.error_occurred():
@@ -288,7 +289,6 @@ class Facade:
                     return response
             else:
                 return Response.from_error("unsuccessfully payment")
-
 
         # pay, if error occured revert
         # revert: self.store_controller.revert_purchase_requests(all_products)
@@ -774,7 +774,7 @@ class Facade:
             return member_id
         if not self.user_controller.is_member(member_id.value):
             permissions = {}
-            for i in range(0, 7):
+            for i in range(0, 9):
                 permissions[i] = False
             return Response(value=permissions)
         member_id = self.user_controller.get_users_username(user_id)
@@ -782,8 +782,15 @@ class Facade:
             return member_id
         return self.store_controller.get_permissions(store_id, member_id.value)
 
-
-
+    def add_visible_discount_by_product(self, user_id, store_id,
+                                        discount_price, end_date, product_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        return self.store_controller.add_visible_discount_by_product(user_id, store_id, discount_price, end_date,
+                                                                     product_id)
 # if __name__ == '__main__':
 #     fc = Facade()
 #     print(fc.enter_as_guest().msg)
@@ -797,7 +804,7 @@ class Facade:
 #     print(fc.add_store_owner("1", "1", "Tal").msg)
 #     print(fc.get_permissions("1","2").value)
 
-    # print(fc.add_new_product_to_inventory("2", "1", "apple", "", 2, "").msg)
-    # print(fc.change_manager_permission("1", "1", "Tal", {1: True, 2: False,
-    #                                                      3: False, 4: False, 5: False, 6: False, 7: False}).msg)
-    # print(fc.add_new_product_to_inventory("2", "1", "apple juice", "", 2, "").msg)
+# print(fc.add_new_product_to_inventory("2", "1", "apple", "", 2, "").msg)
+# print(fc.change_manager_permission("1", "1", "Tal", {1: True, 2: False,
+#                                                      3: False, 4: False, 5: False, 6: False, 7: False}).msg)
+# print(fc.add_new_product_to_inventory("2", "1", "apple juice", "", 2, "").msg)

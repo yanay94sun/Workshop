@@ -157,10 +157,10 @@ class StoreControllerTests(unittest.TestCase):
         self.sc.add_products_to_inventory(USER_ID, STORE_ID, PRODUCT_ID, 9)
         basket = ShoppingBasket(STORE_ID)
         basket.add_to_basket(PRODUCT_ID, 3)
-        discount1 = self.sc.add_visible_discount_by_category(STORE_ID, 0.4, "24/5/2022", "Fruits").value.get_id()
-        discount2 = self.sc.add_conditional_discount_by_product(STORE_ID, 0.3, "24/5/2022",
+        discount1 = self.sc.add_visible_discount_by_category(USER_ID, STORE_ID, 0.4, "24/5/2022", "Fruits").value.get_id()
+        discount2 = self.sc.add_conditional_discount_by_product(USER_ID,STORE_ID, 0.3, "24/5/2022",
                                                                 PRODUCT_ID, {PRODUCT_ID: 2}).value.get_id()
-        discount3 = self.sc.add_and_discount(STORE_ID, discount1, discount2).value.get_id()
+        discount3 = self.sc.add_and_discount(USER_ID,STORE_ID, discount1, discount2).value.get_id()
         response = self.sc.get_basket_price(STORE_ID, basket)
         self.assertEqual(response.value, 90)
 
@@ -168,8 +168,8 @@ class StoreControllerTests(unittest.TestCase):
         self.sc.add_products_to_inventory(USER_ID, STORE_ID, "2", 9)
         basket.add_to_basket("2", 5)
 
-        discount4 = self.sc.add_conditional_discount_by_product(STORE_ID, 0.2, "bla", "2", {"2": 2}).value.get_id()
-        self.sc.add_or_discount(STORE_ID, discount3, discount4)
+        discount4 = self.sc.add_conditional_discount_by_product(USER_ID,STORE_ID, 0.2, "bla", "2", {"2": 2}).value.get_id()
+        self.sc.add_or_discount(USER_ID,STORE_ID, discount3, discount4)
         response = self.sc.get_basket_price(STORE_ID, basket)
         self.assertEqual(response.value, 180)
 
@@ -189,13 +189,13 @@ class StoreControllerTests(unittest.TestCase):
         basket = ShoppingBasket(STORE_ID)
         basket.add_to_basket(PRODUCT_ID, 3)
 
-        rule1 = self.sc.add_simple_purchase_rule_by_product(STORE_ID, {PRODUCT_ID: 50}).value.get_id()
-        rule2 = self.sc.add_simple_purchase_rule_by_min_price(STORE_ID, 50).value.get_id()
-        self.sc.add_or_purchase_rule(STORE_ID, rule1, rule2)
+        rule1 = self.sc.add_simple_purchase_rule_by_product(USER_ID,STORE_ID, {PRODUCT_ID: 50}).value.get_id()
+        rule2 = self.sc.add_simple_purchase_rule_by_min_price(USER_ID,STORE_ID, 50).value.get_id()
+        self.sc.add_or_purchase_rule(USER_ID,STORE_ID, rule1, rule2)
         response = self.sc.check_purchase_policy(STORE_ID, basket)
         self.assertTrue(response.value)
 
-        self.sc.add_simple_purchase_rule_by_category(STORE_ID, "PlayStation")
+        self.sc.add_simple_purchase_rule_by_category(USER_ID,STORE_ID, "PlayStation")
         response = self.sc.check_purchase_policy(STORE_ID, basket)
         self.assertTrue(not response.value)
 

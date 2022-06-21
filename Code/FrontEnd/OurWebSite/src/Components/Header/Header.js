@@ -50,8 +50,8 @@ function Header({handleLogin, checkLogged, ip }){
       }
       else{
         try{
-         const response = await axios.post('http://127.0.0.1:8000/exit',localStorage.getItem('user_id'));
-          console.log(response)
+        //  const response = await axios.post('http://127.0.0.1:8000/exit',localStorage.getItem('user_id'));
+        //   console.log(response)
           navigate('/')
         } catch (err){
           console.log(err.response);
@@ -84,7 +84,7 @@ function Header({handleLogin, checkLogged, ip }){
                     <p className="img__description">My stores</p>
                     </NavLink>
                     <NavLink to ='/home/explore'activeclassname='active' className='img__wrap'>
-                      <SearchIcon className="div-svg"/>
+                      <SearchIcon className="div-svg"/> 
                       <p className="img__description">Search</p>
                     </NavLink>
                     <NavLink to ='/home/shopping-cart'activeclassname='active' className='img__wrap'>
