@@ -6,7 +6,7 @@ import {ReactComponent as MyStoreIcon} from '../../Assets/myStore.svg'
 import {ReactComponent as SearchIcon} from '../../Assets/search.svg'
 import {ReactComponent as CartIcon} from '../../Assets/shopping_cart.svg'
 import {ReactComponent as MyAccountIcon} from '../../Assets/myaccount-icon.svg'
-import {ReactComponent as MyAccountNotifIcon} from '../../Assets/icons8-add-male-user-64.svg'
+//import {ReactComponent as MyAccountNotifIcon} from '../../Assets/icons8-add-male-user-64.svg'
 import './Header.css';
 import axios from 'axios'
 // import io from "socket.io-client";
@@ -50,8 +50,8 @@ function Header({handleLogin, checkLogged, ip }){
       }
       else{
         try{
-        //  const response = await axios.post('http://127.0.0.1:8000/exit',localStorage.getItem('user_id'));
-        //   console.log(response)
+         const response = await axios.post('http://127.0.0.1:8000/exit',localStorage.getItem('user_id'));
+          console.log(response)
           navigate('/')
         } catch (err){
           console.log(err.response);
@@ -71,11 +71,11 @@ function Header({handleLogin, checkLogged, ip }){
             <div className="div-header">
                 <div >
                     <LogoIcon onClick={() => navigate('/home')} style={{cursor:'pointer'}} className="logo"/>
-                    {hasNotification ? <NavLink to ='/home/my-account'activeclassname='active'><MyAccountNotifIcon 
+                    {/* {hasNotification ? <NavLink to ='/home/my-account'activeclassname='active'><MyAccountNotifIcon 
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> : 
                     <NavLink to ='/home/my-account'activeclassname='active'><MyAccountIcon 
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>
-                    }
+                    } */}
 
                 </div>
                 <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
