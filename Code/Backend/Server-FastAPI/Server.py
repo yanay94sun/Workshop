@@ -7,7 +7,6 @@ from fastapi_socketio import SocketManager
 
 # from Code.Backend.FastAPI import utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
@@ -28,7 +27,7 @@ from Code.Backend.Service.Objects.TokenData import TokenData
 from Code.Backend.Service.Objects.UserID import UserID
 from Code.Backend.Service.Objects.User_info import User_info
 from Code.Backend.Service.Service import Service
-from Code.Backend import oauth2
+# from Code.Backend import oauth2
 
 """
                                      IMPORTANT!!!
@@ -146,10 +145,7 @@ def exit_site(user_id: UserID):  # Optional[str] = Cookie(None)):
 @app.post("/guests/login")
 def login(
         user_info: User_info):  # ,        user_id: Optional[str] = Cookie(None),):
-    hashed_password = hash_pass(user_info.password)
     res = service.login(user_info.id, user_info.username, user_info.password)  # user_info.password)
-    print(user_info.id)
-    print("PASS: " + hashed_password)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="wrong details")
@@ -157,22 +153,18 @@ def login(
     # create a token
     # return token
 
-    access_token = oauth2.create_access_token(data={"user_id": user_info.id})
+    # access_token = oauth2.create_access_token(data={"user_id": user_info.id})
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"response": res, "token_type": "bearer"}
 
 
 @app.post("/guests/register")
 def register(user_info: User_info):  # , user_id: Optional[str] = Cookie(None)):
-    # hash the password - user.password
-    print(user_info)
-    # hash_password = hash_pass(user_info.password)
-    # user_info.password = hash_password
     user_info_dict = user_info.dict()
     res = service.register(user_info.id, user_info_dict)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
-    return {"data": user_info_dict}
+    return {"data": res.value}
 
 
 @app.get("/stores/{store_id}")
