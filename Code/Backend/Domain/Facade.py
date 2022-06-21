@@ -8,6 +8,7 @@ from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import Product
 from Code.Backend.Domain.DomainPackageInfo import DomainPackageInfo
 from Code.Backend.Domain.DomainPaymentInfo import DomainPaymentInfo
 from Code.Backend.Domain.MFResponse import Response
+from Code.Backend.Domain.Publisher.NotificationController import NotificationController, Activities
 from Code.Backend.Domain.StoreOfficials.Permissions import Permissions
 from Code.Backend.Service.Objects.ContactInfo import ContactInfo
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
@@ -44,6 +45,7 @@ class Facade:
             self.market = marketResponse.value
             self.user_controller = UserController()
             self.store_controller = StoreController()
+            self.market.set_notification_controller(NotificationController(self.user_controller))
         return marketResponse
 
     def contact_payment_service(self, payment_info: DomainPaymentInfo) -> Response:
@@ -326,7 +328,10 @@ class Facade:
         response_member_id = self.user_controller.get_users_username(user_id)
         if response_member_id.error_occurred():
             return response_member_id
-        return self.store_controller.open_store(response_member_id.value, store_name)
+        res_from_sc = self.store_controller.open_store(response_member_id.value, store_name)
+        if res_from_sc.error_occurred():
+            return res_from_sc
+        self.market.register_store(store_name, response_member_id.value)
 
     def review_product(self, user_id: str, product_info, review: str):
         """
@@ -545,7 +550,10 @@ class Facade:
         member_id = self.user_controller.get_users_username(user_id)
         if member_id.error_occurred():
             return member_id
-        return self.store_controller.add_store_owner(member_id.value, store_id, new_owner_id)
+        sc_res = self.store_controller.add_store_owner(member_id.value, store_id, new_owner_id)
+        if not sc_res.error_occured():
+            self.market.subscribe_to_store(store_id, new_owner_id)
+        return sc_res
 
     def remove_store_owner(self, user_id: str, store_id: str, subject_username: str):
         """
@@ -560,7 +568,11 @@ class Facade:
         remover_username = self.user_controller.get_users_username(user_id)
         if remover_username.error_occurred():
             return remover_username
-        return self.store_controller.remove_store_owner(remover_username.value, store_id, subject_username)
+        sc_res = self.store_controller.remove_store_owner(remover_username.value, store_id, subject_username)
+        if not sc_res.error_occured():
+            self.market.remove_store_official(store_id, remover_username.value, subject_username)
+        return sc_res
+
 
     def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
         """
@@ -618,8 +630,12 @@ class Facade:
         """
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
-        return self.store_controller.close_store(user_id, store_id)
-        pass
+        sc_res = self.store_controller.close_store(user_id, store_id)
+        if not sc_res.error_occurred():
+            self.market.notify_activity(store_id,
+                                        Activities.STORE_CLOSED,
+                                        f"{store_id} closed")
+        return sc_res
 
     def reopen_store(self, user_id: str, store_id: str):
         """
