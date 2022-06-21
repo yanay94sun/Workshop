@@ -1,3 +1,4 @@
+from Code.Backend.Domain import auth
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.VisitorStates.GuestState import GuestState
 from Code.Backend.Domain.VisitorStates.MemberState import MemberState
@@ -39,6 +40,10 @@ class Visitor:
         """
         if self.is_logged_in():
             return Response.from_error("the user is already a member")
+        # hashing pwd
+        hashed_pwd = auth.hash(member_info["password"])
+        # change pwd
+        member_info["password"] = hashed_pwd
         ret = MemberState(self.__status.get_shopping_cart(), member_info)
         return Response(value=ret)
 
