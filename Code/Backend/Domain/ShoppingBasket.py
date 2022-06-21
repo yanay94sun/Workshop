@@ -27,3 +27,6 @@ class ShoppingBasket:
 
     def get_products_and_quantities(self):
         return self.__purchase_quantities
+
+    def get_store(self):
+        return self.__store

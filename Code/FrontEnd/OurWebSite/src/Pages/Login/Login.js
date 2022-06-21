@@ -8,6 +8,7 @@ class Login extends React.Component{
     state ={
         username:'',
         password:'',
+        errMsg:''
     }
     handleChange = (e) =>{
         const {name,value} = e.target
@@ -28,8 +29,10 @@ class Login extends React.Component{
             localStorage.setItem("logged","true")
             console.log(response)
             this.props.navigate('/home')
+            this.setState({errMsg:""}) 
             } catch (err){
                 console.log(err.response);
+                this.setState({errMsg:err.response.data['detail']}) 
             }
     }
     handleGuestSubmit = (e) =>{
@@ -45,6 +48,8 @@ class Login extends React.Component{
                 </div> 
                 <div>
                     <form onSubmit = {this.handleSubmit}>
+                    {this.state.errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{this.state.errMsg}</p> : <br />}
+
                         <input type = 'text' name = 'username' placeholder="username..." required onChange = {this.handleChange}/>
                         <input type = 'password' name ='password' placeholder="password..." required onChange = {this.handleChange}/>
                         <button className="buttonS" onSubmit = {this.handleSubmit}>Log in</button>
