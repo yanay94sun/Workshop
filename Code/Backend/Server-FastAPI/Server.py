@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends, Cookie
+from fastapi import FastAPI, Response, status, HTTPException, WebSocket, Depends, Cookie
+import random
 from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
@@ -51,7 +52,7 @@ service.initial_system(payment_service=PaymentService(), supply_service=SupplySe
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
-socket_manager = SocketManager(app=app)
+
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -79,21 +80,41 @@ app.add_middleware(
     #     "Set-Cookie",
     # ],  # include additional headers as per the application demand
 )
-
+# resfaf dsplm
 """
 WebSocket - SocketIO
 """
+# socket_manager = SocketManager(app=app)
+#
+# @socket_manager.on('client_connect_event')
+# async def handle_client_connect_event(sid, *args, **kwargs):  # (!)
+#     await socket_manager.emit('server_antwort01', {'data': 'connection was successful'})
+#
+#
+# @socket_manager.on('client_start_event')
+# async def handle_client_start_event(sid, *args, **kwargs): # (!)
+#     print('Server says: start_event worked')
+#     await socket_manager.emit('server_antwort01',{'data':'start event worked'})
+#
 
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    print('A new websocket to create.')
+    await websocket.accept()
+    print("Accepted")
+    while True:
+        try:
+            # Wait for any message from the client
+            data = await websocket.receive_text()
+            print(data)
+            # Send message to the client
+            resp = {'value': random.uniform(0, 1)}
+            await websocket.send_json(resp)
+        except Exception as e:
+            print('error:', e)
+            break
+    print('Bye..')
 
-@socket_manager.on('client_connect_event')
-async def handle_client_connect_event(sid, *args, **kwargs):  # (!)
-    await socket_manager.emit('server_antwort01', {'data': 'connection was successful'})
-
-
-@socket_manager.on('client_start_event')
-async def handle_client_start_event(sid, *args, **kwargs): # (!)
-    print('Server says: start_event worked')
-    await socket_manager.emit('server_antwort01',{'data':'start event worked'})
 
 
 """
@@ -113,8 +134,6 @@ General guest actions
 ---------------------------------------------------
 """
 
-
-#
 
 
 @app.get("/guests/enter")
