@@ -1326,3 +1326,68 @@ INFO:uvicorn.error:Shutting down
 INFO:uvicorn.error:Waiting for application shutdown.
 INFO:uvicorn.error:Application shutdown complete.
 INFO:uvicorn.error:Finished server process [23480]
+INFO:uvicorn.error:Started server process [18368]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [18368]
+INFO:uvicorn.error:Started server process [13516]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [18604]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:No stores in the System
+INFO:uvicorn.error:Started server process [15484]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+CRITICAL:root:user isn't logged in
+CRITICAL:root:user doesn't exist
+CRITICAL:root:user doesn't exist
+CRITICAL:root:user doesn't exist
+CRITICAL:root:user doesn't exist
+CRITICAL:root:user doesn't exist
+CRITICAL:root:username doesn't exist
+INFO:uvicorn.error:Started server process [9784]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [19752]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [14616]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Started server process [18900]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [18900]
+INFO:uvicorn.error:Started server process [21120]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Finished server process [21120]
+ERROR:uvicorn.error:Traceback (most recent call last):
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 624, in lifespan
+    await receive()
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\site-packages\uvicorn\lifespan\on.py", line 135, in receive
+    return await self.receive_queue.get()
+  File "c:\users\yanay\appdata\local\programs\python\python39\lib\asyncio\queues.py", line 166, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:uvicorn.error:Started server process [3744]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:('127.0.0.1', 49633) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:connection closed
+INFO:uvicorn.error:('127.0.0.1', 49906) - "WebSocket /ws" [accepted]
+INFO:uvicorn.error:connection open
+INFO:uvicorn.error:Started server process [14292]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
