@@ -33,6 +33,7 @@ function withRouter(Component) {
   }
 
 function Header({handleLogin, checkLogged, ip }){
+    var ws =  null;
     const navigate = useNavigate();
     const [hasNotification, setHasNotification] = useState(false);
     const [isAdmin, setIsAadmin] = useState(false)
@@ -71,10 +72,17 @@ function Header({handleLogin, checkLogged, ip }){
         }
     }
 
-    useEffect(() => { 
-      checkAdmin()  
+    useEffect(() => {
+      checkAdmin()
     }, []);
 
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:8000/ws');
+        ws.onopen = () => ws.send("Connected to React")
+        // ws.onmessage = (e) => {
+        //     console.log("Accepted Message: ", e.data)
+        // }
+    }, [])
     // useEffect(() => {
     //   socket.on("receive_message", () => {
     //     setHasNotification(true);

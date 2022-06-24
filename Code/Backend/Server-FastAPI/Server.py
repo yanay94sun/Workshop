@@ -1,4 +1,6 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends, Cookie
+from random import random
+
+from fastapi import FastAPI, Response, status, HTTPException, WebSocket, Depends, Cookie
 from fastapi.params import Body
 from pydantic import BaseModel
 from pydantic.class_validators import Optional
@@ -7,6 +9,7 @@ from fastapi_socketio import SocketManager
 
 # from Code.Backend.FastAPI import utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
@@ -52,7 +55,7 @@ service.initial_system(payment_service=PaymentService(), supply_service=SupplySe
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
-socket_manager = SocketManager(app=app)
+
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -86,15 +89,29 @@ WebSocket - SocketIO
 """
 
 
-@socket_manager.on('client_connect_event')
-async def handle_client_connect_event(sid, *args, **kwargs):  # (!)
-    await socket_manager.emit('server_antwort01', {'data': 'connection was successful'})
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    print('A new websocket to create.')
+    await websocket.accept()
+    print("Accepted")
+    while True:
+        try:
+            # Wait for any message from the client
+            data = await websocket.receive_text()
+            print(data)
+            # Send message to the client
+            resp = {'value': random.uniform(0, 1)}
+            await websocket.send_json(resp)
+        except Exception as e:
+            print('error:', e)
+            break
+    print('Bye..')
 
 
-@socket_manager.on('client_start_event')
-async def handle_client_start_event(sid, *args, **kwargs):  # (!)
-    print('Server says: start_event worked')
-    await socket_manager.emit('server_antwort01', {'data': 'start event worked'})
+# @socket_manager.on('client_start_event')
+# async def handle_client_start_event(sid, *args, **kwargs): # (!)
+#     print('Server says: start_event worked')
+#     await socket_manager.emit('server_antwort01',{'data':'start event worked'})
 
 
 """
@@ -147,7 +164,10 @@ def exit_site(user_id: UserID):  # Optional[str] = Cookie(None)):
 @app.post("/guests/login")
 def login(
         user_info: User_info):  # ,        user_id: Optional[str] = Cookie(None),):
+    hashed_password = hash_pass(user_info.password)
     res = service.login(user_info.id, user_info.username, user_info.password)  # user_info.password)
+    print(user_info.id)
+    print("PASS: " + hashed_password)
     if res.error_occurred():
         # TODO to change detail msg to non informative one for security reasons
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="wrong details")
@@ -162,6 +182,10 @@ def login(
 
 @app.post("/guests/register")
 def register(user_info: User_info):  # , user_id: Optional[str] = Cookie(None)):
+    # hash the password - user.password
+    print(user_info)
+    # hash_password = hash_pass(user_info.password)
+    # user_info.password = hash_password
     user_info_dict = user_info.dict()
     res = service.register(user_info.id, user_info_dict)
     if res.error_occurred():
@@ -470,6 +494,8 @@ def get_store_roles(store: Store_name):
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
+
+
 
 
 """

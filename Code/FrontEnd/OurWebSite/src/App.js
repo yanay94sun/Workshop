@@ -5,28 +5,34 @@ import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register.js";
 import axios from "axios";
+// import io from "socket.io-client";
+//
+// const socket = io('http://localhost:8000');
+
+// const socket = io.connect("http://127.0.0.1:8000");
+// socket.on("client_connect_event", () => {console.log("connected ", socket.id)})
 
 
 axios.defaults.withCredentials = true
 
 function App() {
 
-  const [isLog,setIsLog] = useState(false)
+    const [isLog,setIsLog] = useState(false)
 
-  const [userId, setUserId] = useState("")
+    const [userId, setUserId] = useState("")
 
-  useEffect(() => {
-    hendleEntrec();
-  }, []);
+    useEffect(() => {
+        hendleEntrec();
+    }, []);
 
-  const hendleEntrec = async () =>{
+    const hendleEntrec = async () =>{
         // localStorage.setItem("user_id","fsdf")
         // localStorage.setItem("logged","false")
-      const checkIfLogged = localStorage.getItem("logged")
-      if (checkIfLogged){
-        if (checkIfLogged === "true"){
-          setIsLog(true)
-        }
+        const checkIfLogged = localStorage.getItem("logged")
+        if (checkIfLogged){
+            if (checkIfLogged === "true"){
+                setIsLog(true)
+            }
         else{
           setIsLog(false)
         }
@@ -38,12 +44,12 @@ function App() {
       }
       else{
       const response = await axios.get('http://127.0.0.1:8000/guests/enter')
-      localStorage.setItem("user_id",response.data.value)   
+      localStorage.setItem("user_id",response.data.value)
       setUserId(response.data.value)
-      console.log(response) 
+      console.log(response)
       }
-  }
-  return (
+    }
+    return (
     <div>
       <Routes >
         <Route path = '/' element= {<Login setLogin={setIsLog} isLogged = {isLog} myId = {userId}/>}/>
@@ -52,6 +58,6 @@ function App() {
         <Route path = '*' element={<NoMatch/>}/>
       </Routes>
     </div>
-  )
-}
-export default App;
+    )
+    }
+    export default App;

@@ -554,7 +554,7 @@ class Facade:
         if member_id.error_occurred():
             return member_id
         sc_res = self.store_controller.add_store_owner(member_id.value, store_id, new_owner_id)
-        if not sc_res.error_occured():
+        if not sc_res.error_occurred():
             self.market.subscribe_to_store(store_id, new_owner_id)
         return sc_res
 
@@ -572,7 +572,7 @@ class Facade:
         if remover_username.error_occurred():
             return remover_username
         sc_res = self.store_controller.remove_store_owner(remover_username.value, store_id, subject_username)
-        if not sc_res.error_occured():
+        if not sc_res.error_occurred():
             self.market.remove_store_official(store_id, remover_username.value, subject_username)
         return sc_res
 
