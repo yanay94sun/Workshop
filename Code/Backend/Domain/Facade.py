@@ -46,6 +46,8 @@ class Facade:
             self.user_controller = UserController()
             self.store_controller = StoreController()
             self.market.set_notification_controller(NotificationController(self.user_controller))
+            ip = self.enter_as_guest().value
+            self.register(ip, {"username": admin_id, 'password': admin_pwd})
         return marketResponse
 
     def contact_payment_service(self, payment_info: DomainPaymentInfo) -> Response:
@@ -332,6 +334,7 @@ class Facade:
         if res_from_sc.error_occurred():
             return res_from_sc
         self.market.register_store(store_name, response_member_id.value)
+        return res_from_sc
 
     def review_product(self, user_id: str, product_info, review: str):
         """
@@ -718,7 +721,17 @@ class Facade:
         :param member_id:
         :return:
         """
-        pass
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        admin_id = self.user_controller.get_users_username(user_id)
+        if admin_id.error_occurred():
+            return admin_id
+        if not self.market.check_if_admin(admin_id.value):
+            return Response(msg='Accesses Denied, user is not Admin')
+        if self.store_controller.get_officials_stores(member_id).value == {}:
+            return self.user_controller.remove_member(member_id)
+        else:
+            return Response(msg='cant remove user that has a role in a store')
 
     def get_all_users_messages_by_admin(self, user_id: str):
         """
@@ -950,9 +963,20 @@ class Facade:
             return member_id
         return self.store_controller.add_or_purchase_rule(member_id.value, store_id, first_rule_id, second_rule_id)
 
+    def get_visible_discounts(self, store_id):
+        return self.store_controller.get_visible_discounts(store_id)
 
+    def get_conditional_discount(self, store_id):
+        return self.store_controller.get_conditional_discounts(store_id)
 
+    def get_combined_discounts(self, store_id):
+        return self.store_controller.get_combined_discounts(store_id)
 
+    def check_if_admin(self, user_id):
+        if not self.user_controller.is_logged_in(user_id):
+            return Response(msg="Not logged in")
+        member_id = self.user_controller.get_users_username(user_id)
+        return Response(value=self.market.check_if_admin(member_id.value))
 
 # if __name__ == '__main__':
 #     fc = Facade()

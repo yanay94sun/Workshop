@@ -4,7 +4,6 @@ from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 
 
-
 class UserControllerTests(unittest.TestCase):
     def setUp(self):
         self.uc = UserController()
@@ -45,7 +44,6 @@ class UserControllerTests(unittest.TestCase):
         res = self.uc.login(self.visitor2_id, "v2", "11")
         self.assertFalse(res.error_occurred(), res.msg)
 
-
     def test_add_product_to_shop_cart(self):
         """
         II.2.3
@@ -72,9 +70,8 @@ class UserControllerTests(unittest.TestCase):
         self.assertTrue(len(res.value.shopping_baskets) == 0, "shopping cart had somthing whiel it shuoldnt")
         res = self.uc.get_shopping_cart(self.visitor1_id)
         self.assertFalse(res.error_occurred(), res.msg)
-        self.assertTrue(len(res.value.shopping_baskets) == 1, f"added single ppr got {len(res.value.shopping_baskets)} baskets")
-
-
+        self.assertTrue(len(res.value.shopping_baskets) == 1,
+                        f"added single ppr got {len(res.value.shopping_baskets)} baskets")
 
     def test_remove_product_from_shop_cart(self):
         """
@@ -90,7 +87,6 @@ class UserControllerTests(unittest.TestCase):
         self.assertFalse(res.error_occurred(), res.msg)
         res = self.uc.remove_product_from_shopping_cart(self.visitor1_id, ppr)
         self.assertTrue(res.error_occurred(), "ppr already removed from shopping cart")
-
 
     def test_logout(self):
         """
@@ -120,6 +116,11 @@ class UserControllerTests(unittest.TestCase):
 
         self.assertTrue(len([p for p in self.uc.get_shopping_cart(self.visitor1_id).value.iter_products()]) == 1)
 
+    def test_remove_member(self):
+        self.uc.register(self.visitor2_id, {"username": "v2", "password": "11"})
+        self.uc.remove_member('v2')
+        response = self.uc.login(self.visitor2_id, 'v2', '11')
+        self.assertEqual(response.msg, "username doesn't exist")
 
 
 if __name__ == '__main__':

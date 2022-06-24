@@ -8,9 +8,6 @@ from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Service.Objects.PaymentService import PaymentService
 
 
-
-
-
 class Market:
 
     def __init__(self):
@@ -116,7 +113,7 @@ class Market:
         """
         pass
 
-    def check_if_admin(self,user_id:str):
+    def check_if_admin(self, user_id: str):
         return user_id in self.__admins_ids
 
     def notify_purchase(self, all_baskets, visitor_state_id):
@@ -141,5 +138,3 @@ class Market:
                                                   Activities.OFFICIAL_REMOVED,
                                                   f"{remover_username} discharged {subject_username} from its duties")
         [self.__notification_controller.unsubscribe(subject_username, store_id, act) for act in Activities]
-
-

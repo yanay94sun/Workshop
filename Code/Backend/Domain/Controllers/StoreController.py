@@ -666,3 +666,26 @@ class StoreController:
 
         except ValueError as e:
             return Response(msg=e.args[0])
+
+    def get_visible_discounts(self, store_id):
+        try:
+            store = self.__get_store(store_id)
+            return Response(value=store.get_discount_policy().get_visible_discounts())
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def get_conditional_discounts(self, store_id):
+        try:
+            store = self.__get_store(store_id)
+            return Response(value=store.get_discount_policy().get_conditional_discounts())
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+    def get_combined_discounts(self, store_id):
+        try:
+            store = self.__get_store(store_id)
+            return Response(value=store.get_discount_policy().get_combined_discounts())
+        except ValueError as e:
+            return Response(msg=e.args[0])
+
+

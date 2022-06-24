@@ -6,6 +6,8 @@ import {ReactComponent as MyStoreIcon} from '../../Assets/myStore.svg'
 import {ReactComponent as SearchIcon} from '../../Assets/search.svg'
 import {ReactComponent as CartIcon} from '../../Assets/shopping_cart.svg'
 import {ReactComponent as MyAccountIcon} from '../../Assets/myaccount-icon.svg'
+import {ReactComponent as AdminLogo} from '../../Assets/admin.svg'
+
 import {ReactComponent as MyAccountNotifIcon} from '../../Assets/icons8-add-male-user-64.svg'
 import './Header.css';
 import axios from 'axios'
@@ -33,6 +35,7 @@ function withRouter(Component) {
 function Header({handleLogin, checkLogged, ip }){
     const navigate = useNavigate();
     const [hasNotification, setHasNotification] = useState(false);
+    const [isAdmin, setIsAadmin] = useState(false)
     const logout = async ()=>{
       const ID = {
         id: ip
@@ -59,6 +62,19 @@ function Header({handleLogin, checkLogged, ip }){
       }
     }
 
+    const checkAdmin = async () => {
+      try{
+        const response = await axios.get('http://127.0.0.1:8000/is_admin/'+localStorage.getItem("user_id"))
+        setIsAadmin(response.data)
+      }catch (err){
+          console.log(err.response);
+        }
+    }
+
+    useEffect(() => { 
+      checkAdmin()  
+    }, []);
+
     // useEffect(() => {
     //   socket.on("receive_message", () => {
     //     setHasNotification(true);
@@ -79,6 +95,10 @@ function Header({handleLogin, checkLogged, ip }){
 
                 </div>
                 <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                    {isAdmin ? <NavLink to ='/home/admin' activeclassname='active' className='img__wrap'>
+                      <AdminLogo className="div-svg"/>
+                    <p className="img__description">admin options</p>
+                    </NavLink>: ""}
                     <NavLink to ='/home/MyStores' activeclassname='active' className='img__wrap'>
                       <MyStoreIcon className="div-svg"/>
                     <p className="img__description">My stores</p>

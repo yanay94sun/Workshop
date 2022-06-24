@@ -44,9 +44,25 @@ class DiscountPolicy:
                 lst.append(discount)
         return lst
 
+    def get_conditional_discounts(self):
+        lst = []
+        for discount in self.__discounts.values():
+            if isinstance(discount, ConditionalDiscount):
+                lst.append(discount)
+        return lst
+
+    def get_combined_discounts(self):
+        lst = []
+        for discount in self.__discounts.values():
+            if not isinstance(discount, ConditionalDiscount) and not isinstance(discount, VisibleDiscount):
+                lst.append(discount)
+        return lst
+
     def add_visible_discount(self, discount_price, end_date, discount_on, Type):
         if discount_price >= 1:
             raise ValueError("cant get discount over 100%")
+        if discount_price <= 0:
+            raise ValueError("discount cant be 0 or negative")
         self.id_counter += 1
         discount = VisibleDiscount(discount_price, end_date, discount_on, Type)
         discount.set_id(self.id_counter)
@@ -58,6 +74,8 @@ class DiscountPolicy:
                                  min_price_for_discount):
         if discount_price >= 1:
             raise ValueError("cant get discount over 100%")
+        if discount_price <= 0:
+            raise ValueError("discount cant be 0 or negative")
         self.id_counter += 1
         discount = ConditionalDiscount(discount_price, end_date, discount_on,
                                        Type,

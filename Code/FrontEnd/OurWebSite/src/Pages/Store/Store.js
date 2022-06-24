@@ -24,12 +24,19 @@ function Store({storesProducts, setStoresProducts}){
     const [discountOn, setDiscountOn] = useState('product')
     const [discount_price, setDiscount_price] = useState('0')
     const [end_date, setEnd_date] = useState('')
-    const [dic_of_products_and_quantity, setDic_of_products_and_quantity] = useState('')
+    const [prodForDiscount, setProdForDiscount] = useState('1')
+    const [amountForDiscount, setAmountForDiscount] = useState(0)
     const [min_price_for_discount, setMin_price_for_discount] = useState(0)
+    const [minOrAmount, setMinOrAmount] = useState("0")   // 0 is min 1 is amount
+    const [firstDiscount, setFirstDiscount] = useState(1)
+    const [secondDiscount, setSecondDiscount] = useState(1)
+    const [combineType, setCombineType] = useState("or")
+    const [newPurhcaseType, setNewPurhcaseType ] = useState('product')
 
     const params = useParams()
     const [options,setOptions] = useState([])
     const [categoryOptions, setCategoryOptions] = useState([])
+    const [discountOptions, setDiscountOptions] = useState([])
     const storeId = params.storeId
     const [permissions, setPermissions] = useState({})
     const [errMsg, setErrMsg] = useState("")
@@ -182,7 +189,8 @@ function Store({storesProducts, setStoresProducts}){
             setStoreName(response.data["store_name"])
             setFounderName(response.data["founder_id"])
             setRank(response.data["rank"])
-            setStoresProducts(storesProducts => [response.data["products"].map(x=><li key={x["_Product__ID"]} style={{cursor:'pointer'}} onClick={()=>Navigate("../"+ x["_Product__ID"])}><h3 style={{display:'inline'}}>{x["_Product__name"]}</h3></li>)])
+            if (response.data["products"].length > 0)
+                setStoresProducts(storesProducts => [response.data["products"].map(x=><div key={x["_Product__ID"]} style={{width:'3px'}}><li key={x["_Product__ID"]} style={{cursor:'pointer'}} ><h3 onClick={()=>Navigate("../"+ x["_Product__ID"])} style={{display:'inline'}}>{x["_Product__name"]}</h3></li></div>)])
             setOptions(options => response.data["products"].map(function(x){
                 return {label:x["_Product__name"],
                         value:x["_Product__ID"]}
@@ -210,16 +218,59 @@ function Store({storesProducts, setStoresProducts}){
                 end_date: end_date,
                 product_id: chosenProductiD,
                 category_name: category,
-                dic_of_products_and_quantity: dic_of_products_and_quantity,
+                prodForDiscount: prodForDiscount,
+                amountForDiscount: amountForDiscount,
                 min_price_for_discount: min_price_for_discount
             }
             console.log(discount)
             const response = await axios.post("http://127.0.0.1:8000/discount/"+newDiscountType+"/"+discountOn,discount)         
             console.log(response)
-        }
-        catch (err){
-            console.log(err.response);
-        }
+            //window.location.reload(false);
+        }catch (err){
+             console.log(err.response);
+             setErrMsg(err.response.data['detail'])
+     }
+    }
+
+    const combineDiscounts = async (e) => {
+        e.preventDefault()
+        try{
+            const discount = {
+                user_id: localStorage.getItem("user_id"),
+                store_id: storeId,
+                first_discount_id: firstDiscount,
+                second_discount_id: secondDiscount
+            }
+            console.log(discount)
+            const response = await axios.post("http://127.0.0.1:8000/discount/"+combineType, discount)         
+            console.log(response)
+            window.location.reload(false);
+        }catch (err){
+             console.log(err.response);
+             setErrMsg(err.response.data['detail'])
+     }
+    }   
+
+    const addNewPurchaseRule = async (e)=>{
+        e.preventDefault()
+        try{
+            const purchase = {
+                user_id: localStorage.getItem("user_id"),
+                store_id: storeId,
+                by_category: category,  
+                products_to_have_for_purchase: prodForDiscount,
+                amount_of_products_to_have: amountForDiscount,
+                min_price_to_have_for_purchase: min_price_for_discount
+            }
+            console.log(purchase)
+            const response = await axios.post("http://127.0.0.1:8000/purchase/simple/" + newPurhcaseType,purchase)         
+            console.log(response)
+           // window.location.reload(false);
+        }catch (err){
+             console.log(err.response);
+             setErrMsg(err.response.data['detail'])
+     }         
+
     }
 
     const hasPermition = (per) =>{
@@ -240,8 +291,102 @@ function Store({storesProducts, setStoresProducts}){
         setAmount("0")
         if (categoryOptions.length >0)
             setCategory(categoryOptions[0].value)
+        setnewDiscountType('visible')
+        setMinOrAmount('0')
+        setMin_price_for_discount('0')
+        setProdForDiscount('1')
+        setAmountForDiscount(0)
     }
+    const groupVisibleDiscounts =(x) =>{
+        var type = ''
+        var val = ''
+        if (x['Type'] === 1){
+            type = 'product'
+            for (var i = 0; i < storesProducts.length; i++){
+                if (options[i].key == x[discountOn]){
+                    val = options[i].label 
+                    break;
+                }
+            }
+        }
+        else if (x['Type'] === 2){
+            type = 'category'
+            for (var i = 0; i < categoryOptions.length; i++){
+                if (categoryOptions[i].key == x[discountOn]){
+                    val = categoryOptions[i].label 
+                    break;
+                }
+            }
+        }
+        else
+            type = 'store'
+        const str = type === 'store' ? 'visible: ' + x['my_discount']*100 + '% on all products' :
+        'visible: ' + x['my_discount']*100 + '% on ' + type + ' ' + val 
+        return {label:str,
+                value:x["discount_id"]}
+}
 
+    const groupConditionalDiscounts = (x)=>{
+        var type = ''
+        var val = ''
+        var condition = ''
+        if (x['Type'] === 1){
+            type = 'product'
+            for (var i = 0; i < storesProducts.length; i++){
+                if (options[i].key == x[discountOn]){
+                    val = options[i].label 
+                    break;
+                }
+            }
+        }
+        else if (x['Type'] === 2){
+            type = 'category'
+            for (var i = 0; i < categoryOptions.length; i++){
+                if (categoryOptions[i].key == x[discountOn]){
+                    val = categoryOptions[i].label 
+                    break;
+                }
+            }
+        }
+        else
+            type = 'store'
+        if (x['min_price_for_discount'] !== 0)
+            condition = 'min price for discount is'
+        else{
+            for (var i = 0; i < storesProducts.length; i++){
+                if (options[i].key == Object.entries(x['products_to_have_for_discount'])[0][0]){
+                    val = options[i].label 
+                    break;
+                }
+            }
+            condition = 'bought at least ' + Object.entries(x['products_to_have_for_discount'])[0][1] + ' of product: '+ val
+        }
+        const str = type === 'store' ? 'conditional: ' + x['my_discount']*100 + '% on all products if':
+        'conditional: ' + x['my_discount']*100 + '% on ' + type + ' ' + val + ' if ' + condition 
+
+        return {label:str,
+                value:x["discount_id"]}
+}
+    const getDiscounts = async ()=>  {
+        try{
+        const response = await axios.get('http://127.0.0.1:8000/discount/visible/'+storeId)
+        console.log(response)
+        const response2 = await axios.get('http://127.0.0.1:8000/discount/conditional/'+storeId)
+        console.log(response2)
+        // const response3 = await axios.get('http://127.0.0.1:8000/discount/combined/'+storeId)
+        // console.log(response3)
+        setDiscountOptions(discounts => response.data.map(groupVisibleDiscounts))
+        setDiscountOptions(discounts => [...discounts, ...response2.data.map(groupConditionalDiscounts)])
+        // setDiscountOptions(discounts => [...discounts, ...response3.data.map((x)=>{
+        //     setDiscountOptions(inerdiscounts => [...inerdiscounts, ...[x['firstDiscount'],x['secondDiscount']]])
+        // })])
+
+
+        }catch (err){
+            console.log(err.response);
+        }
+
+    }
     useEffect(() => {   
         getStoreInfo()
       }, []);
@@ -262,7 +407,7 @@ return(
             </ul>
         </div>
         <div className='split right'>
-            <h2>Actions:</h2>
+            {Object.values(permissions).some(per => per) ? <h2>Actions:</h2>: ""}
             {/* 1 */}
                 {hasPermition(1) ? <li> <Popup  onClose={reset} trigger={<button style={{margin:'5px'}}> Add new product</button>} position="right center">
                     <div>
@@ -284,7 +429,7 @@ return(
                         {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
                         <select onChange={(e) => setChosenProduct(e.target.value)}>
                             {options.map((option) => (
-                                <option value={option.value}>{option.label}</option>))}
+                                <option key={option.value} value={option.value}>{option.label}</option>))}
                          </select>
                          <input type = 'number' name = 'amount' placeholder="amount..." required onChange={(e)=> setAmount(e.target.value)}/>
                         <button style={{marginLeft: '40%'}}  onSubmit = {addProductToInvetory}>add</button>
@@ -301,7 +446,7 @@ return(
                                 <option value={option.value}>{option.label}</option>))}
                          </select>
                          <input type = 'number' name = 'amount' placeholder="amount..." required onChange={(e)=> setAmount(e.target.value)}/>
-                            <button style={{marginLeft: '40%'}}  onSubmit = {removeProductFromInvetory}>add</button>
+                            <button style={{marginLeft: '40%'}}  onSubmit = {removeProductFromInvetory}>remove</button>
                         </form>
                     </div> </Popup></li>: ""}
             {/* 4 */}
@@ -318,7 +463,7 @@ return(
                             <textarea style={{resize:'none'}} type = 'text' name = 'description' placeholder="description..."  onChange={(e)=> setDecription(e.target.value)}/>
                             <input type = 'number' name = 'price' placeholder="price..."  onChange={(e)=> setPrice(e.target.value)}/>
                             <input type = 'text' name = 'category' placeholder="category..." onChange={(e)=> setCategory(e.target.value)}/>
-                            <button style={{marginLeft: '40%'}}  onSubmit = {editProduct}>add</button>
+                            <button style={{marginLeft: '40%'}}  onSubmit = {editProduct}>edit</button>
                         </form>
                     </div> </Popup></li>: ""}
             {/* 5 */}
@@ -359,13 +504,29 @@ return(
             {/* 9 */}
                 {hasPermition(8) ? <li><Popup  onClose={reset} onOpen={reset} trigger={<button style={{margin:'5px'}}>add new discount</button>} position="right center">
                     <div>
+                        {storesProducts.length > 0 ?
                         <form  onSubmit = {addNewDiscount}>
-                            {errMsg !== "" ?<p >{errMsg}</p> : <br />}
+                        {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
                             <p>choose discount type:</p>
                             <select onChange={(e) => setnewDiscountType(e.target.value)}>
                                 <option value = 'visible'>visible</option>
                                 <option value = 'conditional'>conditional</option>
                             </select> 
+                            {newDiscountType === 'conditional' ? <div ><p>choose condition</p><select style={{width:'200px'}} onChange={(e) => setMinOrAmount(e.target.value)}>
+                                    <option value={"0"}>{"min price for discount"}</option>
+                                    <option value={"1"}>{`product and the amount to have for discount`}</option>
+                            </select> 
+                            </div>:""}  
+                            {newDiscountType === 'conditional'  ? minOrAmount === '0' ?
+                            <input type = 'number' name = 'price' placeholder="min amount for a..."  onChange={(e)=> setMin_price_for_discount(e.target.value)}/> 
+                            :<div> <p>choose product to have for discount </p> 
+                                <select style={{width:'200px'}} onChange={(e) => setProdForDiscount(e.target.value)}>
+                                {options.map((option) => (
+                                    <option value={option.value}>{option.label}</option>))}
+                                 </select>
+                                 <p>choose the amount of the product to have for discount</p>
+                                <input type = 'number' name = 'price' placeholder="amount of products to have..."  onChange={(e)=> setAmountForDiscount(e.target.value)}/> 
+                             </div> : ''}  
                             <p>choose discount by:</p>   
                             <select onChange={(e) => setDiscountOn(e.target.value)}>
                                 <option value = 'product'>product</option>
@@ -389,7 +550,67 @@ return(
                             <button style={{marginLeft: '40%'}}  onSubmit = {addNewDiscount}>add</button>
             
                         </form>
+                        : <p>pleasea add prodcsts first</p>}
                     </div> </Popup></li>: ""}
+            {/* 10 */}
+                {hasPermition(8) ? <li><Popup  onOpen={getDiscounts} onClose={reset} trigger={<button style={{margin:'5px'}}>combine discounts</button>} position="right center">
+                    <div>
+                    <form  onSubmit = {combineDiscounts}>
+                    {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
+
+                        <p>choose first discount</p>
+                        <select  onChange={(e) => setFirstDiscount(e.target.value)} style={{width:'200px'}}>
+                            {discountOptions.map((option) => (
+                                            <option value={option.value}>{option.label}</option>))}
+                        </select>
+                        <p>choose second discount</p>
+                        <select  onChange={(e) => setSecondDiscount(e.target.value)} style={{width:'200px'}}>
+                            {discountOptions.map((option) => (
+                                            <option value={option.value}>{option.label}</option>))}
+                        </select>
+                        <p>choose type of combination</p>
+                        <select  onChange={(e) => setCombineType(e.target.value)} style={{width:'200px'}}>
+                            <option value={'or'}>{'or'}</option>
+                            <option value={'and'}>{'and'}</option>
+                            <option value={'xor'}>{'xor'}</option>
+                            <option value={'sum'}>{'sum'}</option>
+                            <option value={'max'}>{'max'}</option>
+                        </select>
+                        <button style={{marginLeft: '40%'}}  onSubmit = {combineDiscounts}>add</button>
+                    </form>
+                  </div> </Popup></li>: ""}
+            {/* 11 */}
+                {hasPermition(8) ? <li><Popup  onOpen={getDiscounts} onClose={reset} trigger={<button style={{margin:'5px'}}>add purhcase rule</button>} position="right center">
+                    <div>
+                    <form  onSubmit = {addNewPurchaseRule}>
+                    {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
+
+                         <p>choose purchase rule by:</p>   
+                            <select onChange={(e) => setDiscountOn(e.target.value)}>
+                                <option value = 'product'>product</option>
+                                <option value = 'category'>category</option>
+                                <option value = 'price'>price</option>
+                            </select> 
+                        {discountOn === 'product' ?<div> <p>choose product to have for rule </p> 
+                                <select style={{width:'200px'}} onChange={(e) => setProdForDiscount(e.target.value)}>
+                                {options.map((option) => (
+                                    <option value={option.value}>{option.label}</option>))}
+                                 </select>
+                                 <p>choose the amount of the product to have for rule</p>
+                                <input type = 'number' name = 'price' placeholder="amount of products to have..."  onChange={(e)=> setAmountForDiscount(e.target.value)}/> 
+                             </div>:""}  
+                        {discountOn === 'category' ? <div><p>choose category to have rule apply on</p> <select onChange={(e) => setCategory(e.target.value)}>
+                            {categoryOptions.map((option) => (
+                                <option value={option.value}>{option.label}</option>))}        
+                                     </select> 
+                                     <p>choose the amount of the product to have for rule</p>
+                                <input type = 'number' name = 'price' placeholder="amount of products to have..."  onChange={(e)=> setAmountForDiscount(e.target.value)}/> </div> :""} 
+                        {discountOn === 'price' ? <div>
+                                <p>choose the minimum amount to spend in store</p>
+                        <input type = 'number' name = 'price' placeholder=" minimum amount..."  onChange={(e)=> setMin_price_for_discount(e.target.value)}/> </div> :""} 
+                        <button style={{marginLeft: '40%'}}  onSubmit = {addNewPurchaseRule}>add</button>
+                    </form>
+                  </div> </Popup></li>: ""}
             
                 
         </div>

@@ -169,3 +169,5 @@ class Store:
             return {"product": self.__products[product_id].__dict__, "quantity": self.__quantities[product_id]}
         else:
             raise ValueError("no object with this id on this store")
+
+

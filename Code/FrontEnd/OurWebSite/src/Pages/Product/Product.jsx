@@ -11,6 +11,7 @@ function Product({storesProducts}) {
 	const [fixprice, setFixPrice] = useState(0);
 	const [totalPrice, setTotalPrice] = useState(1);
 	const [catagory, setCatagory] = useState('');
+	const [discount, setDiscount] = useState(0);
 
 	const [count, setCount] = useState(0);
 
@@ -28,6 +29,7 @@ function Product({storesProducts}) {
 			setRating(response.data['product']['_Product__rating']);
 			setFixPrice(response.data['product']['_Product__price']);
 			setCatagory(response.data['product']['_Product__category']);
+			getDiscounts()
         } catch (err){
             console.log(err.response);
         }
@@ -56,7 +58,7 @@ function Product({storesProducts}) {
 	};
 
 	useEffect(() => {
-		setTotalPrice(fixprice * count);
+		setTotalPrice(fixprice * count * discount);
 	}, [count]);
 
 	const getBadgeClasses = () => {
@@ -86,6 +88,19 @@ function Product({storesProducts}) {
 	const handleDicrement = (count) => {
 		if (count > 0) setCount(count - 1);
 	};
+
+	const getDiscounts = async ()=>  {
+        try{
+        const response = await axios.get('http://127.0.0.1:8000/discount/visible/'+storeId)
+		for (var i = 0; i < response.data.length; i++){
+			if (productId == response.data[i]['discount_on']){
+				setDiscount(response.data[i]['my_discount'])
+			}
+		}
+        }catch (err){
+            console.log(err.response);
+        }
+	}
 
 	return (
 		<div
@@ -131,8 +146,12 @@ function Product({storesProducts}) {
 					Add to cart
 				</button>
 				<p>
-					<strong>${totalPrice}</strong>
+					<strong>price: ${fixprice}</strong>
+					<strong style={{color:'red'}}>      discount: {discount*100}%</strong>
+
 				</p>
+				<strong>total price: ${totalPrice}</strong>
+
 			</div>
 		</div>
 	);

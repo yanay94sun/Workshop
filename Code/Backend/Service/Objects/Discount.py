@@ -8,5 +8,6 @@ class Discount(BaseModel):
     end_date: str
     product_id: str
     category_name: str
-    dic_of_products_and_quantity: str
+    prodForDiscount: str
+    amountForDiscount: int
     min_price_for_discount: int

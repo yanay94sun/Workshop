@@ -11,6 +11,7 @@ import axios from "axios";
 import HomePage from "../HomePage/HomePage";
 import StoreHome from "../Stores/StoresHome";
 import Payment from "../Payment/Payment"
+import Admin from "../Admin/Admin";
 
 const Home = ({setLogin,isLogged,myId}) => {
 
@@ -27,6 +28,7 @@ const Home = ({setLogin,isLogged,myId}) => {
                 <Route path ='/my-account/:userId' element= {<MyAccount/>}/>
                 <Route path="/stores/:storeId/*" element= {<StoreHome ip = {myId}/>}/>
                 <Route path="/payment" element = {<Payment/>}/>
+                <Route path="/admin" element = {<Admin/>}/>
             </Routes>
             
         </div>

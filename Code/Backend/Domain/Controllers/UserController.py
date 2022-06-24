@@ -124,3 +124,13 @@ class UserController:
     def pull_user_msgs(self, uid):
         username = self.__users[uid].get_username()
         return self.__members[username].pull_msgs()
+
+    def remove_member(self, member_id):
+        """
+        call function only if checked that admin is using this
+        member_id is username
+        """
+        if member_id in self.__members.keys():
+            del self.__members[member_id]
+            return Response(value='Removed member: ' + member_id)
+        return Response(msg='member does not exist')

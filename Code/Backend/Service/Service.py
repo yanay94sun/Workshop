@@ -35,17 +35,18 @@ class Service:
     def __init__(self):
         self.facade = Facade()
 
-    def initial_system(self, payment_service, supply_service, admin_id: str = None, admin_pwd: str = None):
+    def initial_system(self, payment_service, supply_service):
         """
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
         -   creates the main admin, if not exist
-        :param admin_id: if not None, one of the system's admins
-        :param admin_pwd: if admin id is not None, is the password of the corresponds admin id
         :param payment_service: an Enum to configure the payment service
         :param supply_service: an Enum to configure the supply service
         :return: None
         """
+        config = helper.read_config()
+        admin_id = config['Admin']['userName']
+        admin_pwd = config['Admin']['password']
         response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
         write_to_log(response, "The system initialized successfully")
 
@@ -67,7 +68,7 @@ class Service:
         # with open("configurations.ini", "w") as file_object:
         #     config_file.write(file_object)
 
-        self.__config()
+       # self.__config()
 
         return response
 
@@ -627,7 +628,9 @@ class Service:
         :param member_id:
         :return:
         """
-        pass
+        response = Response(self.facade.remove_member(user_id, member_id))
+        write_to_log(response, "successfully removed member")
+        return response
 
     def get_all_users_messages_by_admin(self, user_id: str):
         """
@@ -773,7 +776,6 @@ class Service:
         write_to_log(response, "successfully added or purchase rule")
         return response
 
-
     ##################################################################
     # functions for frontend
     ##############################################################
@@ -798,6 +800,26 @@ class Service:
     def get_permissions(self, store_id, user_id):
         response = Response(self.facade.get_permissions(store_id, user_id))
         write_to_log(response, "successfully got permissions")
+        return response
+
+    def get_visible_discounts(self, store_id):
+        response = Response(self.facade.get_visible_discounts(store_id))
+        write_to_log(response, "successfully got discounts")
+        return response
+
+    def get_conditional_discount(self, store_id):
+        response = Response(self.facade.get_conditional_discount(store_id))
+        write_to_log(response, "successfully got discounts")
+        return response
+
+    def get_combined_discounts(self, store_id):
+        response = Response(self.facade.get_combined_discounts(store_id))
+        write_to_log(response, "successfully got discounts")
+        return response
+
+    def check_if_admin(self,user_id):
+        response = Response(self.facade.check_if_admin(user_id))
+        write_to_log(response, "successfully got discounts")
         return response
 
     def __short_register(self, user):
@@ -826,9 +848,10 @@ class Service:
             return store_id
         return store_id.value
 
-    def __config(self):
-        config = helper.read_config()
-        userName = config['Admin']['userName']
-        password = config['Admin']['password']
-        admin_id = self.enter_as_guest().value
-        self.register(admin_id, {"username": userName, 'password': password})
+    # def __config(self):
+    #     config = helper.read_config()
+    #     userName = config['Admin']['userName']
+    #     password = config['Admin']['password']
+    #     admin_id = self.enter_as_guest().value
+    #     self.register(admin_id, {"username": userName, 'password': password})
+    #     self.__addFirstAdmin(userName, password)

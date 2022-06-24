@@ -18,6 +18,7 @@ function MyStores({listItems, setListItems, ip }){
             id: ip
         }
        try{
+       console.log(storeNameToBack)
        const response = await axios.post("http://127.0.0.1:8000/users/open_store",storeNameToBack)
        setErrMsg("")
        setListItems(listItems => [...listItems, <li key={storeName} style={{cursor:'pointer' ,width:'40px'}} onClick={()=>Navigate("../Stores/"+response.data)}>{storeName}</li>])
