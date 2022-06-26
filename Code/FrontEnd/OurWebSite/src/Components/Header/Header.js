@@ -78,7 +78,7 @@ function Header({handleLogin, checkLogged, ip }){
 
     useEffect(() => {
         const ws = new WebSocket('ws://localhost:8000/ws');
-        ws.onopen = () => ws.send("Connected to React")
+        ws.onopen = () => ws.send(localStorage.getItem("user_id"), room);
         // ws.onmessage = (e) => {
         //     console.log("Accepted Message: ", e.data)
         // }
