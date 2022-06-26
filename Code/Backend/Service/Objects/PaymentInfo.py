@@ -12,6 +12,7 @@ class PaymentInfo(BaseModel):
     #     self.amount_to_pay = amount_to_pay
 
     # amount_to_pay: int
+    customer_id: str
     id: str
     holder: str
     card_number: str
