@@ -261,6 +261,11 @@ class Facade:
             revert if could not pay
             """
             cart = self.user_controller.get_shopping_cart(user_id)
+
+            # just testing somthing
+            response = self.market.contact_payment_service(payment_info)
+            return response
+
             if cart.error_occurred():
                 return cart
             all_products = [p for p in cart.value.iter_products()]
@@ -283,8 +288,9 @@ class Facade:
                 if p.error_occurred():
                     return Response.from_error("some error occurred while calculating a basket's price")
                 total_price += p.value
-            if total_price != payment_info.amount_to_pay:
-                return Response(msg="You little piece of shit, trying to steal aha?")
+            #     no payment.amount anymore
+            # if total_price != payment_info.amount_to_pay:
+            #     return Response(msg="You little piece of shit, trying to steal aha?")
             # good pay, remove products from shopping cart
             response = self.market.contact_payment_service(payment_info)
             if response.error_occurred():

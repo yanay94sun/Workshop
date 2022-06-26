@@ -24,6 +24,8 @@ class PaymentServiceAdapter:
             #                                         domain_payment_info.cvv,
             #                                         domain_payment_info.amount_to_pay)
             # TODO - how to break requrest when timeout
+            print("aaaaaa")
+
             try:
                 r = requests.post(url=self.__payment_service, data=PARAMS, timeout=10)
             except Timeout:
