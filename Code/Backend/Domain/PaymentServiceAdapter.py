@@ -2,6 +2,8 @@ from Code.Backend.Domain.MFResponse import Response
 
 # importing the requests library
 import requests
+import time
+from requests.exceptions import Timeout
 
 class PaymentServiceAdapter:
     def __init__(self):
@@ -20,18 +22,21 @@ class PaymentServiceAdapter:
             # res = self.__payment_service.pay(domain_payment_info.credit_card,
             #                                         domain_payment_info.cvv,
             #                                         domain_payment_info.amount_to_pay)
-
-            r = requests.post(url=self.__payment_service, data=PARAMS)
+            # TODO - how to break requrest when timeout
+            try:
+                r = requests.post(url=self.__payment_service, data=PARAMS, timeout=10)
+            except Timeout:
+                return Response(msg="Request Timeout")
             data = r.text
             print(data)
-            if data != "-1":
+            if data != "unexpected-output" and 10000 <= int(data) <= 100000:
                 return Response(value=data)
             return Response(msg="Cannot make payment with the service")
         # SHOULD NOT GET HERE
         return Response(msg="Payment Service is not configured")
 
     def connect_payment_service(self, payment_service):
-        PARAMS = {"action_type":"handshake"}
+        PARAMS = {"action_type": "handshake"}
         r = requests.post(url= payment_service, data= PARAMS)
         data = r.text
         if data == "OK":
