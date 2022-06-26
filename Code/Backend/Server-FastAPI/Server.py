@@ -136,9 +136,9 @@ async def websocket_endpoint(websocket: WebSocket):
             break
     print('Bye..')
 
-def update(user_id):
-    ## conncetion
-    ws.send.to(user_id)
+# def update(user_id):
+#     ## conncetion
+#     ws.send.to(user_id)
 
 
 # @socket_manager.on('client_start_event')
