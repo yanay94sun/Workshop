@@ -32,7 +32,7 @@ function withRouter(Component) {
     return ComponentWithRouterProp;
   }
 
-function Header({handleLogin, checkLogged, ip }){
+function Header({handleLogin, checkLogged }){
     var ws =  null;
     const navigate = useNavigate();
     const [hasNotification, setHasNotification] = useState(false);

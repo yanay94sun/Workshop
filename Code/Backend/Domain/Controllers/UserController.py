@@ -15,7 +15,7 @@ class UserController:
         self.__members: Dict[str, MemberState] = {}  # username: member
         # self.__online_members = set()  # we can use as dictionary with timestamp to set online validity
         #                                # and clear it from time to time
-        self.__online_members = Dict[MemberState, str] = {}  # Member: uid
+        self.__online_members : Dict[MemberState, str] = {}  # Member: uid
         self.__id_counter = 0
 
     def init(self):
