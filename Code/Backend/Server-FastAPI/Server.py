@@ -276,6 +276,7 @@ def get_users_stores(user_id: str):
 
 @app.post("/pay")
 def purchase_shopping_cart(payment_info: PaymentInfo):
+    print("HERE")
     res = service.purchase_shopping_cart(payment_info.holder, payment_info)
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)

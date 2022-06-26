@@ -4,10 +4,18 @@ import { useNavigate } from "react-router-dom";
 
 
 function Payment(){
-    const [customer_id, SetCustomer_id] = useState("");
-    const [customer_name, SetCustomer_name] = useState("");
-    const [credit_card, SetCredit_card] = useState("");
-    const [cvv, SetCvv] = useState("");
+    // const [customer_id, SetCustomer_id] = useState("");
+    // const [customer_name, SetCustomer_name] = useState("");
+    // const [credit_card, SetCredit_card] = useState("");
+    // const [cvv, SetCvv] = useState("");
+    //
+    const [id, SetId] = useState(''); // teudat zehoot
+    const [holder, SetHolder] = useState('');
+    const [card_number, SetCard_number] = useState('');
+    const [ccv, SetCcv] = useState('');
+    const [year, SetYear] = useState('');
+    const [month, SetMonth] = useState('');
+
     const [errMsg, setErrMsg] = useState("")
     const [amount_to_pay, SetAmount_to_pay] = useState(0);
 
@@ -17,10 +25,16 @@ function Payment(){
         e.preventDefault()
         const paymentInfo = {
             customer_id: localStorage.getItem("user_id"),
-            customer_name: customer_name,
-            credit_card: credit_card,
-            cvv: cvv,
-            amount_to_pay: amount_to_pay,
+            // customer_name: customer_name,
+            // credit_card: credit_card,
+            // cvv: cvv,
+            // amount_to_pay: amount_to_pay,
+            id: id,
+            holder: holder,
+            card_number: card_number,
+            ccv: ccv,
+            year: year,
+            month: month,
         }
         try{
 			const response = await axios.post("http://127.0.0.1:8000/pay", paymentInfo);
@@ -50,9 +64,16 @@ function Payment(){
             please fill the information below:
             <form  onSubmit = {handlePayment}>
                     {errMsg !== "" ?<p style={{textAlign:'center', color:'red'}} >{errMsg}</p> : <br />}
-                <input type = 'text' name = 'customer_name' placeholder="customer name..." required onChange={(e)=> SetCustomer_name(e.target.value)}/>
-                <input  type = 'text' name = 'credit_card' placeholder="credit_card..."  onChange={(e)=> SetCredit_card(e.target.value)}/>
-                <input type = 'number' name = 'cvv' placeholder="cvv..." required onChange={(e)=> SetCvv(e.target.value)}/>
+                {/*<input type = 'text' name = 'customer_name' placeholder="customer name..." required onChange={(e)=> SetCustomer_name(e.target.value)}/>*/}
+                {/*<input  type = 'text' name = 'credit_card' placeholder="credit_card..."  onChange={(e)=> SetCredit_card(e.target.value)}/>*/}
+                {/*<input type = 'number' name = 'cvv' placeholder="cvv..." required onChange={(e)=> SetCvv(e.target.value)}/>*/}
+
+                <input type = 'text' name = 'id' placeholder="id..." required onChange={(e)=> SetId(e.target.value)}/>
+                <input  type = 'text' name = 'holder' placeholder="holder..."  onChange={(e)=> SetHolder(e.target.value)}/>
+                <input type = 'text' name = 'card_number' placeholder="card_number..." required onChange={(e)=> SetCard_number(e.target.value)}/>
+                <input type = 'text' name = 'ccv' placeholder="ccv..." required onChange={(e)=> SetCcv(e.target.value)}/>
+                <input type = 'text' name = 'year' placeholder="year..." required onChange={(e)=> SetYear(e.target.value)}/>
+                <input type = 'text' name = 'month' placeholder="month..." required onChange={(e)=> SetMonth(e.target.value)}/>
                 <h4>Your total amount after discounts is: {amount_to_pay}$</h4>
                 <button style={{marginLeft: '40%'}}  onSubmit = {handlePayment}>Pay</button>
             </form>
