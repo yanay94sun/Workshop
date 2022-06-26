@@ -53,7 +53,9 @@ from Code.Backend.Service.Service import Service
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="guests/login")
 try:
     service = Service()
-    service.initial_system(payment_service=PaymentService(), supply_service=SupplyService(), path='config.ini')
+    # service.initial_system(payment_service=PaymentService(), supply_service=SupplyService(), path='config.ini')
+    service.initial_system(payment_service="https://cs-bgu-wsep.herokuapp.com/", supply_service=SupplyService(), path='config.ini')
+
 except ValueError as e:
     sys.exit(e.args)
 

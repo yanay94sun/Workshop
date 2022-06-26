@@ -11,8 +11,10 @@ class PaymentInfo(BaseModel):
     #     self.cvv = cvv
     #     self.amount_to_pay = amount_to_pay
 
-    customer_id: str
-    customer_name: str
-    credit_card: str
-    cvv: str
-    amount_to_pay: int
+    # amount_to_pay: int
+    id: str
+    holder: str
+    card_number: str
+    ccv: str
+    year: str
+    month: str
