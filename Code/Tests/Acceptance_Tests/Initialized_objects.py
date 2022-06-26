@@ -3,8 +3,8 @@ import datetime
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 
-admin_user = "admin"
-admin_pass = "123"
+admin_user = "Admin"
+admin_pass = "Admin"
 customer_id_nitzan = "205952971"
 nitzan = "Nitzan"
 lary = "Lary"

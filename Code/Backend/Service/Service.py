@@ -35,7 +35,7 @@ class Service:
     def __init__(self):
         self.facade = Facade()
 
-    def initial_system(self, payment_service, supply_service):
+    def initial_system(self, payment_service, supply_service, for_test=False):
         """
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
@@ -44,33 +44,18 @@ class Service:
         :param supply_service: an Enum to configure the supply service
         :return: None
         """
-        config = helper.read_config()
-        admin_id = config['Admin']['userName']
-        admin_pwd = config['Admin']['password']
+        # helper.write_new_config('Admin',{'username': 'admin',
+        #                                  'password': 'admin'})
+        try:
+            config = helper.read_config(for_test)
+            admin_id = config['Admin']['username']
+            admin_pwd = config['Admin']['password']
+        except:
+            raise ValueError('problem in config file')
         response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
         write_to_log(response, "The system initialized successfully")
 
-        # this is how you add information to config file:
-
-        # # CREATE OBJECT
-        # config_file = configparser.ConfigParser()
-        #
-        # # READ CONFIG FILE
-        # config_file.read("configurations.ini")
-        #
-        # # UPDATE A FIELD VALUE
-        # config_file["Logger"]["LogLevel"] = "Debug"
-        #
-        # # ADD A NEW FIELD UNDER A SECTION
-        # config_file["Logger"].update({"Format": "(message)"})
-        #
-        # # SAVE THE SETTINGS TO THE FILE
-        # with open("configurations.ini", "w") as file_object:
-        #     config_file.write(file_object)
-
-       # self.__config()
-
-        return response
+        # return response
 
     def contact_payment_service(self, payment_info: PaymentInfo) -> Response:
         """
@@ -817,7 +802,7 @@ class Service:
         write_to_log(response, "successfully got discounts")
         return response
 
-    def check_if_admin(self,user_id):
+    def check_if_admin(self, user_id):
         response = Response(self.facade.check_if_admin(user_id))
         write_to_log(response, "successfully got discounts")
         return response

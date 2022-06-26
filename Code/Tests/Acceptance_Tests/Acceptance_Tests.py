@@ -17,8 +17,9 @@ def is_error(response):
 class AcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.service = Service()
-        self.service.initial_system(admin_id=admin_user, admin_pwd=admin_pass, payment_service=PaymentService(),
-                                    supply_service=SupplyService())
+        self.service.initial_system(payment_service=PaymentService(),
+                                    supply_service=SupplyService(), for_test=True)
+
 
     # def test_contact_payment_service(self):
     #     """

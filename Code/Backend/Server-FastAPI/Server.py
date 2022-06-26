@@ -1,3 +1,4 @@
+import sys
 from random import random
 
 from fastapi import FastAPI, Response, status, HTTPException, WebSocket, Depends, Cookie
@@ -49,9 +50,12 @@ from Code.Backend.Service.Service import Service
 """
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="guests/login")
+try:
+    service = Service()
+    service.initial_system(payment_service=PaymentService(), supply_service=SupplyService())
+except ValueError as e:
+    sys.exit(e.args)
 
-service = Service()
-service.initial_system(payment_service=PaymentService(), supply_service=SupplyService())
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
