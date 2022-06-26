@@ -526,6 +526,14 @@ def get_store_roles(store: Store_name):
     return res.value
 
 
+@app.get("/check_connection/{user_id}")
+def check_connection(user_id: str):
+    res = service.check_connection(user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
 """
 ------------------------------------------------------------------------
                                     Utils
