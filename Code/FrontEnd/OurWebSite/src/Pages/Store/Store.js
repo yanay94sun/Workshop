@@ -191,7 +191,7 @@ function Store({storesProducts, setStoresProducts}){
             setRank(response.data["rank"])
             if (response.data["products"].length > 0)
                 setStoresProducts(storesProducts => [response.data["products"].map(x=><div key={x["_Product__ID"]} style={{width:'3px'}}><li key={x["_Product__ID"]} style={{cursor:'pointer'}} ><h3 onClick={()=>Navigate("../"+ x["_Product__ID"])} style={{display:'inline'}}>{x["_Product__name"]}</h3></li></div>)])
-            setOptions(options => response.data["products"].map(function(x){
+                setOptions(options => response.data["products"].map(function(x){
                 return {label:x["_Product__name"],
                         value:x["_Product__ID"]}
         }))
@@ -401,9 +401,9 @@ return(
                 <li>store ranking: <h3 style={{display:'inline'}}>{storeRank}</h3></li>
                 <li>store products:
                 </li>
-                <ul>
+                <div className='scroller'>
                 {storesProducts.length === 0 ? <li>no products</li>: storesProducts}
-                </ul>
+                </div>
             </ul>
         </div>
         <div className='split right'>

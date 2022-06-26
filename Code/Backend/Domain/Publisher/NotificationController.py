@@ -32,9 +32,17 @@ class NotificationController:
 
     def notify_all(self, store_id: str, activity: Activities, msg: str):
         for username in self.__stores_activity[store_id][activity.value]:
-            if self.__uc.is_online(username):
-                pass  # todo: server.push_notification
-            else:
-                res = self.__uc.add_message_to_member(username, msg)
-                if res.error_occurred():
-                    return res
+            self.notify_single(username, msg)
+
+    async def notify_single(self, to_username, content):
+        accepted_msg = False
+
+        if self.__uc.is_online(to_username):
+            uid = self.__uc.get_username_uid(to_username)
+
+            accepted_msg = server.update(uid, content)
+
+        if not accepted_msg:
+            res = self.__uc.add_message_to_member(to_username, content)
+            if res.error_occurred():
+                return res

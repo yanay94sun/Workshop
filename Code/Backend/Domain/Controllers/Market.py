@@ -138,3 +138,6 @@ class Market:
                                                   Activities.OFFICIAL_REMOVED,
                                                   f"{remover_username} discharged {subject_username} from its duties")
         [self.__notification_controller.unsubscribe(subject_username, store_id, act) for act in Activities]
+
+    def send_notification_to_member(self, to_username, content):
+        self.__notification_controller.notify_single(to_username, content)
