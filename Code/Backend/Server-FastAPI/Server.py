@@ -28,6 +28,7 @@ from Code.Backend.Service.Objects.UserID import UserID
 from Code.Backend.Service.Objects.User_info import User_info
 from Code.Backend.Service.Service import Service
 # from Code.Backend import oauth2
+import Code.DAL.main  # TODO should be deleted: here only for first tests
 
 """
                                      IMPORTANT!!!
