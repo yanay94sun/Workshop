@@ -988,6 +988,11 @@ class Facade:
         member_id = self.user_controller.get_users_username(user_id)
         return Response(value=self.market.check_if_admin(member_id.value))
 
+    def send_message_to_user(self, from_uid, to_username, content):
+        sender = self.user_controller.get_users_username(from_uid)
+        if sender.error_occurred():
+            return sender
+        self.market.send_notification_to_member(to_username, content)
 
     def check_connection(self, user_id):
         return self.user_controller.is_connected(user_id)

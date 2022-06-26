@@ -13,8 +13,9 @@ class UserController:
         """
         self.__users: Dict[str, Visitor] = {}  # ip or other user identifier: user todo
         self.__members: Dict[str, MemberState] = {}  # username: member
-        self.__online_members = set()  # we can use as dictionary with timestamp to set online validity
-                                       # and clear it from time to time
+        # self.__online_members = set()  # we can use as dictionary with timestamp to set online validity
+        #                                # and clear it from time to time
+        self.__online_members = Dict[MemberState, str] = {}  # Member: uid
         self.__id_counter = 0
 
     def init(self):
@@ -52,7 +53,7 @@ class UserController:
             return Response(msg="guest id doesn't exist")
         res = self.__users[user_id].login(self.__members[username], password)
         if not res.error_occurred():
-            self.__online_members.add(res.value)
+            self.__online_members[res.value] = user_id
         return res
 
     def is_logged_in(self, user_id: str):
@@ -92,7 +93,7 @@ class UserController:
             return Response.from_error("user doesn't exist")
         res = self.__users[user_id].logout()
         if not res.error_occurred():
-            self.__online_members.remove(res.value)
+            self.__online_members.pop(res.value)
         return res
 
     def review_product(self, user_id: str, product_info, review: str):
@@ -134,6 +135,9 @@ class UserController:
             del self.__members[member_id]
             return Response(value='Removed member: ' + member_id)
         return Response(msg='member does not exist')
+
+    def get_username_uid(self, username):
+        return self.__online_members[username]
 
     def is_connected(self, user_id):
         if user_id in self.__users.keys():
