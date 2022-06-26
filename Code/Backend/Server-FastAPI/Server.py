@@ -33,6 +33,7 @@ from Code.Backend.Service.Objects.TokenData import TokenData
 from Code.Backend.Service.Objects.UserID import UserID
 from Code.Backend.Service.Objects.User_info import User_info
 from Code.Backend.Service.Service import Service
+
 # from Code.Backend import oauth2
 
 """
@@ -52,14 +53,12 @@ from Code.Backend.Service.Service import Service
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="guests/login")
 try:
     service = Service()
-    service.initial_system(payment_service=PaymentService(), supply_service=SupplyService())
+    service.initial_system(payment_service=PaymentService(), supply_service=SupplyService(), path='config.ini')
 except ValueError as e:
     sys.exit(e.args)
 
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 app = FastAPI()
-
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -498,8 +497,6 @@ def get_store_roles(store: Store_name):
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
-
-
 
 
 """

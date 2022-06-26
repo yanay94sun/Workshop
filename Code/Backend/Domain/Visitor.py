@@ -43,8 +43,9 @@ class Visitor:
         # hashing pwd
         hashed_pwd = auth.hash(member_info["password"])
         # change pwd
-        member_info["password"] = hashed_pwd
-        ret = MemberState(self.__status.get_shopping_cart(), member_info)
+        new_member_info = {'username': member_info['username'],
+                           'password': hashed_pwd}
+        ret = MemberState(self.__status.get_shopping_cart(), new_member_info)
         return Response(value=ret)
 
     def add_product_to_shopping_cart(self, product_info):

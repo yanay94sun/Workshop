@@ -5,12 +5,9 @@ import configparser
 import os
 
 
-def read_config(for_test):
+def read_config(path):
     config = configparser.ConfigParser()
-    if for_test:
-        config.read('Testconfig.ini')
-    else:
-        config.read('config.ini')
+    config.read(path)
     return config
 
 

@@ -22,6 +22,12 @@ add_new_product_args = {
     "price": 10,
     "category": "bread"
 }
+add_new_product_args2 = {
+    "product_name": default_product_name,
+    "product_description": "some product description",
+    "price": 20,
+    "category": "bread"
+}
 
 # tomorrow
 try:

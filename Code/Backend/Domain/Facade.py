@@ -264,6 +264,10 @@ class Facade:
             # validate cart
             if not self.store_controller.valid_all_products_for_purchase(all_products):
                 return Response(msg="not enough quantities")
+            # check if purchase rules are ok
+            if not all(self.store_controller.check_purchase_policy(store_id, basket).value for store_id, basket in
+                       all_baskets.items()):
+                return Response(msg="purchase policy rules are not met")
             # get prices
             prices = (self.store_controller.get_basket_price(store_id, basket) for store_id, basket in
                       all_baskets.items())
@@ -291,6 +295,8 @@ class Facade:
                 response = self.store_controller.remove_all_products_for_purchasing(all_products)
                 if response.error_occurred():
                     return response
+                return Response(value='Successfully payment')
+
             else:
                 return Response.from_error("unsuccessfully payment")
 
@@ -333,7 +339,7 @@ class Facade:
         res_from_sc = self.store_controller.open_store(response_member_id.value, store_name)
         if res_from_sc.error_occurred():
             return res_from_sc
-        self.market.register_store(store_name, response_member_id.value)
+        self.market.register_store(res_from_sc.value, response_member_id.value)
         return res_from_sc
 
     def review_product(self, user_id: str, product_info, review: str):
@@ -576,7 +582,6 @@ class Facade:
             self.market.remove_store_official(store_id, remover_username.value, subject_username)
         return sc_res
 
-
     def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
         """
         II.4.6
@@ -818,7 +823,8 @@ class Facade:
         member_id = self.user_controller.get_users_username(user_id)
         if member_id.error_occurred():
             return member_id
-        return self.store_controller.add_visible_discount_by_product(member_id.value, store_id, discount_price, end_date,
+        return self.store_controller.add_visible_discount_by_product(member_id.value, store_id, discount_price,
+                                                                     end_date,
                                                                      product_id)
 
     def add_visible_discount_by_category(self, user_id, store_id,
@@ -876,7 +882,8 @@ class Facade:
         member_id = self.user_controller.get_users_username(user_id)
         if member_id.error_occurred():
             return member_id
-        return self.store_controller.add_conditional_discount_by_store(member_id.value, store_id, discount_price, end_date,
+        return self.store_controller.add_conditional_discount_by_store(member_id.value, store_id, discount_price,
+                                                                       end_date,
                                                                        dic_of_products_and_quantity,
                                                                        min_price_for_discount)
 

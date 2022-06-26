@@ -35,19 +35,20 @@ class Service:
     def __init__(self):
         self.facade = Facade()
 
-    def initial_system(self, payment_service, supply_service, for_test=False):
+    def initial_system(self, payment_service, supply_service, path='config.ini'):
         """
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
         -   creates the main admin, if not exist
         :param payment_service: an Enum to configure the payment service
         :param supply_service: an Enum to configure the supply service
+        :param path: path to configfile
         :return: None
         """
         # helper.write_new_config('Admin',{'username': 'admin',
         #                                  'password': 'admin'})
         try:
-            config = helper.read_config(for_test)
+            config = helper.read_config(path)
             admin_id = config['Admin']['username']
             admin_pwd = config['Admin']['password']
         except:

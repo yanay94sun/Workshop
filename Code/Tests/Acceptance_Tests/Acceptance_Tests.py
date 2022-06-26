@@ -18,8 +18,7 @@ class AcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.service = Service()
         self.service.initial_system(payment_service=PaymentService(),
-                                    supply_service=SupplyService(), for_test=True)
-
+                                    supply_service=SupplyService(), path='Testconfig.ini')
 
     # def test_contact_payment_service(self):
     #     """
@@ -75,8 +74,10 @@ class AcceptanceTests(unittest.TestCase):
         self.assertTrue(is_error(response), "Can not register with a registered id")
 
     def login(self, register_info):
+        username = register_info["username"]
+        password = register_info["password"]
         g_id = self.register(register_info)
-        response = self.service.login(g_id, register_info["username"], register_info["password"])
+        response = self.service.login(g_id, username, password)
         self.assertTrue(not is_error(response), "Should not be an error when login once with correct info")
         return g_id
 
@@ -319,13 +320,15 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(price, add_new_product_args["price"])
         # bad purchase - bad payment
         response = self.service.purchase_shopping_cart(g_id, bad_payment)
-        self.assertTrue(is_error(response), response.msg)
+        self.assertTrue(is_error(response))
         # good purchase
         response = self.service.purchase_shopping_cart(g_id, payment)
-        self.assertTrue(not is_error(response), response.msg)
+        self.assertTrue(not is_error(response))
+        # check inventory
+        self.assertEqual(self.service.get_product_and_quantities(store_id, p1_id).value['quantity'], 0)
         # repurchase
         response = self.service.purchase_shopping_cart(g_id, payment)
-        self.assertTrue(is_error(response), response.msg)
+        self.assertTrue(is_error(response))
         # check in the shopping cart
         response = self.service.get_shopping_cart(g_id)
         self.assertTrue(not is_error(response))
@@ -361,6 +364,8 @@ class AcceptanceTests(unittest.TestCase):
         # purchase
         response = self.service.purchase_shopping_cart(g_id, payment)
         self.assertTrue(not is_error(response), response.msg)
+        # check inventory
+        self.assertEqual(self.service.get_product_and_quantities(store_id, p1_id).value['quantity'], 0)
 
     def test_purchase_shop_cart_concurrently(self):
         """
@@ -555,6 +560,37 @@ class AcceptanceTests(unittest.TestCase):
         t1.join()
         t2.join()
         self.assertTrue(err_list[0] != err_list[1], err_list)
+
+    def test_purchase_policy(self):
+        g_id = self.login(good_register_info)
+        store_opener = self.login(good_register_info2)  # store opener client id
+        store_id = self.open_store(store_opener, store_name)
+        # add products to inventory
+        p1_id = self.service.add_new_product_to_inventory(store_opener, store_id, 'apple', 'bla', 10, 'fruits').value
+        self.service.add_products_to_inventory(store_opener, store_id, p1_id, 2)
+        # add product p1 with 1 quantity to shopping cart for g_id1
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
+        self.assertTrue(not is_error(response))
+        self.service.add_simple_purchase_rule_by_product(store_opener, store_id, {p1_id: 2})
+        # get cart's price
+        response = self.service.get_cart_price(g_id)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        price = response.value
+        payment = good_payment(10)
+        # assert correctness of price
+        self.assertEqual(price, 10)
+        # bad purchase - does not fulfill purchase rule
+        response = self.service.purchase_shopping_cart(g_id, good_payment(price))
+        self.assertTrue(is_error(response))
+        # add product to fulfill purchase rule
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
+        payment = good_payment(20)
+        self.assertTrue(not is_error(response))
+        # good purchase
+        response = self.service.purchase_shopping_cart(g_id, payment)
+        self.assertTrue(not is_error(response))
+
 
     # # def test_remove_store_owner(self):
     # #     """
