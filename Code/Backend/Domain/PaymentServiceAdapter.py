@@ -40,6 +40,7 @@ class PaymentServiceAdapter:
         PARAMS = {"action_type": "handshake"}
         r = requests.post(url= payment_service, data= PARAMS)
         data = r.text
+        print(data)
         if data == "OK":
             self.__payment_service = payment_service
             return Response(value=data)
