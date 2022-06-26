@@ -576,20 +576,50 @@ class AcceptanceTests(unittest.TestCase):
         response = self.service.get_cart_price(g_id)
         self.assertTrue(not is_error(response))
         self.assertIsNotNone(response.value)
+
         price = response.value
         payment = good_payment(10)
         # assert correctness of price
-        self.assertEqual(price, 10)
         # bad purchase - does not fulfill purchase rule
-        response = self.service.purchase_shopping_cart(g_id, good_payment(price))
+        response = self.service.purchase_shopping_cart(g_id, payment)
         self.assertTrue(is_error(response))
         # add product to fulfill purchase rule
         response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
-        payment = good_payment(20)
+        responsePay = self.service.get_cart_price(g_id)
+        self.assertTrue(not is_error(responsePay))
+        self.assertIsNotNone(responsePay.value)
+
+        price = responsePay.value
+        payment = good_payment(price)
         self.assertTrue(not is_error(response))
         # good purchase
         response = self.service.purchase_shopping_cart(g_id, payment)
         self.assertTrue(not is_error(response))
+
+    def test_discount_policy(self):
+        g_id = self.login(good_register_info)
+        store_opener = self.login(good_register_info2)  # store opener client id
+        store_id = self.open_store(store_opener, store_name)
+        # add products to inventory (1 of p1, 2 of p2)
+        p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
+        # add product p1 with 1 quantity to shopping cart for g_id
+        response = self.service.add_product_to_shopping_cart(g_id, store_id, p1_id, 1)
+        self.assertTrue(not is_error(response))
+        # add discount to store
+        response = self.service.add_visible_discount_by_store(store_opener, store_id, 0.5, '')
+        self.assertTrue(not is_error(response))
+        # logout
+        response = self.service.logout(g_id)
+        self.assertTrue(not is_error(response), response.msg)
+        # login
+        response = self.service.login(g_id, good_register_info["username"], good_register_info["password"])
+        self.assertTrue(not is_error(response), response.msg)
+        # purchase -> get cart price
+        response = self.service.get_cart_price(g_id)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        self.assertEqual(response.value, 5)
+
 
 
     # # def test_remove_store_owner(self):

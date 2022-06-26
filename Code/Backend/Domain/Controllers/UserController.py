@@ -15,7 +15,7 @@ class UserController:
         self.__members: Dict[str, MemberState] = {}  # username: member
         # self.__online_members = set()  # we can use as dictionary with timestamp to set online validity
         #                                # and clear it from time to time
-        self.__online_members = Dict[MemberState, str] = {}  # Member: uid
+        self.__online_members : Dict[MemberState, str] = {}  # Member: uid
         self.__id_counter = 0
 
     def init(self):
@@ -138,3 +138,8 @@ class UserController:
 
     def get_username_uid(self, username):
         return self.__online_members[username]
+
+    def is_connected(self, user_id):
+        if user_id in self.__users.keys():
+            return Response(value=True)
+        return Response(value=False)

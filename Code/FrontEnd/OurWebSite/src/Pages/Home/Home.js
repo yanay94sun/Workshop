@@ -19,7 +19,7 @@ const Home = ({setLogin,isLogged,myId}) => {
 
     return (
         <div>
-            <Header handleLogin={setLogin} checkLogged = {isLogged} ip = {myId}/>
+            <Header handleLogin={setLogin} checkLogged = {isLogged}/>
             <Routes>
                 <Route path = '/' element = {<HomePage/>}/>
                 <Route path ='/MyStores' element= {<MyStores listItems={myStoreList} setListItems ={setMyStoreList} ip = {myId}/>}/>
