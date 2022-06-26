@@ -1326,3 +1326,402 @@ INFO:uvicorn.error:Shutting down
 INFO:uvicorn.error:Waiting for application shutdown.
 INFO:uvicorn.error:Application shutdown complete.
 INFO:uvicorn.error:Finished server process [23480]
+INFO:uvicorn.error:Started server process [17812]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [17812]
+INFO:uvicorn.error:Started server process [12664]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [12664]
+INFO:uvicorn.error:Started server process [4492]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [4492]
+INFO:uvicorn.error:Started server process [8460]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Started server process [9204]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [9204]
+INFO:uvicorn.error:Started server process [12396]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [12396]
+INFO:uvicorn.error:Started server process [2112]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [2112]
+INFO:uvicorn.error:Started server process [8232]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [8232]
+INFO:uvicorn.error:Started server process [25504]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\cors.py", line 84, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\Backend\Server-FastAPI\Server.py", line 108, in root
+    user=user.UserBase(user="u1", password="123")
+  File "pydantic\main.py", line 331, in pydantic.main.BaseModel.__init__
+pydantic.error_wrappers.ValidationError: 1 validation error for UserBase
+username
+  field required (type=value_error.missing)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [25504]
+INFO:uvicorn.error:Started server process [20100]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\cors.py", line 84, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\Backend\Server-FastAPI\Server.py", line 107, in root
+    main.persist_user(
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\DAL\main.py", line 49, in persist_user
+    db.add(new_user)
+AttributeError: 'generator' object has no attribute 'add'
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [20100]
+INFO:uvicorn.error:Started server process [16932]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\cors.py", line 84, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\Backend\Server-FastAPI\Server.py", line 107, in root
+    main.persist_user(
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\DAL\main.py", line 50, in persist_user
+    db.add(new_user)
+AttributeError: 'generator' object has no attribute 'add'
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [16932]
+INFO:uvicorn.error:Started server process [11392]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\cors.py", line 84, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\Backend\Server-FastAPI\Server.py", line 107, in root
+    main.persist_user(
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\DAL\main.py", line 50, in persist_user
+    db.add(new_user)
+AttributeError: 'generator' object has no attribute 'add'
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [11392]
+INFO:uvicorn.error:Started server process [17324]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\cors.py", line 84, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\Backend\Server-FastAPI\Server.py", line 107, in root
+    main.persist_user(
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\DAL\main.py", line 50, in persist_user
+    db.add(new_user)
+AttributeError: 'generator' object has no attribute 'add'
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [17324]
+INFO:uvicorn.error:Started server process [26596]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:uvicorn.error:Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 372, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\uvicorn\middleware\proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\applications.py", line 261, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 181, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\middleware\cors.py", line 84, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 82, in __call__
+    raise exc
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\exceptions.py", line 71, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 21, in __call__
+    raise e
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 656, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\routing.py", line 61, in app
+    response = await func(request)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 227, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\fastapi\routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\starlette\concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\to_thread.py", line 28, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(func, *args, cancellable=cancellable,
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 818, in run_sync_in_worker_thread
+    return await future
+  File "C:\Users\Nitzan\AppData\Local\Programs\Python\Python39\lib\site-packages\anyio\_backends\_asyncio.py", line 754, in run
+    result = context.run(func, *args)
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\Backend\Server-FastAPI\Server.py", line 107, in root
+    main.persist_user(
+  File "D:\Users\Nitzan\BGU\Year 3\S.B\workshop\WorkshopV3\.\Code\DAL\main.py", line 50, in persist_user
+    db.add(new_user)
+AttributeError: 'generator' object has no attribute 'add'
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [26596]
+INFO:uvicorn.error:Started server process [23824]
+INFO:uvicorn.error:Waiting for application startup.
+INFO:uvicorn.error:Application startup complete.
+INFO:uvicorn.error:Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:uvicorn.error:Shutting down
+INFO:uvicorn.error:Waiting for application shutdown.
+INFO:uvicorn.error:Application shutdown complete.
+INFO:uvicorn.error:Finished server process [23824]

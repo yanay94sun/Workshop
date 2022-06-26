@@ -46,9 +46,8 @@ class Product(Base):
 class ShoppingBasket(Base):
     __tablename__ = "shoppingBaskets"
 
-    id = Column(Integer, primary_key=True, nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE"))
-    product_id = Column(Integer, ForeignKey("products.product_id", onupdate="CASCADE"), nullable=False)
+    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE"), primary_key=True)
+    product_id = Column(Integer, ForeignKey("products.product_id", onupdate="CASCADE"), nullable=False, primary_key=True)
     username = Column(String, ForeignKey("users.username"), nullable=False)
     quantity = Column(Integer, nullable=False)
 
