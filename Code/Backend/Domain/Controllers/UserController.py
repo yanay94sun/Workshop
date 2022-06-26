@@ -134,3 +134,8 @@ class UserController:
             del self.__members[member_id]
             return Response(value='Removed member: ' + member_id)
         return Response(msg='member does not exist')
+
+    def is_connected(self, user_id):
+        if user_id in self.__users.keys():
+            return Response(value=True)
+        return Response(value=False)

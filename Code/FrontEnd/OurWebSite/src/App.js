@@ -28,6 +28,23 @@ function App() {
     const hendleEntrec = async () =>{
         // localStorage.setItem("user_id","fsdf")
         // localStorage.setItem("logged","false")
+        var loggedUser = localStorage.getItem("user_id")
+        if (loggedUser && !isNaN(loggedUser)){
+            const connected = await axios.get('http://127.0.0.1:8000/check_connection/'+loggedUser)
+            if (connected.data === false){
+              const newIp = await axios.get('http://127.0.0.1:8000/guests/enter')
+              localStorage.setItem("logged",false)
+              loggedUser = newIp.data.value
+            }
+            setUserId(loggedUser)
+            console.log("id is "+loggedUser)
+        }
+        else{
+        const response = await axios.get('http://127.0.0.1:8000/guests/enter')
+        localStorage.setItem("user_id",response.data.value)
+        setUserId(response.data.value)
+        console.log(response)
+        }
         const checkIfLogged = localStorage.getItem("logged")
         if (checkIfLogged){
             if (checkIfLogged === "true"){
@@ -37,17 +54,7 @@ function App() {
           setIsLog(false)
         }
       }
-      const loggedUser = localStorage.getItem("user_id")
-      if (loggedUser && !isNaN(loggedUser)){
-          setUserId(loggedUser)
-          console.log("id is "+loggedUser)
-      }
-      else{
-      const response = await axios.get('http://127.0.0.1:8000/guests/enter')
-      localStorage.setItem("user_id",response.data.value)
-      setUserId(response.data.value)
-      console.log(response)
-      }
+
     }
     return (
     <div>

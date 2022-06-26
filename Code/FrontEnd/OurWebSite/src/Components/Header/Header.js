@@ -39,7 +39,7 @@ function Header({handleLogin, checkLogged, ip }){
     const [isAdmin, setIsAadmin] = useState(false)
     const logout = async ()=>{
       const ID = {
-        id: ip
+        id: localStorage.getItem('user_id')
       }
       if (checkLogged){
         try{
@@ -54,8 +54,8 @@ function Header({handleLogin, checkLogged, ip }){
       }
       else{
         try{
-        //  const response = await axios.post('http://127.0.0.1:8000/exit',localStorage.getItem('user_id'));
-        //   console.log(response)
+           const response = await axios.post('http://127.0.0.1:8000/exit',ID);
+          console.log(response)
           navigate('/')
         } catch (err){
           console.log(err.response);

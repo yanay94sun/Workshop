@@ -638,7 +638,10 @@ class Facade:
         """
         if not self.user_controller.is_logged_in(user_id):
             return Response(msg="Not logged in")
-        sc_res = self.store_controller.close_store(user_id, store_id)
+        member_id = self.user_controller.get_users_username(user_id)
+        if member_id.error_occurred():
+            return member_id
+        sc_res = self.store_controller.close_store(member_id.value, store_id)
         if not sc_res.error_occurred():
             self.market.notify_activity(store_id,
                                         Activities.STORE_CLOSED,
@@ -984,6 +987,10 @@ class Facade:
             return Response(msg="Not logged in")
         member_id = self.user_controller.get_users_username(user_id)
         return Response(value=self.market.check_if_admin(member_id.value))
+
+
+    def check_connection(self, user_id):
+        return self.user_controller.is_connected(user_id)
 
 # if __name__ == '__main__':
 #     fc = Facade()
