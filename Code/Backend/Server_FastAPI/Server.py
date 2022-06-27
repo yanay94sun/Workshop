@@ -134,12 +134,13 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     # await manager.connect(websocket)
     print("Accepted")
+    uid = ''
     try:
-        # while True:
+        while True:
             # Wait for any message from the client
-        uid = await websocket.receive_text()
+            uid = await websocket.receive_text()
 
-        service.register_connection(uid, websocket)
+            service.register_connection(uid, websocket)
 
             # break
 
@@ -153,6 +154,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect as e1:
         # manager.disconnect(websocket)
         # await manager.broadcast(f"Client #{client_id} left the chat")
+        print(uid)
         print('error:', e1)
             # break
     print('Bye..')
