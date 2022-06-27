@@ -15,8 +15,16 @@ class PackageInfo(BaseModel):
     #     self.costumer_address = costumer_address
     #     self.store_id = store_id
     #     self.products_ids_and_quantity = products_ids_and_quantity
-    costumer_name: str
-    costumer_last_name: str
-    costumer_address: str
-    store_id: str
-    products_ids_and_quantity: Dict[str, int]
+
+    # costumer_name: str
+    # costumer_last_name: str
+    # costumer_address: str
+    # store_id: str
+    # products_ids_and_quantity: Dict[str, int]
+
+    customer_id: str
+    name: str
+    address: str
+    city: str
+    country: str
+    zip: str

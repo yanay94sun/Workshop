@@ -262,9 +262,9 @@ class Facade:
             """
             cart = self.user_controller.get_shopping_cart(user_id)
 
-            # just testing somthing
-            response = self.market.contact_payment_service(payment_info)
-            return response
+            # # just testing somthing
+            # response = self.market.contact_payment_service(payment_info)
+            # return response
 
             if cart.error_occurred():
                 return cart

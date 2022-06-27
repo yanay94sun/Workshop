@@ -21,10 +21,6 @@ class PaymentServiceAdapter:
                       "ccv": domain_payment_info.ccv,
                       "id": domain_payment_info.id
                       }
-            # res = self.__payment_service.pay(domain_payment_info.credit_card,
-            #                                         domain_payment_info.cvv,
-            #                                         domain_payment_info.amount_to_pay)
-
             try:
                 r = requests.post(url=self.__payment_service, data=PARAMS, timeout=8)
             except Timeout:
