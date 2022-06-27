@@ -137,7 +137,7 @@ class UserController:
         return Response(msg='member does not exist')
 
     def get_username_uid(self, username):
-        return self.__online_members[username]
+        return self.__online_members[self.__members[username]]
 
     def is_connected(self, user_id):
         if user_id in self.__users.keys():
