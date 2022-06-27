@@ -36,7 +36,7 @@ function App() {
               localStorage.setItem("logged",false)
               loggedUser = newIp.data.value
             }
-            setUserId(loggedUser)
+            localStorage.setItem("user_id", loggedUser)
             console.log("id is "+loggedUser)
         }
         else{

@@ -12,6 +12,7 @@ import {ReactComponent as MyAccountNotifIcon} from '../../Assets/icons8-add-male
 import './Header.css';
 import axios from 'axios'
 import io from "socket.io-client";
+import Popup from "reactjs-popup";
 
 
 // const socket = io.connect("http://127.0.0.1:8000");
@@ -67,9 +68,6 @@ function Header({handleLogin, checkLogged }){
 
     const handleMyAccount = () => {
         setHasNotification(false);
-
-
-
     }
 
     const checkAdmin = async () => {
@@ -110,8 +108,25 @@ function Header({handleLogin, checkLogged }){
             <div className="div-header">
                 <div >
                     <LogoIcon onClick={() => navigate('/home')} style={{cursor:'pointer'}} className="logo"/>
-                    {hasNotification ? <NavLink onClick={() => handleMyAccount()} to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
-                    style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> :
+                    {hasNotification ?
+                    //     <NavLink onClick={() => handleMyAccount()} to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
+                    // style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> :
+
+                    <li>
+                        <Popup trigger={<NavLink onClick={() => handleMyAccount()} to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
+                            style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>} position="right center">
+                            <div>
+                                <ul>
+                                    {messages.map((message) => (
+                                    <li>
+                                        {message}
+                                    </li>))}
+
+                                </ul>
+                            </div>
+                        </Popup>
+                    </li>
+                        :
                     <NavLink to ='/home/my-account' activeclassname='active'><MyAccountIcon
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>
                     }

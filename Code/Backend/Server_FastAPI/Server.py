@@ -27,11 +27,9 @@ from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.NewProudct import NewProduct
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
-from Code.Backend.Service.Objects.PaymentService import PaymentService
 from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
 from Code.Backend.Service.Objects.StoreName import Store_name
-from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Objects.TokenData import TokenData
 from Code.Backend.Service.Objects.UserID import UserID
 from Code.Backend.Service.Objects.User_info import User_info
@@ -57,7 +55,9 @@ from Code.Backend.Service.Service import Service
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="guests/login")
 try:
     service = Service()
-    service.initial_system(payment_service=PaymentService(), supply_service=SupplyService(), path='config.ini')
+    # service.initial_system(payment_service=PaymentService(), supply_service=SupplyService(), path='config.ini')
+    service.initial_system(payment_service="https://cs-bgu-wsep.herokuapp.com/", supply_service="https://cs-bgu-wsep.herokuapp.com/", path='config.ini')
+
 except ValueError as e:
     sys.exit(e.args)
 
@@ -290,7 +290,7 @@ def get_stores_info():
 
 @app.post("/add_product_to_shopping_cart")
 def add_product_to_shopping_cart(add_product: AddProduct):  # , user_id: Optional[str] = Cookie(None)):
-    print(add_product)
+    # print(add_product)
     res = service.add_product_to_shopping_cart(
         add_product.id, add_product.store_id, add_product.product_id, add_product.quantity
     )
@@ -342,17 +342,25 @@ def get_users_stores(user_id: str):
 
 @app.post("/pay")
 def purchase_shopping_cart(payment_info: PaymentInfo):
+    print("HERE")
     res = service.purchase_shopping_cart(payment_info.customer_id, payment_info)
     if res.error_occurred():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+        if res.msg == "Request Timeout":
+            raise HTTPException(status_code=status.HTTP_408_REQUEST_TIMEOUT, detail=res.msg)
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
 @app.post("/supply")
 def contact_supply_service(package_info: PackageInfo):
+    # need to send customer_id like in payment?
     res = service.contact_supply_service(package_info)
     if res.error_occurred():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+        if res.msg == "Request Timeout":
+            raise HTTPException(status_code=status.HTTP_408_REQUEST_TIMEOUT, detail=res.msg)
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
