@@ -46,7 +46,7 @@ from Code.Backend.Service.Service import Service
 
 - for install all packages needed please run in terminal: pip install -r requirements.txt
 
-- to run the server run in terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
+- to run the server run in terminal: uvicorn Code.Backend.Server_FastAPI.Server:app --reload
                         
                         
                         thank you,

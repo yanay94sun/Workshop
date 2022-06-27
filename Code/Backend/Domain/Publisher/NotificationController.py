@@ -1,8 +1,12 @@
 from enum import Enum
 from typing import Dict, List
 
+from fastapi import WebSocket
+
 from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.VisitorStates.MemberState import MemberState
+
+from Code.Backend.Server_FastAPI.Server import ConnectionManager
 
 
 class Activities(Enum):
@@ -17,6 +21,7 @@ class NotificationController:
     def __init__(self, user_controller: UserController):
         self.__uc = user_controller
         self.__stores_activity: Dict[str, List[List[str]]] = {}  # store_id, list<list<str usernames>>
+        self.__phone_book: Dict[str, WebSocket] = {}  # uid, websocket
 
     def subscribe(self, username: str, store_id: str, activity: Activities):
         self.__stores_activity[store_id][activity.value].append(username)
@@ -40,7 +45,7 @@ class NotificationController:
         if self.__uc.is_online(to_username):
             uid = self.__uc.get_username_uid(to_username)
 
-            accepted_msg = server.update(uid, content)
+            accepted_msg = server.ConnectionManager()
 
         if not accepted_msg:
             res = self.__uc.add_message_to_member(to_username, content)
