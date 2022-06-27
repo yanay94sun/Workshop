@@ -93,6 +93,8 @@ app.add_middleware(
 """
 WebSocket - SocketIO
 """
+
+
 # class ConnectionManager:
 #     def __init__(self):
 #         self.active_connections: List[WebSocket] = []
@@ -117,9 +119,6 @@ WebSocket - SocketIO
 #
 #
 # manager = ConnectionManager()
-
-
-
 
 
 @app.websocket("/ws")
@@ -150,7 +149,7 @@ async def websocket_endpoint(websocket: WebSocket):
         # await manager.broadcast(f"Client #{client_id} left the chat")
         print(uid)
         print('error:', e1)
-            # break
+        # break
     print('Bye..')
 
 
@@ -466,6 +465,30 @@ def add_max_discount(discount: DiscountCompose):
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
     return res.value
+
+
+@app.get("/discount/visible/{store_id}")
+def get_visible_discounts(store_id: str):
+    res = service.get_visible_discounts(store_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/discount/conditional/{store_id}")
+def get_conditional_discount(store_id: str):
+    res = service.get_conditional_discount(store_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+@app.get("/is_admin/{user_id}")
+def get_conditional_discount(user_id: str):
+    res = service.is_admin(user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
 
 
 """

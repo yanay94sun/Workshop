@@ -184,7 +184,7 @@ class Store:
     def __create_product_from_db(self, productDB):
         # TODO Nitzan product id
         product = Product(productDB.product_id, productDB.name, productDB.description,
-                          productDB.price, productDB.category, productDB, productDB.store_id)
+                          productDB.price, productDB.category, 'store_id')  # TODO productDB.store_id
         product.change_rating(productDB.rating)
         return product
 
@@ -196,26 +196,24 @@ class Store:
         self.officialRec(currentOfficial, officialsDB, officials)
         return officials
 
-
     def officialRec(self, curr, officialsDB, officials):
-            next_in_line = list(filter(lambda x: x.appointee == curr.appointed, officialsDB))
-            if not next_in_line:
-                return
-            for officialSon in next_in_line:
-                if officialSon.is_owner:
-                    currentOfficial = StoreOwner(officialSon.username, curr)
-                else:
-                    currentOfficial = StoreManager(officialSon.username, curr)
-                currentOfficial.set_permission(Permissions({
-                                        Actions.INVENTORY_ACTION.value: officialSon.INVENTORY_ACTION,
-                                        Actions.CHANGE_MANAGER_PERMISSION.value: officialSon.CHANGE_MANAGER_PERMISSION,
-                                        Actions.ADD_STORE_MANAGER.value: officialSon.ADD_STORE_MANAGER,
-                                        Actions.ADD_STORE_OWNER.value: officialSon.ADD_STORE_OWNER,
-                                        Actions.GET_STORE_PURCHASE_HISTORY.value: officialSon.GET_STORE_PURCHASE_HISTORY,
-                                        Actions.CLOSE_STORE.value: officialSon.CLOSE_STORE,
-                                        Actions.GET_STORE_ROLES.value: officialSon.GET_STORE_ROLES,
-                                        Actions.DISCOUNT_MANAGEMENT: officialSon.PURCHASE_MANAGEMENT,
-                                        Actions.PURCHASE_MANAGEMENT: officialSon.DISCOUNT_MANAGEMENT}))
-                officials[currentOfficial.appointee] = currentOfficial
-                self.officialRec(currentOfficial, officialsDB, officials)
-
+        next_in_line = list(filter(lambda x: x.appointee == curr.appointed, officialsDB))
+        if not next_in_line:
+            return
+        for officialSon in next_in_line:
+            if officialSon.is_owner:
+                currentOfficial = StoreOwner(officialSon.username, curr)
+            else:
+                currentOfficial = StoreManager(officialSon.username, curr)
+            currentOfficial.set_permission(Permissions({
+                Actions.INVENTORY_ACTION.value: officialSon.INVENTORY_ACTION,
+                Actions.CHANGE_MANAGER_PERMISSION.value: officialSon.CHANGE_MANAGER_PERMISSION,
+                Actions.ADD_STORE_MANAGER.value: officialSon.ADD_STORE_MANAGER,
+                Actions.ADD_STORE_OWNER.value: officialSon.ADD_STORE_OWNER,
+                Actions.GET_STORE_PURCHASE_HISTORY.value: officialSon.GET_STORE_PURCHASE_HISTORY,
+                Actions.CLOSE_STORE.value: officialSon.CLOSE_STORE,
+                Actions.GET_STORE_ROLES.value: officialSon.GET_STORE_ROLES,
+                Actions.DISCOUNT_MANAGEMENT: officialSon.PURCHASE_MANAGEMENT,
+                Actions.PURCHASE_MANAGEMENT: officialSon.DISCOUNT_MANAGEMENT}))
+            officials[currentOfficial.appointee] = currentOfficial
+            self.officialRec(currentOfficial, officialsDB, officials)
