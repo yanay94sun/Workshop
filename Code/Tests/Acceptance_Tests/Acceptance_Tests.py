@@ -421,6 +421,25 @@ class AcceptanceTests(unittest.TestCase):
         response = self.service.open_store(g_id, 'stores_name')
         self.assertTrue(is_error(response))
 
+    def test_asaf_notification_1(self):
+        g_id1 = self.login(good_register_info)
+        g_id2 = self.login(good_register_info2)
+        self.service.logout(g_id2)
+        g_id3 = self.login(good_register_info3)
+        self.service.logout(g_id3)
+
+        self.service.open_store(g_id1, "s1")
+        p1, p2 = self.add_products_to_inventory("s1", g_id1)
+
+
+        self.service.add_store_owner(g_id1, good_register_info2["username"])
+        self.service.add_store_manager(g_id1, "s1", good_register_info3["username"])
+
+        self.service.remove_store_owner(ui)
+
+
+
+
     # def test_A7_exit(self):
     #     """
     #     II.1.2
