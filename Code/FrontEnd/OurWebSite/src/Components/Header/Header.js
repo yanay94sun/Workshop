@@ -93,9 +93,9 @@ function Header({handleLogin, checkLogged }){
             console.log("Accepted Message: ", e.data)
             setHasNotification(true);
 
-            // const old_msg = messages;
-            // old_msg.concat([e.data]);
-            // setMessages(...old_msg);
+            const old_msg = [...messages];
+            old_msg.concat([e.data]);
+            setMessages(old_msg);
         }
     }, [])
     // useEffect(() => {
