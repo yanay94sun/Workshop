@@ -221,6 +221,8 @@ class Facade:
             revert if could not pay
             """
             cart = self.user_controller.get_shopping_cart(user_id)
+            if cart.error_occurred():
+                return cart
             all_products = [p for p in cart.value.iter_products()]
             all_baskets = cart.value.shopping_baskets
             # validate cart
@@ -259,6 +261,8 @@ class Facade:
             revert if could not pay
             """
             cart = self.user_controller.get_shopping_cart(user_id)
+            if cart.error_occurred():
+                return cart
             all_products = [p for p in cart.value.iter_products()]
             all_baskets = cart.value.shopping_baskets
             # validate cart
