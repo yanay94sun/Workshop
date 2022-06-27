@@ -58,8 +58,11 @@ function Product({storesProducts}) {
 	};
 
 	useEffect(() => {
-		setTotalPrice(fixprice * count * discount);
-	}, [count]);
+		if (discount > 0)
+			setTotalPrice(fixprice * count * discount);
+		else
+			setTotalPrice(fixprice * count);
+	}, [count, discount, fixprice]);
 
 	const getBadgeClasses = () => {
 		let badgeStyle = {
@@ -93,7 +96,7 @@ function Product({storesProducts}) {
         try{
         const response = await axios.get('http://127.0.0.1:8000/discount/visible/'+storeId)
 		for (var i = 0; i < response.data.length; i++){
-			if (productId == response.data[i]['discount_on']){
+			if (productId === response.data[i]['discount_on']){
 				setDiscount(response.data[i]['my_discount'])
 			}
 		}
