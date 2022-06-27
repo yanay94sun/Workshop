@@ -21,14 +21,23 @@ import configparser
 
 from state import state
 
-logging.basicConfig(filename="SystemLog.log")
+# Creating and Configuring Logger
+
+Log_Format = "%(levelname)s %(asctime)s - %(message)s"
+
+logging.basicConfig(filename="SystemLog.log",
+                    filemode="w",
+                    format=Log_Format
+                    )
+
+logger = logging.getLogger()
 
 
 def write_to_log(response, success_msg):
     if response.error_occurred():
-        logging.critical(response.msg)
+        logger.critical(response.msg)
     else:
-        logging.info(success_msg)
+        logger.info(success_msg)
 
 
 class Service:
