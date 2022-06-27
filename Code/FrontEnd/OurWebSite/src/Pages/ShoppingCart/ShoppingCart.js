@@ -77,7 +77,7 @@ function ShoppingCart() {
 	const getCartInfo = async () =>{
         try{
             const response = await axios.get("http://127.0.0.1:8000/cart/" + localStorage.getItem("user_id"));
-            console.log(response.data["shopping_baskets"]);
+            // console.log(response.data["shopping_baskets"]);
 			const products_temp = [];
 			const basket = response.data["shopping_baskets"];
 			for (const store in basket) {
@@ -102,7 +102,7 @@ function ShoppingCart() {
 				}
 				
 			}
-			console.log(products_temp);
+			// console.log(products_temp);
 			setProducts(products_temp);
 			
 
