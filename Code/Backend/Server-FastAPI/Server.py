@@ -26,11 +26,9 @@ from Code.Backend.Service.Objects.AddProduct import AddProduct
 from Code.Backend.Service.Objects.NewProudct import NewProduct
 from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
-from Code.Backend.Service.Objects.PaymentService import PaymentService
 from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
 from Code.Backend.Service.Objects.StoreName import Store_name
-from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Objects.TokenData import TokenData
 from Code.Backend.Service.Objects.UserID import UserID
 from Code.Backend.Service.Objects.User_info import User_info

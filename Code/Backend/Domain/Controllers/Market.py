@@ -5,7 +5,6 @@ from Code.Backend.Domain.SupplyServiceAdapter import SupplyServiceAdapter
 # from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.MFResponse import Response
 
-from Code.Backend.Service.Objects.PaymentService import PaymentService
 
 
 class Market:
