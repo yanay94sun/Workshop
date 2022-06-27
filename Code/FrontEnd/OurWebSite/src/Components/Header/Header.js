@@ -66,7 +66,8 @@ function Header({handleLogin, checkLogged }){
     const checkAdmin = async () => {
       try{
         const response = await axios.get('http://127.0.0.1:8000/is_admin/'+localStorage.getItem("user_id"))
-        setIsAadmin(response.data)
+        console.log(response)
+        setIsAadmin(response.data.value)
       }catch (err){
           console.log(err.response);
         }
@@ -96,9 +97,9 @@ function Header({handleLogin, checkLogged }){
             <div className="div-header">
                 <div >
                     <LogoIcon onClick={() => navigate('/home')} style={{cursor:'pointer'}} className="logo"/>
-                    {hasNotification ? <NavLink to ='/home/my-account'activeclassname='active'><MyAccountNotifIcon 
+                    {hasNotification ? <NavLink to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> : 
-                    <NavLink to ='/home/my-account'activeclassname='active'><MyAccountIcon 
+                    <NavLink to ='/home/my-account' activeclassname='active'><MyAccountIcon
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>
                     }
 
