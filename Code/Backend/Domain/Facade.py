@@ -291,7 +291,8 @@ class Facade:
                 return response
             success = response.value
             if success:
-                self.market.notify_purchase(all_baskets.values(), user_id)
+                store_name_factory = lambda sid: self.store_controller.get_store_info(sid).value["store_name"]
+                self.market.notify_purchase(all_baskets.values(), user_id, store_name_factory)
                 for p in all_products:
                     response = self.remove_product_from_shopping_cart(user_id, p)
                     if response.error_occurred():
