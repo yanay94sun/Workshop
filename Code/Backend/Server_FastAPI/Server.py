@@ -119,7 +119,8 @@ WebSocket - SocketIO
 # manager = ConnectionManager()
 
 
-def send_ws_message(msg: str, ws: WebSocket):
+async def send_ws_message(msg: str, ws: WebSocket):
+    print("trying to send msg to client")
     try:
         await ws.send_text(msg)
         return True
@@ -129,10 +130,10 @@ def send_ws_message(msg: str, ws: WebSocket):
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    # print('A new websocket to create.')
+    print('A new websocket to create.')
     await websocket.accept()
     # await manager.connect(websocket)
-    # print("Accepted")
+    print("Accepted")
     try:
         # while True:
             # Wait for any message from the client
@@ -154,7 +155,7 @@ async def websocket_endpoint(websocket: WebSocket):
         # await manager.broadcast(f"Client #{client_id} left the chat")
         print('error:', e1)
             # break
-    # print('Bye..')
+    print('Bye..')
 
 
 # @app.websocket("/ws")
