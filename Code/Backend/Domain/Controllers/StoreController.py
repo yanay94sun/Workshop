@@ -1,10 +1,16 @@
 from typing import Dict, Iterable, List
 
+from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPolicy
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
+from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
+from Code.DAL.Objects.store import PurchasePolicy as PurchasePolicyDB, Official
+from Code.DAL.Objects.store import DiscountPolicy as DiscountPolicyDB
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
-from Code.Backend.Domain.StoreOfficials.Permissions import Actions, Permissions
+from Code.Backend.Domain.StoreOfficials.Permissions import Actions
+import Code.DAL.main as dal
+from Code.DAL.Objects.store import StoreBase
 
 
 def search_filter(res, filterType, filterValue=None):
@@ -50,6 +56,7 @@ class StoreController:
         return Response(value=res)
 
     def get_officials_stores(self, official_id):
+        # TODO think about it should we call all the stores in data base?
         """
         returns dic {store id: store name}
         """
@@ -93,6 +100,24 @@ class StoreController:
         store_id = self.__generate_id()
         newStore = Store(user_id, store_name, store_id)
         self.stores[store_id] = newStore
+
+        # add to db
+        store_base = StoreBase(store_id=store_id, is_active=True, name=store_name, founder_username=user_id
+                               , id_counter=0)
+        # TODO purchasePolicy = PurchasePolicyDB()
+        discount_policy = DiscountPolicyDB(store_id=store_id, id_counter=0, discounts=[])
+        founderDb = Official(username=user_id, appointee=None, INVENTORY_ACTION=True,
+                             CHANGE_MANAGER_PERMISSION=True,
+                             ADD_STORE_MANAGER=True,
+                             ADD_STORE_OWNER=True,
+                             GET_STORE_PURCHASE_HISTORY=True,
+                             CLOSE_STORE=True,
+                             GET_STORE_ROLES=True,
+                             PURCHASE_MANAGEMENT=True,
+                             DISCOUNT_MANAGEMENT=True,
+                             is_owner=True
+                             )
+        dal.persist_store(store_base, purchase_policy, discount_policy, [], [founderDb])
         return Response(value=store_id)
 
     def add_products_to_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
@@ -596,6 +621,7 @@ class StoreController:
         throws ValueError if not exist
         """
         if store_id not in self.stores:
+
             raise ValueError("Store id does not exist or is inactive")
         else:
             return self.stores[store_id]
@@ -688,4 +714,26 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
+    def __get_data_from_database(self):
+        # check database
+        storesDB = []  # TODO get all stores
+        for storeDB in storesDB:
+            founder = storeDB.store.founder_username
+            store_name = storeDB.store.name
+            store_id = storeDB.store.store_id
 
+            store = Store(founder, store_name, store_id)
+
+            store_id_counter = storeDB.store.id_counter
+
+            purchase_policy = PurchasePolicy()
+            # TODO purchase_policy.create_purchase_policy_from_db()
+
+            discount_policy = DiscountPolicy()
+            discount_policy.create_discount_policy_from_db(storeDB.discount_policy.discounts
+                                                           , storeDB.discount_policy.id_counter)
+            # TODO store_history = storeDB.purchase_history
+
+            store.create_store_from_db(storeDB.products, discount_policy, purchase_policy
+                                       , storeDB.officials, [], store_id_counter)
+            self.stores[store_id] = store

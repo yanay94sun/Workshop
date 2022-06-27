@@ -9,6 +9,7 @@ from Code.Backend.Domain.DiscountPolicyObjects.SumDiscount import SumDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.VisibleDiscount import VisibleDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.XorDiscount import XorDiscount
 from Code.Backend.Domain.Product import Product
+from Code.DAL.Objects.store import Discount
 
 
 class DiscountPolicy:
@@ -144,3 +145,12 @@ class DiscountPolicy:
             return discount
         except:
             raise ValueError("no discount was found with the given id")
+
+    def create_discount_policy_from_db(self, discounts: List[Discount], id_counter):
+        persist_discounts = {x.id: self.__create_discount_from_db(x) for x in discounts}
+        self.__discounts = persist_discounts
+        self.id_counter = id_counter
+
+    def __create_discount_from_db(self, discount: Discount):
+        # TODO
+        pass

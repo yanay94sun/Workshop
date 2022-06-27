@@ -53,3 +53,7 @@ class PurchasePolicy:
             return rule
         except:
             raise ValueError("no discount was found with the given id")
+
+    def create_purchase_policy_from_db(self, purchase_rules, id_counter):
+        self.purchase_rules = purchase_rules
+        self.id_counter = id_counter
