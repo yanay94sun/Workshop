@@ -8,7 +8,7 @@ function Payment(){
     // const [customer_name, SetCustomer_name] = useState("");
     // const [credit_card, SetCredit_card] = useState("");
     // const [cvv, SetCvv] = useState("");
-    //
+    // bla bla
     const [id, SetId] = useState(''); // teudat zehoot
     const [holder, SetHolder] = useState('');
     const [card_number, SetCard_number] = useState('');
