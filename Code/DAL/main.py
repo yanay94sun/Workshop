@@ -3,7 +3,8 @@ from typing import List, Tuple, Callable
 from sqlalchemy.orm import Session
 
 from Code.DAL import models
-from Code.DAL.Objects.store import StoreBase, PurchasePolicy, DiscountPolicy, Product, Official, Store
+from Code.DAL.Objects.store import StoreBase, PurchasePolicy, DiscountPolicy, Product, Official, Store, PurchaseRule, \
+    ComplexPurchaseRule, Discount, ComplexDiscount
 from Code.DAL.Objects.user import User, Notification, ShoppingBasketItem, UserBase
 from Code.DAL.database import engine, get_db
 
@@ -96,16 +97,29 @@ def persist_store(store: StoreBase,
     new_store = models.Store(**store.dict())
     new_products = [models.Product(**p.dict(), store_id=store.store_id) for p in products]
     new_officials = [models.Official(**official.dict(), store_id=store.store_id) for official in officials]
-    # TODO: implement
-    new_purchase_policy = None
+
+    new_purchase_policy = models.PurchasePolicy(policy_id=purchase_policy.policy_id,
+                                                store_id=purchase_policy.store.store_id,
+                                                id_counter=purchase_policy.id_counter)
+
+    # make rules orm
+    new_purchase_rules = [models.PurchaseRule(**pr.dict()) for pr in purchase_policy.purchase_rules]
+    new_cmplx_rules = [models.ComplexPurchaseRule(**cmplx.dict()) for cmplx in purchase_policy.complex_purchase_rules]
+    # add purchase policy do db
+    # add 2 different rules to db
+    # combine them into one PurchasePolicy
+    # same for discount
+
     new_discount_policy = None
-    for instance in new_officials + new_products:
-        db.add(instance)
     db.add(new_store)
+    db.add(new_purchase_policy)
+    for instance in new_officials + new_products + new_purchase_rules + new_cmplx_rules:
+        db.add(instance)
     db.commit()
-    for instance in new_officials + new_products:
+    for instance in new_officials + new_products + new_purchase_rules + new_cmplx_rules:
         db.refresh(instance)
     db.refresh(new_store)
+    db.refresh(new_purchase_policy)
     return Store(store=new_store,
                  purchase_policy=new_purchase_policy,
                  discount_policy=new_discount_policy,
@@ -113,26 +127,66 @@ def persist_store(store: StoreBase,
                  officials=new_officials)
 
 
-def get_store(store_id: int, db: Session = get_db()) -> Store:
+def get_all_stores(db: Session = get_db()) -> List[Store]:
     """
     :param db:
-    :param store_id:
-    :return: Store object if exists, None otherwise.
+    :return: list of stores object if exists, None otherwise.
     """
-    store = db.query(models.Store).filter(models.Store.store_id == store_id).first()
-    if not store:
-        return store
-    purchase_policy = None
-    discount_policy = None
-    products = db.query(models.Product).filter(models.Product.store_id == store_id).all()
-    officials = db.query(models.Official).filter(models.Official.store_id == store_id).all()
-    return Store(
-        store=StoreBase.from_orm(store),
-        purchase_policy=None,
-        discount_policy=None,
-        products=(Product.from_orm(p) for p in products),
-        officials=(Official.from_orm(official) for official in officials)
+    stores = db.query(models.Store).all()
+    if not stores:
+        return stores
+    result = []
+    all_stores = (StoreBase.from_orm(s) for s in stores)
+    for store in all_stores:
+        store_id = store.store_id
+
+        purchase_policy_res = get_purchase_policy(db, store_id)
+
+        discount_policy_res = get_discount_policy(db, store_id)
+
+        products = db.query(models.Product).filter(models.Product.store_id == store_id).all()
+        officials = db.query(models.Official).filter(models.Official.store_id == store_id).all()
+        result.append(Store(
+            store=StoreBase.from_orm(store),
+            purchase_policy=purchase_policy_res,
+            discount_policy=discount_policy_res,
+            products=(Product.from_orm(p) for p in products),
+            officials=(Official.from_orm(official) for official in officials)
+        ))
+
+
+def get_discount_policy(db, store_id):
+    discount_policy = db.query(models.DiscountPolicy).filter(models.DiscountPolicy.store_id == store_id).first()
+    discounts = db.query(models.Discount).filter(models.Discount.discount_policy_id == discount_policy.policy_id)
+    complex_discounts = db.query(models.ComplexDiscount).filter(
+        models.ComplexDiscount.discount_policy_id == discount_policy.policy_id)
+    discounts_res = (Discount.from_orm(d) for d in discounts)
+    complex_discounts_res = (ComplexDiscount.from_orm(cd) for cd in complex_discounts)
+    discount_policy_res = DiscountPolicy(
+        store_id=discount_policy.store_id,
+        id_counter=discount_policy.id_counter,
+        discounts=discounts_res,
+        complex_discounts=complex_discounts_res
     )
+    return discount_policy_res
+
+
+def get_purchase_policy(db, store_id):
+    purchase_policy = db.query(models.PurchasePolicy).filter(models.PurchasePolicy.store_id == store_id).first()
+    purchase_rules = db.query(models.PurchaseRule).filter(
+        models.PurchaseRule.purchase_policy_id == purchase_policy.purchase_policy_id).all()
+    complex_purchase_rules = db.query(models.ComplexPurchaseRule).filter(
+        models.ComplexPurchaseRule.purchase_policy_id == purchase_policy.purchase_policy_id).all()
+    purchase_rules_res = (PurchaseRule.from_orm(rule) for rule in purchase_rules)
+    complex_purchase_rules_res = (ComplexPurchaseRule.from_orm(crule) for crule in complex_purchase_rules)
+    purchase_policy_res = PurchasePolicy(
+        policy_id=purchase_policy.policy_id,
+        store_id=purchase_policy.store_id,
+        id_counter=purchase_policy.id_counter,
+        purchase_rules=purchase_rules_res,
+        complex_purchase_rules=complex_purchase_rules_res
+    )
+    return purchase_policy_res
 
 
 def delete_store(store_id: int, db: Session = next(get_db())) -> bool:

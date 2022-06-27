@@ -18,8 +18,8 @@ class PurchaseRule(BaseModel):
 
 class ComplexPurchaseRule(BaseModel):
     id: int
-    first_rule: PurchaseRule
-    second_rule: PurchaseRule
+    first_rule_id: int
+    second_rule_id: int
     type_: int  # or/and...
     purchase_policy_id: int
 
@@ -107,8 +107,8 @@ class Official(BaseModel):
 
 class StoreBase(BaseModel):
     store_id: str
-    is_active: bool
     name: str
+    is_active: bool
     founder_username: str
     id_counter: int
 
