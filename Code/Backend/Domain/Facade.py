@@ -291,6 +291,7 @@ class Facade:
                 return response
             success = response.value
             if success:
+                self.market.notify_purchase(all_baskets.values(), user_id)
                 for p in all_products:
                     response = self.remove_product_from_shopping_cart(user_id, p)
                     if response.error_occurred():
@@ -299,7 +300,6 @@ class Facade:
                 response = self.store_controller.remove_all_products_for_purchasing(all_products)
                 if response.error_occurred():
                     return response
-                self.market.notify_purchase(all_baskets.values(), user_id)
                 return Response(value='Successfully payment')
 
             else:
@@ -582,10 +582,8 @@ class Facade:
         remover_username = self.user_controller.get_users_username(user_id)
         if remover_username.error_occurred():
             return remover_username
-        sc_res = self.store_controller.remove_store_owner(remover_username.value, store_id, subject_username)
-        if not sc_res.error_occurred():
-            self.market.remove_store_official(store_id, remover_username.value, subject_username)
-        return sc_res
+        self.store_controller.remove_store_owner(remover_username.value, store_id, subject_username)
+        self.market.remove_store_official(store_id, remover_username.value, subject_username)
 
     def add_store_manager(self, user_id: str, store_id: str, new_manager_id: str):
         """
@@ -998,6 +996,13 @@ class Facade:
         if sender.error_occurred():
             return sender
         self.market.send_notification_to_member(to_username, content)
+
+    def pull_user_msgs(self, uid):
+        uc_res = self.user_controller.is_logged_in(uid)
+        if uc_res.error_occurred():
+            return uc_res
+        return Response(self.user_controller.pull_user_msgs(uid))
+
 
     def check_connection(self, user_id):
         return self.user_controller.is_connected(user_id)
