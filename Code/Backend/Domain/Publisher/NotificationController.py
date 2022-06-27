@@ -39,7 +39,7 @@ class NotificationController:
         for username in self.__stores_activity[store_id][activity.value]:
             self.notify_single(username, msg)
 
-    async def notify_single(self, to_username, content):
+    def notify_single(self, to_username, content):
         accepted_msg = False
 
         if self.__uc.is_online(to_username):
