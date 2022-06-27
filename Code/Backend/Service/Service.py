@@ -64,17 +64,17 @@ class Service:
         :return: Response object
         """
         response = Response(self.facade.contact_payment_service(self.__service_payment_info_to_domain(payment_info)))
-        write_to_log(response, "successfully contacted payment service")
+        write_to_log(response, "Successfully contacted payment service")
         return response
 
     def change_payment_service(self, payment_service):
         response = Response(self.facade.change_payment_service(payment_service))
-        write_to_log(response, "successfully changed payment service")
+        write_to_log(response, f"Successfully changed payment service to: {payment_service}")
         return response
 
     def change_supply_service(self, supply_service):
         response = Response(self.facade.change_supply_service(supply_service))
-        write_to_log(response, "successfully changed supply service")
+        write_to_log(response, f"Successfully changed supply service to: {supply_service}")
         return response
 
     def __service_payment_info_to_domain(self, payment_info):
@@ -91,7 +91,7 @@ class Service:
         :return:
         """
         response = Response(self.facade.contact_supply_service(self.__service_supply_info_to_domain(package_info)))
-        write_to_log(response, "successfully contacted supply service")
+        write_to_log(response, "Successfully contacted supply service")
         return response
 
     def __service_supply_info_to_domain(self, package_info):
@@ -114,7 +114,7 @@ class Service:
         :return: guest id
         """
         response = Response(self.facade.enter_as_guest())
-        write_to_log(response, "successfully entered as guest")
+        write_to_log(response, "Successfully entered as guest")
         return response
 
     def exit(self, user_id: str):
@@ -137,7 +137,7 @@ class Service:
         :return:
         """
         response = Response(self.facade.register(guest_id, user_info))
-        write_to_log(response, "successfully register to the system")
+        write_to_log(response, f"successfully register user: {user_info['username']} to the system")
         return response
 
     def login(self, guest_id: str, username: str, password: str):
@@ -150,7 +150,7 @@ class Service:
         :return:
         """
         response = Response(self.facade.login(guest_id, username, password))
-        write_to_log(response, "successfully logged in")
+        write_to_log(response, f"{username} Successfully logged in")
         return response
 
     """Guest's Purchase actions"""
@@ -245,7 +245,7 @@ class Service:
         :return:
         """
         response = Response(self.facade.purchase_shopping_cart(user_id, payment_info))
-        write_to_log(response, "successfully purchased shopping cart")
+        write_to_log(response, "Successfully purchased shopping cart")
         return response
 
     """
@@ -274,7 +274,7 @@ class Service:
         :return:
         """
         response = Response(self.facade.open_store(user_id, store_name))
-        write_to_log(response, "successfully opned store")
+        write_to_log(response, f"successfully opened store named: {store_name}")
         return response
 
     def review_product(self, user_id: str, product_info, review: str):
