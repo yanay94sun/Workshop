@@ -36,19 +36,25 @@ class NotificationController:
         self.__stores_activity[sid] = [[owner_username] for _ in Activities]
 
     def notify_all(self, store_id: str, activity: Activities, msg: str):
+        print("in notify_all")
         for username in self.__stores_activity[store_id][activity.value]:
+            print(f"sending to {username}")
             self.notify_single(username, msg)
 
     def notify_single(self, to_username, content):
         accepted_msg = False
-
+        print("in notify_single")
         if self.__uc.is_online(to_username):
+            print("notify single 1")
             uid = self.__uc.get_username_uid(to_username)
+            print("notify single 2")
             accepted_msg = server.send_ws_message(content, self.__phone_book[uid])
         if not accepted_msg:
+            print("notify single 3")
             res = self.__uc.add_message_to_member(to_username, content)
             if res.error_occurred():
                 return res
 
     def register_connection(self, uid, ws: WebSocket):
+        print("notify single 4")
         self.__phone_book[uid] = ws
