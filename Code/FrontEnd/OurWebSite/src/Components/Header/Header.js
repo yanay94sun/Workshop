@@ -11,7 +11,7 @@ import {ReactComponent as AdminLogo} from '../../Assets/admin.svg'
 import {ReactComponent as MyAccountNotifIcon} from '../../Assets/icons8-add-male-user-64.svg'
 import './Header.css';
 import axios from 'axios'
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import Popup from "reactjs-popup";
 
 
@@ -34,7 +34,7 @@ function withRouter(Component) {
   }
 
 function Header({handleLogin, checkLogged }){
-    var ws =  null;
+    // var ws =  null;
     const navigate = useNavigate();
     const [hasNotification, setHasNotification] = useState(false);
     const [isAdmin, setIsAadmin] = useState(false)
@@ -91,9 +91,13 @@ function Header({handleLogin, checkLogged }){
             console.log("Accepted Message: ", e.data)
             setHasNotification(true);
 
-            const old_msg = [...messages];
-            old_msg.concat([e.data]);
-            setMessages(old_msg);
+            // const old_msg = [...messages];
+            // old_msg.concat([e.data]);
+            // setMessages(old_msg);
+            // console.log(messages);
+
+            setMessages([...messages, e.data]);
+            console.log(messages);
         }
     }, [])
     // useEffect(() => {
@@ -112,8 +116,7 @@ function Header({handleLogin, checkLogged }){
                     //     <NavLink onClick={() => handleMyAccount()} to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
                     // style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> :
 
-                    <li>
-                        <Popup trigger={<NavLink onClick={() => handleMyAccount()} to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
+                        <Popup onClose={handleMyAccount} trigger={<NavLink  to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
                             style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>} position="right center">
                             <div>
                                 <ul>
@@ -125,7 +128,6 @@ function Header({handleLogin, checkLogged }){
                                 </ul>
                             </div>
                         </Popup>
-                    </li>
                         :
                     <NavLink to ='/home/my-account' activeclassname='active'><MyAccountIcon
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>
