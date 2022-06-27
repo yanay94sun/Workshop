@@ -4,8 +4,38 @@ from typing import List, Dict
 from pydantic import BaseModel
 
 
+class PurchaseRule(BaseModel):
+    id: int
+    product_id: int
+    quantity: int
+    min_price_to_have: int
+    category: str
+    purchase_policy_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ComplexPurchaseRule(BaseModel):
+    id: int
+    first_rule: PurchaseRule
+    second_rule: PurchaseRule
+    type_: int  # or/and...
+    purchase_policy_id: int
+
+    class Config:
+        orm_mode = True
+
+
 class PurchasePolicy(BaseModel):
-    pass
+    policy_id: int
+    store_id: int
+    id_counter: int
+    purchase_rules: List[PurchaseRule]
+    complex_purchase_rules: List[ComplexPurchaseRule]
+
+    class Config:
+        orm_mode = True
 
 
 class Discount(BaseModel):
@@ -13,7 +43,22 @@ class Discount(BaseModel):
     discount_on: bool
     end_date: datetime
     type: int
-    discount_id: int
+    discount_policy_id: int
+    product_id: int
+    min_count_of_product: int
+    min_price_of_product: int
+    is_visible: bool
+
+    class Config:
+        orm_mode = True
+
+
+class ComplexDiscount(BaseModel):
+    id: int
+    first_discount: Discount
+    second_discount: Discount
+    type_: int  # or/and/cond...
+    discount_policy_id: int
 
     class Config:
         orm_mode = True
@@ -23,6 +68,7 @@ class DiscountPolicy(BaseModel):
     store_id: int
     id_counter: int
     discounts: List[Discount]
+    complex_discounts: List[ComplexDiscount]
 
     class Config:
         orm_mode = True

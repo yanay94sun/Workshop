@@ -22,11 +22,11 @@ class Store(Base):
     __tablename__ = "stores"
 
     store_id = Column(Integer, primary_key=True, nullable=False)
-    is_active = Column(Boolean, server_default='TRUE', nullable=False)
-    purchase_policy = Column(Integer, nullable=False)
-    display_policy = Column(Integer, nullable=False)
     name = Column(String, nullable=False)
-    founder = Column(String, ForeignKey("users.username", onupdate="CASCADE"), nullable=False)
+    is_active = Column(Boolean, server_default='TRUE', nullable=False)
+    # purchase_policy = Column(Integer, nullable=False)
+    # discount_policy = Column(Integer, nullable=False)
+    founder_username = Column(String, ForeignKey("users.username", onupdate="CASCADE"), nullable=False)
     id_counter = Column(Integer, nullable=False)
 
 
@@ -43,8 +43,8 @@ class Product(Base):
     store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE"), nullable=False)
 
 
-class ShoppingBasket(Base):
-    __tablename__ = "shoppingBaskets"
+class ShoppingBasketItem(Base):
+    __tablename__ = "shoppingBasketItems"
 
     store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE"), primary_key=True)
     product_id = Column(Integer, ForeignKey("products.product_id", onupdate="CASCADE"), nullable=False,
@@ -56,10 +56,10 @@ class ShoppingBasket(Base):
 class Official(Base):
     __tablename__ = "officials"
 
-    id = Column(Integer, primary_key=True, nullable=False)
-    username = Column(String, ForeignKey("users.username", onupdate="CASCADE"), nullable=False)
+    # id = Column(Integer, primary_key=True, nullable=False)
+    username = Column(String, ForeignKey("users.username", onupdate="CASCADE"), primary_key=True, nullable=False)
     appointee = Column(String, ForeignKey("users.username", onupdate="CASCADE"), nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE"), nullable=False)
+    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE"), primary_key=True, nullable=False)
     INVENTORY_ACTION = Column(Boolean, server_default="FALSE", nullable=False)
     CHANGE_MANAGER_PERMISSION = Column(Boolean, server_default="FALSE", nullable=False)
     ADD_STORE_MANAGER = Column(Boolean, server_default="FALSE", nullable=False)
