@@ -299,6 +299,7 @@ class Facade:
                 response = self.store_controller.remove_all_products_for_purchasing(all_products)
                 if response.error_occurred():
                     return response
+                self.market.notify_purchase(all_baskets.values(), user_id)
                 return Response(value='Successfully payment')
 
             else:
