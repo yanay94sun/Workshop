@@ -336,7 +336,10 @@ def purchase_shopping_cart(payment_info: PaymentInfo):
     print("HERE")
     res = service.purchase_shopping_cart(payment_info.holder, payment_info)
     if res.error_occurred():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+        if res.msg == "Request Timeout":
+            raise HTTPException(status_code=status.HTTP_408_REQUEST_TIMEOUT, detail=res.msg)
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
 
 
