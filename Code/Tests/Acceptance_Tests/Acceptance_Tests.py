@@ -466,18 +466,25 @@ class AcceptanceTests(unittest.TestCase):
 
         self.service.register_connection(store_opener, WebSocketMock())
 
+        response = self.service.remove_store_owner(store_opener, store_id, good_register_info3["username"])
+        self.assertTrue(not is_error(response))
 
         response = self.service.purchase_shopping_cart(g_id1, payment1)
         self.assertTrue(not is_error(response))
 
-        response = self.service.remove_store_owner(store_opener, store_id, good_register_info3["username"])
-        self.assertTrue(not is_error(response))
-
+        self.service.login(store_owner1, **good_register_info2)
+        self.service.login(store_owner2, **good_register_info3)
 
         msgs1 = self.service.pull_user_msgs(store_owner1)
         msgs2 = self.service.pull_user_msgs(store_owner2)
 
-        pass
+        self.assertTrue(not is_error(msgs1))
+        msgs1 = msgs1.value
+        self.assertTrue(len(msgs1) == 2)
+
+        self.assertTrue(not is_error(msgs2))
+        msgs2 = msgs2.value
+        self.assertTrue(len(msgs2) == 1)
 
 
 

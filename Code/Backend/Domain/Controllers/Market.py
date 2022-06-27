@@ -115,12 +115,12 @@ class Market:
     def check_if_admin(self, user_id: str):
         return user_id in self.__admins_ids
 
-    def notify_purchase(self, all_baskets, visitor_state_id):
+    def notify_purchase(self, all_baskets, visitor_state_id, store_name_factory=lambda x: x):
         for basket in all_baskets:
             store_id = basket.get_store()
             product_and_quantities = basket.get_products_and_quantities()
             product_format = [f"{q} {p}" for p, q in product_and_quantities.items()]
-            msg = f"{visitor_state_id} purchased {'|'.join(product_format)}"
+            msg = f"{visitor_state_id} purchased |quantity product-id| {'|'.join(product_format)} from store {store_name_factory(store_id)}"
             self.__notification_controller.notify_all(store_id, Activities.PURCHASE_IN_STORE, msg)
 
     def notify_activity(self, store_id, activity: Activities, msg):
