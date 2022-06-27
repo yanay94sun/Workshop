@@ -93,54 +93,68 @@ app.add_middleware(
 """
 WebSocket - SocketIO
 """
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
+# class ConnectionManager:
+#     def __init__(self):
+#         self.active_connections: List[WebSocket] = []
+#
+#     async def connect(self, websocket: WebSocket):
+#         await websocket.accept()
+#         self.active_connections.append(websocket)
+#
+#     def disconnect(self, websocket: WebSocket):
+#         self.active_connections.remove(websocket)
+#
+#     async def send_personal_message(self, message: str, websocket: WebSocket):
+#         try:
+#
+#             await websocket.send_text(message)
+#         except WebSocketDisconnect:
+#             manager.disconnect(websocket)
+#             # await manager.broadcast(f"Client #{client_id} left the chat")
+#     async def broadcast(self, message: str):
+#         for connection in self.active_connections:
+#             await connection.send_text(message)
+#
+#
+# manager = ConnectionManager()
 
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
+def send_ws_message(msg: str, ws: WebSocket):
+    try:
+        await ws.send_text(msg)
+        return True
+    except WebSocketDisconnect:
+        return False
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        try:
-
-            await websocket.send_text(message)
-        except WebSocketDisconnect:
-            manager.disconnect(websocket)
-            # await manager.broadcast(f"Client #{client_id} left the chat")
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
-
-
-manager = ConnectionManager()
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    print('A new websocket to create.')
-    # await websocket.accept()
-    await manager.connect(websocket)
-    print("Accepted")
+    # print('A new websocket to create.')
+    await websocket.accept()
+    # await manager.connect(websocket)
+    # print("Accepted")
     try:
-        while True:
+        # while True:
             # Wait for any message from the client
-            data = await websocket.receive_text()
-            websocket.join(data)
-            print(data)
-            # res  = service.getuser
-            # Send message to the client
-            resp = {'value': random.uniform(0, 1)}
-            await websocket.send_json(resp)
-    # except Exception as e:
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        # await manager.broadcast(f"Client #{client_id} left the chat")
-        print('error:', e)
+        uid = await websocket.receive_text()
+
+        service.register_connection(uid, websocket)
+
             # break
-    print('Bye..')
+
+            # websocket.join(data)
+            # print(data)
+            # # res  = service.getuser
+            # # Send message to the client
+            # resp = {'value': random.uniform(0, 1)}
+            # await websocket.send_json(resp)
+    # except Exception as e:
+    except WebSocketDisconnect as e1:
+        # manager.disconnect(websocket)
+        # await manager.broadcast(f"Client #{client_id} left the chat")
+        print('error:', e1)
+            # break
+    # print('Bye..')
 
 
 # @app.websocket("/ws")

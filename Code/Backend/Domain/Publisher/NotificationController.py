@@ -6,7 +6,7 @@ from fastapi import WebSocket
 from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 
-from Code.Backend.Server_FastAPI.Server import ConnectionManager
+import Code.Backend.Server_FastAPI.Server as server
 
 
 class Activities(Enum):
@@ -44,10 +44,11 @@ class NotificationController:
 
         if self.__uc.is_online(to_username):
             uid = self.__uc.get_username_uid(to_username)
-
-            accepted_msg = server.ConnectionManager()
-
+            accepted_msg = server.send_ws_message(content, self.__phone_book[uid])
         if not accepted_msg:
             res = self.__uc.add_message_to_member(to_username, content)
             if res.error_occurred():
                 return res
+
+    def register_connection(self, uid, ws: WebSocket):
+        self.__phone_book[uid] = ws

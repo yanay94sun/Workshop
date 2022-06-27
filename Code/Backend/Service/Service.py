@@ -963,3 +963,5 @@ class Service:
     #     admin_id = self.enter_as_guest().value
     #     self.register(admin_id, {"username": userName, 'password': password})
     #     self.__addFirstAdmin(userName, password)
+    def register_connection(self, uid, websocket):
+        self.facade.market.register_connection(uid, websocket)
