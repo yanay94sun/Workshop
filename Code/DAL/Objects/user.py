@@ -3,7 +3,10 @@ from typing import List
 from pydantic.main import BaseModel
 
 
-class ShoppingBasket(BaseModel):
+class ShoppingBasketItem(BaseModel):
+    """
+    represent a single item in a shopping basket
+    """
     store_id: str
     product_id: int
     quantity: int
@@ -13,6 +16,7 @@ class ShoppingBasket(BaseModel):
 
 
 class Notification(BaseModel):
+    id: int
     message: str
 
     class Config:
@@ -29,7 +33,7 @@ class UserBase(BaseModel):
 
 class User(BaseModel):
     user: UserBase
-    shopping_cart: List[ShoppingBasket] = []
+    shopping_cart: List[ShoppingBasketItem] = []
     notifications: List[Notification] = []
 
     class Config:

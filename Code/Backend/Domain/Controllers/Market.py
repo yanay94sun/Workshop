@@ -140,3 +140,7 @@ class Market:
 
     def send_notification_to_member(self, to_username, content):
         self.__notification_controller.notify_single(to_username, content)
+
+    def register_connection(self, uid, websocket):
+        print("in the way 2")
+        self.__notification_controller.register_connection(uid, websocket)

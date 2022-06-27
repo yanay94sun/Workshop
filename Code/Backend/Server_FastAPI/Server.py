@@ -2,6 +2,7 @@ import sys
 from random import random
 from typing import List
 
+import uvicorn
 from fastapi import FastAPI, Response, status, HTTPException, WebSocket, Depends, Cookie
 from fastapi.params import Body
 from pydantic import BaseModel
@@ -93,53 +94,63 @@ app.add_middleware(
 """
 WebSocket - SocketIO
 """
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        try:
-
-            await websocket.send_text(message)
-        except WebSocketDisconnect:
-            manager.disconnect(websocket)
-            # await manager.broadcast(f"Client #{client_id} left the chat")
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
 
 
-manager = ConnectionManager()
+# class ConnectionManager:
+#     def __init__(self):
+#         self.active_connections: List[WebSocket] = []
+#
+#     async def connect(self, websocket: WebSocket):
+#         await websocket.accept()
+#         self.active_connections.append(websocket)
+#
+#     def disconnect(self, websocket: WebSocket):
+#         self.active_connections.remove(websocket)
+#
+#     async def send_personal_message(self, message: str, websocket: WebSocket):
+#         try:
+#
+#             await websocket.send_text(message)
+#         except WebSocketDisconnect:
+#             manager.disconnect(websocket)
+#             # await manager.broadcast(f"Client #{client_id} left the chat")
+#     async def broadcast(self, message: str):
+#         for connection in self.active_connections:
+#             await connection.send_text(message)
+#
+#
+# manager = ConnectionManager()
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     print('A new websocket to create.')
-    # await websocket.accept()
-    await manager.connect(websocket)
+    await websocket.accept()
+    # await manager.connect(websocket)
     print("Accepted")
+    uid = ''
     try:
         while True:
             # Wait for any message from the client
-            data = await websocket.receive_text()
-            websocket.join(data)
-            print(data)
-            # res  = service.getuser
-            # Send message to the client
-            resp = {'value': random.uniform(0, 1)}
-            await websocket.send_json(resp)
-    # except Exception as e:
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        # await manager.broadcast(f"Client #{client_id} left the chat")
-        print('error:', e)
+            uid = await websocket.receive_text()
+
+            service.register_connection(uid, websocket)
+
             # break
+
+            # websocket.join(data)
+            # print(data)
+            # # res  = service.getuser
+            # # Send message to the client
+            # resp = {'value': random.uniform(0, 1)}
+            # await websocket.send_json(resp)
+    # except Exception as e:
+    except WebSocketDisconnect as e1:
+        # manager.disconnect(websocket)
+        # await manager.broadcast(f"Client #{client_id} left the chat")
+        print(uid)
+        print('error:', e1)
+        # break
     print('Bye..')
 
 
@@ -465,6 +476,30 @@ def add_max_discount(discount: DiscountCompose):
     return res.value
 
 
+@app.get("/discount/visible/{store_id}")
+def get_visible_discounts(store_id: str):
+    res = service.get_visible_discounts(store_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+@app.get("/discount/conditional/{store_id}")
+def get_conditional_discount(store_id: str):
+    res = service.get_conditional_discount(store_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+@app.get("/is_admin/{user_id}")
+def get_conditional_discount(user_id: str):
+    res = service.is_admin(user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
+
 """
 --------------------------------------
 Member's purchase actions
@@ -630,3 +665,7 @@ def hash_pass(password: str):
 #     user_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
 #                                    detail="could not validate user", headers={"WWW-Authenticate": "Bearer"})
 #     return verify_access_token(token, user_exception)
+
+# if __name__ == "__main__":
+#     uvicorn.run("Code.Backend.Server_FastAPI.Server:app --reload", host="127.0.0.1" , port=8000)
+#

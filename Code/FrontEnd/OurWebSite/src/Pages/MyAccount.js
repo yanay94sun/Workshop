@@ -1,9 +1,18 @@
-import React, { Component } from 'react';
+import React, {Component, useState} from 'react';
 
-function MyAccount(){
+function MyAccount(messages){
+    const [msgs, setMsgs] = useState(messages);
+    const [counter, setCounter] = useState(0);
     
 return(
-    <h2>My Account </h2>
+    <div>
+        <h2>My Account </h2>
+        <ul>
+            {msgs.map((message) => (
+                <li> {message}</li>
+            ))}
+        </ul>
+    </div>
 )
 }
 

@@ -63,7 +63,7 @@ class Store:
         self.__quantities[product_id] += quantity
 
     def add_new_product(self, name, description, price, category):
-        if name in map(lambda x: x.get_name(),list(self.__products.values())):
+        if name in map(lambda x: x.get_name(), list(self.__products.values())):
             raise ValueError("product name already exist")
         self.__id_counter += 1
         ID = str(self.__id_counter)
@@ -135,7 +135,8 @@ class Store:
                                       official.appointee.appointed == subject_username,
                                       self.__officials.values()))
         for child in all_my_children:
-            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(child.appointed)
+            self.remove_store_owner_end_his_children_and_his_children_s_children_and_his_family_and_kill_them_rec_helper(
+                child.appointed)
         self.__officials.pop(subject_username)
 
     def remove_products_by_id(self, product_id, quantity):
@@ -170,4 +171,49 @@ class Store:
         else:
             raise ValueError("no object with this id on this store")
 
+    def create_store_from_db(self, products, discount_policy, purchase_policy, officials
+                             , purchase_history, id_counter):
+        self.__products = {x.product_id: self.__create_product_from_db(x) for x in products}
+        self.__quantities = {x.product_id: x.quantity for x in products}
+        self.__discount_policy = discount_policy
+        self.__purchase_policy = purchase_policy
+        self.__officials: Dict[str, StoreOfficial] = self.__create_officials_from_db(officials)
+        self.__purchase_history = purchase_history
+        self.__id_counter = id_counter
 
+    def __create_product_from_db(self, productDB):
+        # TODO Nitzan product id
+        product = Product(productDB.product_id, productDB.name, productDB.description,
+                          productDB.price, productDB.category, 'store_id')  # TODO productDB.store_id
+        product.change_rating(productDB.rating)
+        return product
+
+    def __create_officials_from_db(self, officialsDB):
+        officials = {}
+        founderDB = next(filter(lambda x: not x.appointee, officialsDB))
+        currentOfficial = StoreFounder(founderDB.username)
+        officials[founderDB.username] = currentOfficial
+        self.officialRec(currentOfficial, officialsDB, officials)
+        return officials
+
+    def officialRec(self, curr, officialsDB, officials):
+        next_in_line = list(filter(lambda x: x.appointee == curr.appointed, officialsDB))
+        if not next_in_line:
+            return
+        for officialSon in next_in_line:
+            if officialSon.is_owner:
+                currentOfficial = StoreOwner(officialSon.username, curr)
+            else:
+                currentOfficial = StoreManager(officialSon.username, curr)
+            currentOfficial.set_permission(Permissions({
+                Actions.INVENTORY_ACTION.value: officialSon.INVENTORY_ACTION,
+                Actions.CHANGE_MANAGER_PERMISSION.value: officialSon.CHANGE_MANAGER_PERMISSION,
+                Actions.ADD_STORE_MANAGER.value: officialSon.ADD_STORE_MANAGER,
+                Actions.ADD_STORE_OWNER.value: officialSon.ADD_STORE_OWNER,
+                Actions.GET_STORE_PURCHASE_HISTORY.value: officialSon.GET_STORE_PURCHASE_HISTORY,
+                Actions.CLOSE_STORE.value: officialSon.CLOSE_STORE,
+                Actions.GET_STORE_ROLES.value: officialSon.GET_STORE_ROLES,
+                Actions.DISCOUNT_MANAGEMENT: officialSon.PURCHASE_MANAGEMENT,
+                Actions.PURCHASE_MANAGEMENT: officialSon.DISCOUNT_MANAGEMENT}))
+            officials[currentOfficial.appointee] = currentOfficial
+            self.officialRec(currentOfficial, officialsDB, officials)
