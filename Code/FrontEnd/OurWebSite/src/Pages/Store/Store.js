@@ -399,8 +399,7 @@ return(
                 <li>store name: <h3 style={{display:'inline'}}>{storeName}</h3></li>
                 <li>store founder's name: <h3 style={{display:'inline'}}>{founderName}</h3></li>
                 <li>store ranking: <h3 style={{display:'inline'}}>{storeRank}</h3></li>
-                <li>store products:
-                </li>
+                <li>store products:</li>
                 <div className='scroller'>
                 {storesProducts.length === 0 ? <li>no products</li>: storesProducts}
                 </div>
