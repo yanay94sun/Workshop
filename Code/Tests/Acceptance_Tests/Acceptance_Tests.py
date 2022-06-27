@@ -2,6 +2,8 @@ import threading
 import unittest
 from typing import List
 
+from fastapi import WebSocket
+
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Service.Objects.PaymentService import PaymentService
 from Code.Backend.Service.Objects.SupplySevice import SupplyService
@@ -420,6 +422,66 @@ class AcceptanceTests(unittest.TestCase):
         self.assertTrue(not is_error(response), response.msg)
         response = self.service.open_store(g_id, 'stores_name')
         self.assertTrue(is_error(response))
+
+    def test_asaf_notification_1(self):
+
+        g_id1 = self.enter_as_guest().value
+        g_id2 = self.enter_as_guest().value
+
+        store_opener = self.login(good_register_info)  # store opener client id
+        store_owner1 = self.login(good_register_info2)
+        store_owner2 = self.login(good_register_info3)
+
+        store_id = self.open_store(store_opener, store_name)
+        # add products to inventory (1 of p1, 2 of p2)
+        p1_id, p2_id = self.add_products_to_inventory(store_id, store_opener)
+
+        response = self.service.add_store_owner(store_opener, store_id, good_register_info3["username"])
+        self.assertTrue(not is_error(response), response.msg)
+
+        response = self.service.add_store_owner(store_opener, store_id, good_register_info2["username"])
+        self.assertTrue(not is_error(response), response.msg)
+
+        # add product p1 with 1 quantity to shopping cart for g_id1
+        response = self.service.add_product_to_shopping_cart(g_id1, store_id, p1_id, 1)
+        self.assertTrue(not is_error(response), response.msg)
+        # add product p1 with 1 quantity to shopping cart for g_id2
+        response = self.service.add_product_to_shopping_cart(g_id2, store_id, p1_id, 1)
+        self.assertTrue(not is_error(response), response.msg)
+        # get cart price for both
+        response = self.service.get_cart_price(g_id1)
+        self.assertTrue(not is_error(response))
+        self.assertIsNotNone(response.value)
+        payment1 = good_payment(response.value)
+
+        self.service.logout(store_owner1)
+        self.service.logout(store_owner2)
+
+        class WebSocketMock(WebSocket):
+            def __init__(self):
+                pass
+
+            async def send_text(self, data: str) -> None:
+                return
+
+        self.service.register_connection(store_opener, WebSocketMock())
+
+
+        response = self.service.purchase_shopping_cart(g_id1, payment1)
+        self.assertTrue(not is_error(response))
+
+        response = self.service.remove_store_owner(store_opener, store_id, good_register_info3["username"])
+        self.assertTrue(not is_error(response))
+
+
+        msgs1 = self.service.pull_user_msgs(store_owner1)
+        msgs2 = self.service.pull_user_msgs(store_owner2)
+
+        pass
+
+
+
+
 
     # def test_A7_exit(self):
     #     """
