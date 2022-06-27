@@ -96,9 +96,9 @@ function Header({handleLogin, checkLogged }){
             <div className="div-header">
                 <div >
                     <LogoIcon onClick={() => navigate('/home')} style={{cursor:'pointer'}} className="logo"/>
-                    {hasNotification ? <NavLink to ='/home/my-account'activeclassname='active'><MyAccountNotifIcon 
+                    {hasNotification ? <NavLink to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> : 
-                    <NavLink to ='/home/my-account'activeclassname='active'><MyAccountIcon 
+                    <NavLink to ='/home/my-account' activeclassname='active'><MyAccountIcon
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>
                     }
 

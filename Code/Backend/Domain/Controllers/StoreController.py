@@ -4,13 +4,13 @@ from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPol
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
-from Code.DAL.Objects.store import PurchasePolicy as PurchasePolicyDB, Official
-from Code.DAL.Objects.store import DiscountPolicy as DiscountPolicyDB
+# from Code.DAL.Objects.store import PurchasePolicy as PurchasePolicyDB, Official
+# from Code.DAL.Objects.store import DiscountPolicy as DiscountPolicyDB
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
 from Code.Backend.Domain.StoreOfficials.Permissions import Actions
-import Code.DAL.main as dal
-from Code.DAL.Objects.store import StoreBase
+# import Code.DAL.main as dal
+# from Code.DAL.Objects.store import StoreBase
 
 
 def search_filter(res, filterType, filterValue=None):
@@ -102,22 +102,22 @@ class StoreController:
         self.stores[store_id] = newStore
 
         # add to db
-        store_base = StoreBase(store_id=store_id, is_active=True, name=store_name, founder_username=user_id
-                               , id_counter=0)
-        # TODO purchasePolicy = PurchasePolicyDB()
-        discount_policy = DiscountPolicyDB(store_id=store_id, id_counter=0, discounts=[])
-        founderDb = Official(username=user_id, appointee=None, INVENTORY_ACTION=True,
-                             CHANGE_MANAGER_PERMISSION=True,
-                             ADD_STORE_MANAGER=True,
-                             ADD_STORE_OWNER=True,
-                             GET_STORE_PURCHASE_HISTORY=True,
-                             CLOSE_STORE=True,
-                             GET_STORE_ROLES=True,
-                             PURCHASE_MANAGEMENT=True,
-                             DISCOUNT_MANAGEMENT=True,
-                             is_owner=True
-                             )
-        dal.persist_store(store_base, purchase_policy, discount_policy, [], [founderDb])
+        # store_base = StoreBase(store_id=store_id, is_active=True, name=store_name, founder_username=user_id
+        #                        , id_counter=0)
+        # # TODO purchasePolicy = PurchasePolicyDB()
+        # discount_policy = DiscountPolicyDB(store_id=store_id, id_counter=0, discounts=[])
+        # founderDb = Official(username=user_id, appointee=None, INVENTORY_ACTION=True,
+        #                      CHANGE_MANAGER_PERMISSION=True,
+        #                      ADD_STORE_MANAGER=True,
+        #                      ADD_STORE_OWNER=True,
+        #                      GET_STORE_PURCHASE_HISTORY=True,
+        #                      CLOSE_STORE=True,
+        #                      GET_STORE_ROLES=True,
+        #                      PURCHASE_MANAGEMENT=True,
+        #                      DISCOUNT_MANAGEMENT=True,
+        #                      is_owner=True
+        #                      )
+        # dal.persist_store(store_base, purchase_policy, discount_policy, [], [founderDb])
         return Response(value=store_id)
 
     def add_products_to_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
