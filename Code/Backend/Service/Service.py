@@ -956,13 +956,9 @@ class Service:
             return store_id
         return store_id.value
 
-    # def __config(self):
-    #     config = helper.read_config()
-    #     userName = config['Admin']['userName']
-    #     password = config['Admin']['password']
-    #     admin_id = self.enter_as_guest().value
-    #     self.register(admin_id, {"username": userName, 'password': password})
-    #     self.__addFirstAdmin(userName, password)
     def register_connection(self, uid, websocket):
         print("in the way 1")
         self.facade.market.register_connection(uid, websocket)
+
+    def is_admin(self, user_id):
+        return Response(value=self.facade.check_if_admin(user_id))

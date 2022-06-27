@@ -66,7 +66,8 @@ function Header({handleLogin, checkLogged }){
     const checkAdmin = async () => {
       try{
         const response = await axios.get('http://127.0.0.1:8000/is_admin/'+localStorage.getItem("user_id"))
-        setIsAadmin(response.data)
+        console.log(response)
+        setIsAadmin(response.data.value)
       }catch (err){
           console.log(err.response);
         }

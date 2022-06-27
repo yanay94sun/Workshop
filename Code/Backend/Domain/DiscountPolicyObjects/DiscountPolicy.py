@@ -9,7 +9,7 @@ from Code.Backend.Domain.DiscountPolicyObjects.SumDiscount import SumDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.VisibleDiscount import VisibleDiscount
 from Code.Backend.Domain.DiscountPolicyObjects.XorDiscount import XorDiscount
 from Code.Backend.Domain.Product import Product
-from Code.DAL.Objects.store import Discount
+from Code.DAL.Objects.store import Discount, ComplexDiscount
 
 
 class DiscountPolicy:
@@ -146,11 +146,67 @@ class DiscountPolicy:
         except:
             raise ValueError("no discount was found with the given id")
 
-    def create_discount_policy_from_db(self, discounts: List[Discount], id_counter):
+    def create_discount_policy_from_db(self, discounts: List[Discount],
+                                       complexDiscounts: List[ComplexDiscount], id_counter):
         persist_discounts = {x.id: self.__create_discount_from_db(x) for x in discounts}
-        self.__discounts = persist_discounts
+        persist_complex_discounts = self.__create_complex_discount_from_db(complexDiscounts, persist_discounts)
+        self.__discounts = persist_discounts.update(persist_complex_discounts)
         self.id_counter = id_counter
 
-    def __create_discount_from_db(self, discount: Discount):
-        # TODO
-        pass
+    def __create_discount_from_db(self, discountDB: Discount):
+        if discountDB.is_visible:
+            # TODO add discountDB.discount
+            discount = VisibleDiscount('discount', discountDB.end_date, discountDB.discount_on, discountDB.type)
+            discount.set_id(discountDB.id)
+            return discount
+        else:
+            dic_of_prod = {discountDB.product_id: discountDB.min_count_of_product}
+            discount = ConditionalDiscount('discount', discountDB.end_date,
+                                           discountDB.discount_on, discountDB.type,
+                                           dic_of_prod, discountDB.min_price_of_product)
+            discount.set_id(discountDB.id)
+            return discount
+
+    def __create_complex_discount_from_db(self, complexDiscounts, persist_discounts):
+        res = {}
+        for discountDB in complexDiscounts:
+            self.__complex_rec(discountDB.id, complexDiscounts, persist_discounts, res)
+        return res
+
+    def __complex_rec(self, discount_id, complexDiscounts, persist_discounts, res):
+        curDiscountDB = next(filter(lambda x: x.id == discount_id, complexDiscounts))
+        # exit term
+        if not curDiscountDB or (curDiscountDB and curDiscountDB.id in res.keys()):
+            return
+        # check if not complex discount is son
+        if curDiscountDB.first_discount in persist_discounts.keys():
+            first_discount = persist_discounts[curDiscountDB.first_discount]
+        else:
+            # check if already made the complex discount
+            if curDiscountDB.first_discount in res.keys():
+                first_discount = res[curDiscountDB.first_discount]
+            else:
+                first_discount = self.__complex_rec(curDiscountDB.first_discount, complexDiscounts, persist_discounts, res)
+        # check if not complex discount is son
+        if curDiscountDB.second_discount in persist_discounts.keys():
+            second_discount = persist_discounts[curDiscountDB.second_discount]
+        else:
+            # check if already made the complex discount
+            if curDiscountDB.second_discount in res.keys():
+                second_discount = res[curDiscountDB.second_discount]
+            else:
+                second_discount = self.__complex_rec(curDiscountDB.second_discount, complexDiscounts, persist_discounts, res)
+
+        if curDiscountDB.type_ == 0:  # or
+            discount = OrDiscount(first_discount, second_discount)
+        elif curDiscountDB.type_ == 1:  # and
+            discount = AndDiscount(first_discount, second_discount)
+        elif curDiscountDB.type_ == 2:  # xor
+            discount = XorDiscount(first_discount, second_discount)
+        elif curDiscountDB.type_ == 3:  # sum
+            discount = SumDiscount(first_discount, second_discount)
+        else:  # 4 max
+            discount = MaxDiscount(first_discount, second_discount)
+        discount.set_id(curDiscountDB.id)
+        res[discount.discount_id] = discount
+        return discount

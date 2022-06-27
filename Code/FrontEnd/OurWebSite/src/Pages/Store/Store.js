@@ -190,12 +190,12 @@ function Store({storesProducts, setStoresProducts}){
             setFounderName(response.data["founder_id"])
             setRank(response.data["rank"])
             if (response.data["products"].length > 0)
-                setStoresProducts(storesProducts => [response.data["products"].map(x=><div key={x["_Product__ID"]} style={{width:'3px'}}><li key={x["_Product__ID"]} style={{cursor:'pointer'}} ><h3 onClick={()=>Navigate("../"+ x["_Product__ID"])} style={{display:'inline'}}>{x["_Product__name"]}</h3></li></div>)])
+                setStoresProducts(storesProducts => [response.data["products"].map(x=><div key={x["_Product__ID"]} style={{width:'3px'}}><li style={{cursor:'pointer'}} ><h3 onClick={()=>Navigate("../"+ x["_Product__ID"])} style={{display:'inline'}}>{x["_Product__name"]}</h3></li></div>)])
                 setOptions(options => response.data["products"].map(function(x){
                 return {label:x["_Product__name"],
                         value:x["_Product__ID"]}
         }))
-            const catgs = [... new Set(response.data["products"].map(item => item["_Product__category"]))]
+            const catgs = [... new Set(response.data["products"].map(item =>item["_Product__category"]))]
             setCategoryOptions(categryOptions => catgs.map(function(x){
                 return {label:x,
                         value:x}
@@ -225,7 +225,7 @@ function Store({storesProducts, setStoresProducts}){
             console.log(discount)
             const response = await axios.post("http://127.0.0.1:8000/discount/"+newDiscountType+"/"+discountOn,discount)         
             console.log(response)
-            //window.location.reload(false);
+            window.location.reload(false);
         }catch (err){
              console.log(err.response);
              setErrMsg(err.response.data['detail'])
