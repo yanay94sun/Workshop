@@ -6,7 +6,7 @@ from fastapi import WebSocket
 from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 
-import Code.Backend.Server_FastAPI.Server as server
+import Code.Backend.Server_FastAPI.messages_sender as server
 
 
 class Activities(Enum):
