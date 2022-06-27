@@ -15,6 +15,7 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
+from starlette.websockets import WebSocketDisconnect
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Service.Objects.Discount import Discount
@@ -45,7 +46,7 @@ from Code.Backend.Service.Service import Service
 
 - for install all packages needed please run in terminal: pip install -r requirements.txt
 
-- to run the server run in terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
+- to run the server run in terminal: uvicorn Code.Backend.Server_FastAPI.Server:app --reload
                         
                         
                         thank you,
@@ -92,51 +93,93 @@ app.add_middleware(
 """
 WebSocket - SocketIO
 """
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
+# class ConnectionManager:
+#     def __init__(self):
+#         self.active_connections: List[WebSocket] = []
+#
+#     async def connect(self, websocket: WebSocket):
+#         await websocket.accept()
+#         self.active_connections.append(websocket)
+#
+#     def disconnect(self, websocket: WebSocket):
+#         self.active_connections.remove(websocket)
+#
+#     async def send_personal_message(self, message: str, websocket: WebSocket):
+#         try:
+#
+#             await websocket.send_text(message)
+#         except WebSocketDisconnect:
+#             manager.disconnect(websocket)
+#             # await manager.broadcast(f"Client #{client_id} left the chat")
+#     async def broadcast(self, message: str):
+#         for connection in self.active_connections:
+#             await connection.send_text(message)
+#
+#
+# manager = ConnectionManager()
 
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
-
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
-
-
-manager = ConnectionManager()
+def send_ws_message(msg: str, ws: WebSocket):
+    try:
+        await ws.send_text(msg)
+        return True
+    except WebSocketDisconnect:
+        return False
 
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    print('A new websocket to create.')
+    # print('A new websocket to create.')
     await websocket.accept()
-    print("Accepted")
-    while True:
-        try:
+    # await manager.connect(websocket)
+    # print("Accepted")
+    try:
+        # while True:
             # Wait for any message from the client
-            data = await websocket.receive_text()
-            websocket.join(data)
-            print(data)
-            # res  = service.getuser
-            # Send message to the client
-            resp = {'value': random.uniform(0, 1)}
-            await websocket.send_json(resp)
-        except Exception as e:
-            print('error:', e)
-            break
-    print('Bye..')
+        uid = await websocket.receive_text()
 
-def update(user_id):
-    ## conncetion
-    ws.send.to(user_id)
+        service.register_connection(uid, websocket)
+
+            # break
+
+            # websocket.join(data)
+            # print(data)
+            # # res  = service.getuser
+            # # Send message to the client
+            # resp = {'value': random.uniform(0, 1)}
+            # await websocket.send_json(resp)
+    # except Exception as e:
+    except WebSocketDisconnect as e1:
+        # manager.disconnect(websocket)
+        # await manager.broadcast(f"Client #{client_id} left the chat")
+        print('error:', e1)
+            # break
+    # print('Bye..')
+
+
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     print('A new websocket to create.')
+#     await websocket.accept()
+#     print("Accepted")
+#     while True:
+#         try:
+#             # Wait for any message from the client
+#             data = await websocket.receive_text()
+#             websocket.join(data)
+#             print(data)
+#             # res  = service.getuser
+#             # Send message to the client
+#             resp = {'value': random.uniform(0, 1)}
+#             await websocket.send_json(resp)
+#         except Exception as e:
+#             print('error:', e)
+#             break
+#     print('Bye..')
+#
+# def update(user_id):
+#     ## conncetion
+#     ws.send.to(user_id)
 
 
 # @socket_manager.on('client_start_event')
