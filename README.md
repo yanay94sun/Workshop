@@ -5,7 +5,7 @@
 
 ##### - Please install all packages needed for the site to run, to do so run in terminal: pip install -r requirements.txt
 
-##### - To run the server, run in terminal: uvicorn Code.Backend.Server-FastAPI.Server:app --reload
+##### - To run the server, run in terminal: uvicorn Code.Backend.Server_FastAPI.Server:app --reload
                         
                         
 ### Explantion about init file and configuration placeholder
