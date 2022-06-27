@@ -6,7 +6,7 @@ from fastapi import WebSocket
 from Code.Backend.Domain.Controllers.UserController import UserController
 from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 
-import Code.Backend.Server_FastAPI.Server as server
+import Code.Backend.Server_FastAPI.messages_sender as server
 
 
 class Activities(Enum):
@@ -39,7 +39,7 @@ class NotificationController:
         for username in self.__stores_activity[store_id][activity.value]:
             self.notify_single(username, msg)
 
-    async def notify_single(self, to_username, content):
+    def notify_single(self, to_username, content):
         accepted_msg = False
 
         if self.__uc.is_online(to_username):
