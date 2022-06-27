@@ -16,6 +16,13 @@ function Payment(){
     const [year, SetYear] = useState('');
     const [month, SetMonth] = useState('');
 
+    const [name, SetName] = useState('');
+    const [address, SetAddress] = useState('');
+    const [city, SetCity] = useState('');
+    const [country, SetCountry] = useState('');
+    const [zip, SetZip] = useState('');
+
+
     const [errMsg, setErrMsg] = useState("")
     const [amount_to_pay, SetAmount_to_pay] = useState(0);
 
@@ -36,9 +43,18 @@ function Payment(){
             year: year,
             month: month,
         }
+        const supplyInfo = {
+            customer_id: localStorage.getItem("user_id"),
+            name: name,
+            address: address,
+            city: city,
+            country: country,
+            zip: zip,
+        }
         try{
 			const response = await axios.post("http://127.0.0.1:8000/pay", paymentInfo);
             console.log(response.data);
+            const response2 = await axios.post("http://127.0.0.1:8000/supply", supplyInfo);
         } catch (err){
             console.log(err.response);
         }
@@ -74,6 +90,13 @@ function Payment(){
                 <input type = 'text' name = 'ccv' placeholder="ccv..." required onChange={(e)=> SetCcv(e.target.value)}/>
                 <input type = 'text' name = 'year' placeholder="year..." required onChange={(e)=> SetYear(e.target.value)}/>
                 <input type = 'text' name = 'month' placeholder="month..." required onChange={(e)=> SetMonth(e.target.value)}/>
+
+                <input type = 'text' name = 'name' placeholder="name..." required onChange={(e)=> SetName(e.target.value)}/>
+                <input  type = 'text' name = 'address' placeholder="address..."  onChange={(e)=> SetAddress(e.target.value)}/>
+                <input type = 'text' name = 'city' placeholder="city..." required onChange={(e)=> SetCity(e.target.value)}/>
+                <input type = 'text' name = 'country' placeholder="country..." required onChange={(e)=> SetCountry(e.target.value)}/>
+                <input type = 'text' name = 'zip' placeholder="zip..." required onChange={(e)=> SetZip(e.target.value)}/>
+
                 <h4>Your total amount after discounts is: {amount_to_pay}$</h4>
                 <button style={{marginLeft: '40%'}}  onSubmit = {handlePayment}>Pay</button>
             </form>
