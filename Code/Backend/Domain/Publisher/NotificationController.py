@@ -25,8 +25,7 @@ class NotificationController:
         self.__stores_activity: Dict[str, List[List[str]]] = {}  # store_id, list<list<str usernames>>
         self.__phone_book: Dict[str, WebSocket] = {}  # uid, websocket
 
-        self.__event_loop = asyncio.BaseEventLoop()
-        self.__event_loop.run_forever()
+        self.__event_loop = asyncio.SelectorEventLoop()
 
     def subscribe(self, username: str, store_id: str, activity: Activities):
         self.__stores_activity[store_id][activity.value].append(username)
