@@ -2,6 +2,7 @@ import sys
 from random import random
 from typing import List
 
+import uvicorn
 from fastapi import FastAPI, Response, status, HTTPException, WebSocket, Depends, Cookie
 from fastapi.params import Body
 from pydantic import BaseModel
@@ -656,3 +657,7 @@ def hash_pass(password: str):
 #     user_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
 #                                    detail="could not validate user", headers={"WWW-Authenticate": "Bearer"})
 #     return verify_access_token(token, user_exception)
+
+# if __name__ == "__main__":
+#     uvicorn.run("Code.Backend.Server_FastAPI.Server:app --reload", host="127.0.0.1" , port=8000)
+#

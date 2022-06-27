@@ -37,6 +37,8 @@ function Header({handleLogin, checkLogged }){
     const navigate = useNavigate();
     const [hasNotification, setHasNotification] = useState(false);
     const [isAdmin, setIsAadmin] = useState(false)
+    const [messages, setMessages] = useState([]);
+
     const logout = async ()=>{
       const ID = {
         id: localStorage.getItem('user_id')
@@ -63,6 +65,13 @@ function Header({handleLogin, checkLogged }){
       }
     }
 
+    const handleMyAccount = () => {
+        setHasNotification(false);
+
+
+
+    }
+
     const checkAdmin = async () => {
       try{
         const response = await axios.get('http://127.0.0.1:8000/is_admin/'+localStorage.getItem("user_id"))
@@ -83,6 +92,10 @@ function Header({handleLogin, checkLogged }){
         ws.onmessage = (e) => {
             console.log("Accepted Message: ", e.data)
             setHasNotification(true);
+
+            // const old_msg = messages;
+            // old_msg.concat([e.data]);
+            // setMessages(...old_msg);
         }
     }, [])
     // useEffect(() => {
@@ -97,8 +110,8 @@ function Header({handleLogin, checkLogged }){
             <div className="div-header">
                 <div >
                     <LogoIcon onClick={() => navigate('/home')} style={{cursor:'pointer'}} className="logo"/>
-                    {hasNotification ? <NavLink to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
-                    style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> : 
+                    {hasNotification ? <NavLink onClick={() => handleMyAccount()} to ='/home/my-account' activeclassname='active'><MyAccountNotifIcon
+                    style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink> :
                     <NavLink to ='/home/my-account' activeclassname='active'><MyAccountIcon
                     style={{height: '40px',width: '40px',padding: '0 20px'}}/></NavLink>
                     }
@@ -113,11 +126,11 @@ function Header({handleLogin, checkLogged }){
                       <MyStoreIcon className="div-svg"/>
                     <p className="img__description">My stores</p>
                     </NavLink>
-                    <NavLink to ='/home/explore'activeclassname='active' className='img__wrap'>
+                    <NavLink to ='/home/explore' activeclassname='active' className='img__wrap'>
                       <SearchIcon className="div-svg"/> 
                       <p className="img__description">Search</p>
                     </NavLink>
-                    <NavLink to ='/home/shopping-cart'activeclassname='active' className='img__wrap'>
+                    <NavLink to ='/home/shopping-cart' activeclassname='active' className='img__wrap'>
                       <CartIcon className="div-svg"/>
                       <p className="img__description">Shopping cart</p>
 
