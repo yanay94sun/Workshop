@@ -51,10 +51,11 @@ class StoreControllerTests(unittest.TestCase):
         response = self.sc.add_new_product_to_inventory(USER_ID, STORE_ID, "Apple", "cool apple", 30, "fruits")
         self.assertEqual(response.value, PRODUCT_ID)
         # add more quantity
-        self.sc.add_products_to_inventory(USER_ID, STORE_ID, PRODUCT_ID, 9)
+        response =  self.sc.add_products_to_inventory(USER_ID, STORE_ID, PRODUCT_ID, 9)
         # check if the amount is really 9 as it should be
+        t = self.sc.get_product(STORE_ID, PRODUCT_ID, 10)
         self.assertTrue(self.sc.get_product(STORE_ID, PRODUCT_ID, 9) is not None)
-        self.assertTrue(self.sc.get_product(STORE_ID, PRODUCT_ID, 10) is None)
+        self.assertTrue(t is None)
 
     def test_remove_products_from_inventory(self):
         self.sc.open_store(USER_ID, "The_Store")

@@ -47,37 +47,37 @@ def get_new_product_args(p_name: str):
     return add_new_product_args
 
 
-def good_payment(amount):
-    return PaymentInfo(
-        **{
-            "customer_id": customer_id_nitzan,
-            "customer_name": nitzan,
-            "credit_card": credit_card,
-            "cvv": '123',
-            "amount_to_pay": amount
-        }
-    )
+# def good_payment(amount):
+#     return PaymentInfo(
+#         **{
+#             "customer_id": customer_id_nitzan,
+#             "customer_name": nitzan,
+#             "credit_card": credit_card,
+#             "cvv": '123',
+#             "amount_to_pay": amount
+#         }
+#     )
+# 100 good
+def create_payment(user_id, cvv):
+    return PaymentInfo(customer_id=user_id,
+                       id=customer_id_nitzan,
+                       holder=nitzan,
+                       card_number="4580458045804580",
+                       ccv=cvv,
+                       year="2022",
+                       month="12")
 
+# good_payment_info = create_payment()
 
-good_payment_info = PaymentInfo(
-    **{
-        "customer_id": customer_id_nitzan,
-        "customer_name": nitzan,
-        "credit_card": credit_card,
-        "cvv": 123,
-        "amount_to_pay": 100
-    }
-)
-
-bad_amount_payment_info = PaymentInfo(
-    **{
-        "customer_id": customer_id_nitzan,
-        "customer_name": nitzan,
-        "credit_card": credit_card,
-        "cvv": 123,
-        "amount_to_pay": -100
-    }
-)
+# bad_amount_payment_info = PaymentInfo(
+#     **{
+#         "customer_id": customer_id_nitzan,
+#         "customer_name": nitzan,
+#         "credit_card": credit_card,
+#         "cvv": 123,
+#         "amount_to_pay": -100
+#     }
+# )
 
 # good_package_info = PackageInfo(
 #

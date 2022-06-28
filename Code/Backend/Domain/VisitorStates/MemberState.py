@@ -24,8 +24,8 @@ class MemberState(State):
         self.__password = member_info["password"]
         self.__waiting_messages = []
         self.__member_info = member_info
-        dal_user = UserBase(**member_info)
-        dal.persist_user(dal_user)
+        # dal_user = UserBase(**member_info)
+        # dal.persist_user(dal_user)
 
     def is_logged_in(self):
         return True
