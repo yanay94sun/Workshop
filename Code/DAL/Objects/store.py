@@ -42,7 +42,7 @@ class PurchasePolicy(BaseModel):
 class Discount(BaseModel):
     id: int
     store_id: str
-    discount_on: bool
+    discount_on: str
     end_date: datetime
     type: int
     discount_policy_id: int

@@ -39,7 +39,8 @@ class Product(Base):
     rating = Column(Integer, nullable=False)
     price = Column(Integer, nullable=False)
     quantity = Column(Integer, nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), primary_key=True,
+                      nullable=False)
     discount_value = Column(Integer)
 
 
@@ -88,7 +89,7 @@ class Discount(Base):
 
     id = Column(Integer, primary_key=True, nullable=False)
     store_id = Column(String, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    discount_on = Column(Boolean, server_default="FALSE", nullable=False)
+    discount_on = Column(String, nullable=False)
     end_date = Column(TIMESTAMP(timezone=True), nullable=False)
     type = Column(Integer)
     discount_policy_id = Column(Integer,

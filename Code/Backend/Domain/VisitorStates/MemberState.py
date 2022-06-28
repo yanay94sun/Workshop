@@ -5,6 +5,9 @@ from Code.Backend.Domain import auth
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.VisitorStates.VisitorState import State
 
+#import Code.DAL.main as dal
+from Code.DAL.Objects.user import UserBase
+
 from passlib.context import CryptContext
 
 # hashing passwords
@@ -21,6 +24,8 @@ class MemberState(State):
         self.__password = member_info["password"]
         self.__waiting_messages = []
         self.__member_info = member_info
+        dal_user = UserBase(**member_info)
+        dal.persist_user(dal_user)
 
     def is_logged_in(self):
         return True
@@ -45,6 +50,11 @@ class MemberState(State):
         tmp = self.__waiting_messages
         self.__waiting_messages = []
         return tmp
+
+    def add_product_to_shopping_cart(self, product_info):
+        super().add_product_to_shopping_cart(product_info)
+        # persist
+
 
 
 

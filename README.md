@@ -8,12 +8,8 @@
 ##### - To run the server, run in terminal: uvicorn Code.Backend.Server_FastAPI.Server:app --reload
                         
                         
-### Explantion about init file and configuration placeholder
-##### bla bla bla bla bla bla bla bla bla bla
-##### bla bla bla bla bla bla bla bla bla bla
-##### bla bla bla bla bla bla bla bla bla bla
-##### bla bla bla bla bla bla bla bla bla bla
-##### bla bla bla bla bla bla bla bla bla bla
+### Init file and configuration
+#### The system initilaze with Admin with the username admin and password admin
 
 ![This is an image](https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png)
 
