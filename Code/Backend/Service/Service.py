@@ -967,7 +967,7 @@ class Service:
 
     def register_connection(self, uid, websocket):
         print("in the way 1")
-        self.facade.market.register_connection(uid, websocket)
+        self.facade.register_connection(uid, websocket)
 
     def pull_user_msgs(self, uid):
         return Response(self.facade.pull_user_msgs(uid))

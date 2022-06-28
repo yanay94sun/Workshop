@@ -1014,6 +1014,16 @@ class Facade:
     def check_connection(self, user_id):
         return self.user_controller.is_connected(user_id)
 
+    def register_connection(self, uid, websocket):
+        self.market.register_connection(uid, websocket)
+        username = self.user_controller.get_users_username(uid)
+        if username.error_occurred():
+            return username
+        username = username.value
+        user_appending_messages = self.user_controller.pull_user_msgs(uid)
+        for msg in user_appending_messages:
+            self.market.send_notification_to_member(username, msg)
+
 # if __name__ == '__main__':
 #     fc = Facade()
 #     print(fc.enter_as_guest().msg)
