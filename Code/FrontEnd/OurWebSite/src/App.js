@@ -36,7 +36,7 @@ function App() {
               localStorage.setItem("logged",false)
               loggedUser = newIp.data.value
             }
-            localStorage.setItem("user_id", loggedUser)
+            setUserId(loggedUser)
             console.log("id is "+loggedUser)
         }
         else{
@@ -61,7 +61,7 @@ function App() {
       <Routes >
         <Route path = '/' element= {<Login setLogin={setIsLog} isLogged = {isLog} myId = {userId}/>}/>
         <Route path = '/home/*' element = {<Home setLogin ={setIsLog}  isLogged = {isLog} myId = {userId}/>}/>
-        <Route path ="/register" element= {<Register handleLog = {setIsLog} logged = {isLog} myId = {userId} />}/>
+        <Route path ="/register" element= {<Register handleLog = {setIsLog} logged = {isLog} myId = {userId } />}/>
         <Route path = '*' element={<NoMatch/>}/>
       </Routes>
     </div>

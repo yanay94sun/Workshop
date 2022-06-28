@@ -13,8 +13,8 @@ class StoreManager(StoreOfficial):
                                         Actions.GET_STORE_PURCHASE_HISTORY.value: True,
                                         Actions.CLOSE_STORE.value: False,
                                         Actions.GET_STORE_ROLES.value: False,
-                                        Actions.PURCHASE_MANAGEMENT: False,
-                                        Actions.DISCOUNT_MANAGEMENT: False})
+                                        Actions.PURCHASE_MANAGEMENT.value: False,
+                                        Actions.DISCOUNT_MANAGEMENT.value: False})
 
     def check_permission(self, action):
         return self.permissions.check_permission(action)

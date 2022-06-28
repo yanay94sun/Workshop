@@ -61,6 +61,7 @@ class Store:
 
     def update_quantities(self, product_id, quantity):
         self.__quantities[product_id] += quantity
+        return self.__quantities[product_id]
 
     def add_new_product(self, name, description, price, category):
         if name in map(lambda x: x.get_name(), list(self.__products.values())):
@@ -173,8 +174,8 @@ class Store:
 
     def create_store_from_db(self, products, discount_policy, purchase_policy, officials
                              , purchase_history, id_counter):
-        self.__products = {x.product_id: self.__create_product_from_db(x) for x in products}
-        self.__quantities = {x.product_id: x.quantity for x in products}
+        self.__products = {str(x.product_id): self.__create_product_from_db(x) for x in products}
+        self.__quantities = {str(x.product_id): x.quantity for x in products}
         self.__discount_policy = discount_policy
         self.__purchase_policy = purchase_policy
         self.__officials: Dict[str, StoreOfficial] = self.__create_officials_from_db(officials)
@@ -184,7 +185,7 @@ class Store:
     def __create_product_from_db(self, productDB):
         # TODO Nitzan product id
         product = Product(productDB.product_id, productDB.name, productDB.description,
-                          productDB.price, productDB.category, 'store_id')  # TODO productDB.store_id
+                          productDB.price, productDB.category, productDB.store_id)
         product.change_rating(productDB.rating)
         return product
 
