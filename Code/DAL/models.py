@@ -60,7 +60,7 @@ class Official(Base):
     # id = Column(Integer, primary_key=True, nullable=False)
     username = Column(String, ForeignKey("users.username", onupdate="CASCADE", ondelete="CASCADE"), primary_key=True,
                       nullable=False)
-    appointee = Column(String, ForeignKey("users.username", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    appointee = Column(String, ForeignKey("users.username", onupdate="CASCADE", ondelete="CASCADE"), nullable=True)
     store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), primary_key=True,
                       nullable=False)
     INVENTORY_ACTION = Column(Boolean, server_default="FALSE", nullable=False)

@@ -94,17 +94,17 @@ class Product(BaseModel):
 
 class Official(BaseModel):
     username: str
-    appointee: str
-    INVENTORY_ACTION: bool
-    CHANGE_MANAGER_PERMISSION: bool
-    ADD_STORE_MANAGER: bool
-    ADD_STORE_OWNER: bool
-    GET_STORE_PURCHASE_HISTORY: bool
-    CLOSE_STORE: bool
-    GET_STORE_ROLES: bool
-    PURCHASE_MANAGEMENT: bool
-    DISCOUNT_MANAGEMENT: bool
-    is_owner: bool
+    appointee: str = None
+    INVENTORY_ACTION: bool = True
+    CHANGE_MANAGER_PERMISSION: bool = True
+    ADD_STORE_MANAGER: bool = True
+    ADD_STORE_OWNER: bool = True
+    GET_STORE_PURCHASE_HISTORY: bool = True
+    CLOSE_STORE: bool = True
+    GET_STORE_ROLES: bool = True
+    PURCHASE_MANAGEMENT: bool = True
+    DISCOUNT_MANAGEMENT: bool = True
+    is_owner: bool = True
 
     class Config:
         orm_mode = True
