@@ -44,7 +44,7 @@ class Service:
     def __init__(self):
         self.facade = Facade()
 
-    def initial_system(self, payment_service, supply_service, path='config.ini'):
+    def initial_system(self, payment_service, supply_service, path=None):
         """
         I.1
         -   contacts to the related services, by init the fields in the market from a fixed list of services
@@ -54,12 +54,17 @@ class Service:
         :param path: path to configfile
         :return: None
         """
-        try:
-            config = helper.read_config(path)
-            admin_id = config['Admin']['username']
-            admin_pwd = config['Admin']['password']
-        except:
-            raise ValueError('problem in config file')
+        admin_id = ''
+        admin_pwd = ''
+        if path:
+            try:
+                config = helper.read_config(path)
+                admin_id = config['Admin']['username']
+                admin_pwd = config['Admin']['password']
+            except:
+                raise ValueError('problem in config file')
+        else:
+            state(self)
         response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
         write_to_log(response, "The system initialized successfully")
 

@@ -62,7 +62,9 @@ class PurchasePolicy:
         self.id_counter = id_counter
 
     def __create_simple_rule_from_db(self, ruleDB: PurchaseRuleDB):
-        prod_for_purchase = {ruleDB.product_id: ruleDB.quantity}
+        prod_for_purchase = {}
+        if ruleDB.product_id != '':
+            prod_for_purchase = {ruleDB.product_id: ruleDB.quantity}
         rule = SimplePurchaseRule(prod_for_purchase, ruleDB.min_price_to_have, ruleDB.category)
         rule.set_id(ruleDB.id)
         return rule
