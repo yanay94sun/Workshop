@@ -1,6 +1,8 @@
-from typing import Dict
+from typing import Dict, List
 
-from Code.Backend.Domain.VisitorStates import MemberState
+from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
+from Code.Backend.Domain.ShoppingCart import ShoppingCart
+from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.Visitor import Visitor
@@ -16,7 +18,7 @@ class UserController:
         self.__members: Dict[str, MemberState] = {}  # username: member
         # self.__online_members = set()  # we can use as dictionary with timestamp to set online validity
         #                                # and clear it from time to time
-        self.__online_members : Dict[MemberState, str] = {}  # Member: uid
+        self.__online_members: Dict[MemberState, str] = {}  # Member: uid
         self.__id_counter = 0
         self.get_from_db()
 
@@ -151,5 +153,20 @@ class UserController:
         for user in users:
             username = user.user.username
             password = user.user.password
-            notifications = [n.message for n in user.notifications]
-            shopping_cart = {}
+
+            cart: Dict[str, ShoppingBasket] = {}  # store_id, List[product, quantity]
+            for basket in user.shopping_cart:
+                sid = basket.store_id
+                if sid not in cart:
+                    cart[sid] = ShoppingBasket(sid)
+                cart[sid].add_to_basket(str(basket.product_id), basket.quantity)
+            shopping_cart = ShoppingCart()
+            shopping_cart.shopping_baskets = cart
+
+            member = MemberState(shopping_cart, {"username": username, "password": password})
+            [member.add_message(n.message) for n in user.notifications]
+
+            self.__members[username] = member
+
+
+
