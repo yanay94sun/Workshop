@@ -25,7 +25,7 @@ function Payment(){
 
     const [errMsg, setErrMsg] = useState("")
     const [amount_to_pay, SetAmount_to_pay] = useState(0);
-
+    const [msg, setMsg] = useState('');
 
 
     const handlePayment = async (e) => {
@@ -55,6 +55,7 @@ function Payment(){
 			const response = await axios.post("http://127.0.0.1:8000/pay", paymentInfo);
             console.log(response.data);
             const response2 = await axios.post("http://127.0.0.1:8000/supply", supplyInfo);
+            setMsg(response.data)
         } catch (err){
             console.log(err.response);
         }
@@ -99,6 +100,8 @@ function Payment(){
 
                 <h4>Your total amount after discounts is: {amount_to_pay}$</h4>
                 <button style={{marginLeft: '40%'}}  onSubmit = {handlePayment}>Pay</button>
+                <p></p>
+				{msg === '' ? <strong> </strong> : <strong style={{color: 'red'}}> {msg}</strong>}
             </form>
         </div> 
     )
