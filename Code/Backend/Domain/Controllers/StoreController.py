@@ -732,8 +732,8 @@ class StoreController:
             founder = storeDB.store.founder_username
             store_name = storeDB.store.name
             store_id = storeDB.store.store_id
-            if store_id > max_id:
-                max_id = store_id
+            if int(store_id) > max_id:
+                max_id = int(store_id)
             store = Store(founder, store_name, store_id)
 
             store_id_counter = storeDB.store.id_counter

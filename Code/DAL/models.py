@@ -21,7 +21,7 @@ class Notification(Base):
 class Store(Base):
     __tablename__ = "stores"
 
-    store_id = Column(Integer, primary_key=True, nullable=False)
+    store_id = Column(String, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
     is_active = Column(Boolean, server_default='TRUE', nullable=False)
     founder_username = Column(String, ForeignKey("users.username", onupdate="CASCADE", ondelete="CASCADE"),
@@ -61,7 +61,7 @@ class Official(Base):
     username = Column(String, ForeignKey("users.username", onupdate="CASCADE", ondelete="CASCADE"), primary_key=True,
                       nullable=False)
     appointee = Column(String, ForeignKey("users.username", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), primary_key=True,
+    store_id = Column(String, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), primary_key=True,
                       nullable=False)
     INVENTORY_ACTION = Column(Boolean, server_default="FALSE", nullable=False)
     CHANGE_MANAGER_PERMISSION = Column(Boolean, server_default="FALSE", nullable=False)
@@ -79,7 +79,7 @@ class DiscountPolicy(Base):
     __tablename__ = "discount_policies"
 
     policy_id = Column(Integer, primary_key=True, nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    store_id = Column(String, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     id_counter = Column(Integer)
 
 
@@ -87,7 +87,7 @@ class Discount(Base):
     __tablename__ = "discounts"
 
     id = Column(Integer, primary_key=True, nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    store_id = Column(String, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     discount_on = Column(Boolean, server_default="FALSE", nullable=False)
     end_date = Column(TIMESTAMP(timezone=True), nullable=False)
     type = Column(Integer)
@@ -119,7 +119,7 @@ class PurchasePolicy(Base):
     __tablename__ = "purchase_policies"
 
     policy_id = Column(Integer, primary_key=True, nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    store_id = Column(String, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     id_counter = Column(Integer)
 
 
@@ -127,7 +127,7 @@ class PurchaseRule(Base):
     __tablename__ = "purchase_rules"
 
     id = Column(Integer, primary_key=True, nullable=False)
-    store_id = Column(Integer, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    store_id = Column(String, ForeignKey("stores.store_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     product_id = Column(Integer, ForeignKey("products.product_id", onupdate="CASCADE", ondelete="CASCADE"))
     quantity = Column(Integer)
     min_price_to_have = Column(Integer)
