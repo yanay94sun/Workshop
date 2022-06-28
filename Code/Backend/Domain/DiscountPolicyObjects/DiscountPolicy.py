@@ -156,12 +156,12 @@ class DiscountPolicy:
     def __create_discount_from_db(self, discountDB: Discount):
         if discountDB.is_visible:
             # TODO add discountDB.discount
-            discount = VisibleDiscount('discount', discountDB.end_date, discountDB.discount_on, discountDB.type)
+            discount = VisibleDiscount(discountDB.discount_value, discountDB.end_date, discountDB.discount_on, discountDB.type)
             discount.set_id(discountDB.id)
             return discount
         else:
             dic_of_prod = {discountDB.product_id: discountDB.min_count_of_product}
-            discount = ConditionalDiscount('discount', discountDB.end_date,
+            discount = ConditionalDiscount(discountDB.discount_value, discountDB.end_date,
                                            discountDB.discount_on, discountDB.type,
                                            dic_of_prod, discountDB.min_price_of_product)
             discount.set_id(discountDB.id)

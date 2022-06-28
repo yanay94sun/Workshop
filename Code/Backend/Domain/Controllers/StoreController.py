@@ -4,13 +4,13 @@ from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPol
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
-# from Code.DAL.Objects.store import PurchasePolicy as PurchasePolicyDB, Official
-# from Code.DAL.Objects.store import DiscountPolicy as DiscountPolicyDB
+from Code.DAL.Objects.store import PurchasePolicy as PurchasePolicyDB, Official, Product
+from Code.DAL.Objects.store import DiscountPolicy as DiscountPolicyDB
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
 from Code.Backend.Domain.StoreOfficials.Permissions import Actions
-# import Code.DAL.main as dal
-# from Code.DAL.Objects.store import StoreBase
+import Code.DAL.main as dal
+from Code.DAL.Objects.store import StoreBase
 
 
 def search_filter(res, filterType, filterValue=None):
@@ -29,6 +29,7 @@ class StoreController:
         self.stores: Dict[str, Store] = {}  # {store id : store object}
         self.inactive_stores: Dict[str, Store] = {}  # {store id : store object}
         self.id_counter = 0
+        self.__get_data_from_database()
 
     def get_store_info(self, store_id: str):
         try:
@@ -102,22 +103,22 @@ class StoreController:
         self.stores[store_id] = newStore
 
         # add to db
-        # store_base = StoreBase(store_id=store_id, is_active=True, name=store_name, founder_username=user_id
-        #                        , id_counter=0)
-        # # TODO purchasePolicy = PurchasePolicyDB()
-        # discount_policy = DiscountPolicyDB(store_id=store_id, id_counter=0, discounts=[])
-        # founderDb = Official(username=user_id, appointee=None, INVENTORY_ACTION=True,
-        #                      CHANGE_MANAGER_PERMISSION=True,
-        #                      ADD_STORE_MANAGER=True,
-        #                      ADD_STORE_OWNER=True,
-        #                      GET_STORE_PURCHASE_HISTORY=True,
-        #                      CLOSE_STORE=True,
-        #                      GET_STORE_ROLES=True,
-        #                      PURCHASE_MANAGEMENT=True,
-        #                      DISCOUNT_MANAGEMENT=True,
-        #                      is_owner=True
-        #                      )
-        # dal.persist_store(store_base, purchase_policy, discount_policy, [], [founderDb])
+        store_base = StoreBase(store_id=store_id, is_active=True, name=store_name, founder_username=user_id
+                               , id_counter=0)
+        purchasePolicy = PurchasePolicyDB(store_id=store_id, id_counter=0, purchase_rules=[], complex_purchase_rules=[])
+        discount_policy = DiscountPolicyDB(store_id=store_id, id_counter=0, discounts=[])
+        founderDb = Official(username=user_id, appointee=None, INVENTORY_ACTION=True,
+                             CHANGE_MANAGER_PERMISSION=True,
+                             ADD_STORE_MANAGER=True,
+                             ADD_STORE_OWNER=True,
+                             GET_STORE_PURCHASE_HISTORY=True,
+                             CLOSE_STORE=True,
+                             GET_STORE_ROLES=True,
+                             PURCHASE_MANAGEMENT=True,
+                             DISCOUNT_MANAGEMENT=True,
+                             is_owner=True
+                             )
+        dal.persist_store(store_base, [], [founderDb], purchasePolicy, discount_policy)
         return Response(value=store_id)
 
     def add_products_to_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
@@ -133,7 +134,13 @@ class StoreController:
 
             # check if the product exists. if it is, add new quantity
             product = store.get_product(product_id, 0)
-            store.update_quantities(product_id, quantity)
+            total_quantity = store.update_quantities(product_id, quantity)
+            # update db
+            productDB = Product(product_id=int(product.get_ID()), name=product.get_name(),
+                                description=product.get_description(),
+                                rating=product.get_rating(), price=product.get_price(),
+                                category=product.get_category(), quantity=total_quantity, store_id=store_id)
+            dal.update_product(productDB)
             return Response(value="Added " + str(quantity) + " items of " + product.get_name())
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -150,6 +157,10 @@ class StoreController:
                 return Response(msg="User does not have access to this action")
 
             ID = store.add_new_product(product_name, product_description, price, category)
+            # add to db
+            productDB = Product(product_id=int(ID), name=product_name, description=product_description,
+                                rating=0, price=price, category=category, quantity=0, store_id=store_id)
+            dal.persist_product(store_id, productDB)
             return Response(value=ID)
 
         except ValueError as e:
@@ -173,7 +184,13 @@ class StoreController:
             if product is None:
                 return Response(msg="Attempt to remove more Items then the existing quantity")
             else:
-                store.update_quantities(product_id, -quantity)
+                total_quantities = store.update_quantities(product_id, -quantity)
+                # update db
+                productDB = Product(product_id=int(product.get_ID()), name=product.get_name(),
+                                    description=product.get_description(),
+                                    rating=product.get_rating(), price=product.get_price(),
+                                    category=product.get_category(), quantity=total_quantities, store_id=store_id)
+                dal.update_product(productDB)
                 return Response(value="Removed " + str(quantity) + " items of " + product.get_name())
 
         except ValueError as e:
@@ -195,6 +212,13 @@ class StoreController:
             else:
                 store.edit_product(product_id, name, description, rating
                                    , price, category)
+                # update db
+                # TODO check if not changing value dosent effect database
+                productDB = Product(product_id=int(product.get_ID()), name=product.get_name(),
+                                    description=product.get_description(),
+                                    rating=product.get_rating(), price=product.get_price(),
+                                    category=product.get_category(), store_id=store_id)
+                dal.update_product(productDB)
                 return Response(value="Product was edited")
 
         except ValueError as e:
@@ -211,6 +235,11 @@ class StoreController:
             # check if user is already an owner or store manager
             if not store.add_owner(user_id, new_owner_id):
                 return Response(msg="User is already an Owner of this store")
+
+            # add to db
+            official = Official(username=new_owner_id, appointee=user_id, CLOSE_STORE=False)
+            dal.persist_official(store_id, official)
+
             return Response(value="Made User with id: " + str(new_owner_id) + " an owner")
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -226,6 +255,12 @@ class StoreController:
             # check if user is already a manager or store owner
             if not store.add_manager(user_id, new_manager_id):
                 return Response(msg="User is already a Manager of this store")
+            # add to db
+            official = Official(username=new_manager_id, appointee=user_id, CLOSE_STORE=False, INVENTORY_ACTION=False,
+                                CHANGE_MANAGER_PERMISSION=False, ADD_STORE_MANAGER=False,
+                                ADD_STORE_OWNER=False,GET_STORE_ROLES=False, PURCHASE_MANAGEMENT=False,
+                                DISCOUNT_MANAGEMENT=False)
+            dal.persist_official(store_id, official)
             return Response(value="Made User with id: " + str(new_manager_id) + " a manager")
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -239,6 +274,15 @@ class StoreController:
                 return Response(msg="User does not have access to this action")
 
             store.change_permissions(manager_id, new_permission)
+            # add to db
+            # TODO check about default values and add dal.update official
+            official = Official(username=manager_id, CLOSE_STORE=new_permission[5], INVENTORY_ACTION=new_permission[1],
+                                CHANGE_MANAGER_PERMISSION=new_permission[4], ADD_STORE_MANAGER=new_permission[3],
+                                ADD_STORE_OWNER=new_permission[2], GET_STORE_ROLES=new_permission[6],
+                                PURCHASE_MANAGEMENT=new_permission[8],
+                                DISCOUNT_MANAGEMENT=new_permission[9],
+                                GET_STORE_PURCHASE_HISTORY=new_permission[7])
+            dal.persist_official(store_id, official)
             return Response(value="Permissions successfully changed")
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -714,34 +758,34 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    # def __get_data_from_database(self):
-    #     max_id = -1
-    #     storesDB = dal.get_all_stores()
-    #     for storeDB in storesDB:
-    #         founder = storeDB.store.founder_username
-    #         store_name = storeDB.store.name
-    #         store_id = storeDB.store.store_id
-    #         if store_id > max_id:
-    #             max_id = store_id
-    #         store = Store(founder, store_name, store_id)
-    #
-    #         store_id_counter = storeDB.store.id_counter
-    #
-    #         purchase_policy = PurchasePolicy()
-    #         purchase_policy.create_purchase_policy_from_db(storeDB.purchase_policy.purchase_rules,
-    #                                                        storeDB.purchase_policy.complex_purchase_rules,
-    #                                                        storeDB.purchase_policy.id_counter)
-    #
-    #         discount_policy = DiscountPolicy()
-    #         discount_policy.create_discount_policy_from_db(storeDB.discount_policy.discounts,
-    #                                                        storeDB.discount_policy.complex_discounts
-    #                                                        , storeDB.discount_policy.id_counter)
-    #         # TODO store_history = storeDB.purchase_history
-    #
-    #         store.create_store_from_db(storeDB.products, discount_policy, purchase_policy
-    #                                    , storeDB.officials, [], store_id_counter)
-    #         if storeDB.store.is_active:
-    #             self.stores[store_id] = store
-    #         else:
-    #             self.inactive_stores[store_id] = store
-    #     self.id_counter = max_id + 1
+    def __get_data_from_database(self):
+        max_id = -1
+        storesDB = dal.get_all_stores()
+        for storeDB in storesDB:
+            founder = storeDB.store.founder_username
+            store_name = storeDB.store.name
+            store_id = storeDB.store.store_id
+            if int(store_id) > max_id:
+                max_id = int(store_id)
+            store = Store(founder, store_name, store_id)
+
+            store_id_counter = storeDB.store.id_counter
+
+            purchase_policy = PurchasePolicy()
+            purchase_policy.create_purchase_policy_from_db(storeDB.purchase_policy.purchase_rules,
+                                                           storeDB.purchase_policy.complex_purchase_rules,
+                                                           storeDB.purchase_policy.id_counter)
+
+            discount_policy = DiscountPolicy()
+            discount_policy.create_discount_policy_from_db(storeDB.discount_policy.discounts,
+                                                           storeDB.discount_policy.complex_discounts
+                                                           , storeDB.discount_policy.id_counter)
+            # TODO store_history = storeDB.purchase_history
+
+            store.create_store_from_db(storeDB.products, discount_policy, purchase_policy
+                                       , storeDB.officials, [], store_id_counter)
+            if storeDB.store.is_active:
+                self.stores[store_id] = store
+            else:
+                self.inactive_stores[store_id] = store
+        self.id_counter = max_id + 1
