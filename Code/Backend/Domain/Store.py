@@ -184,7 +184,7 @@ class Store:
     def __create_product_from_db(self, productDB):
         # TODO Nitzan product id
         product = Product(productDB.product_id, productDB.name, productDB.description,
-                          productDB.price, productDB.category, 'store_id')  # TODO productDB.store_id
+                          productDB.price, productDB.category, productDB.store_id)
         product.change_rating(productDB.rating)
         return product
 
