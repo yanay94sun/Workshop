@@ -84,9 +84,29 @@ function Header({handleLogin, checkLogged }){
       checkAdmin()
     }, []);
 
+    const handlePullingUserMsg = async () => {
+        try{
+            const response = await axios.get('http://127.0.0.1:8000/get_user_msgs/'+localStorage.getItem("user_id"))
+            console.log(response)
+            const msgs = response.data;
+            if (msgs.length > 0){
+                setMessages(msgs);
+                setHasNotification(true);
+            }
+        }catch (err){
+              console.log(err.response);
+        }
+    }
+
+    useEffect(() => {
+        handlePullingUserMsg()
+    }, [])
+
     useEffect(() => {
         const ws = new WebSocket('ws://localhost:8000/ws');
-        ws.onopen = () => ws.send(localStorage.getItem("user_id"));
+        ws.onopen = () => {
+            ws.send(localStorage.getItem("user_id"));
+        }
         ws.onmessage = (e) => {
             console.log("Accepted Message: ", e.data)
             setHasNotification(true);
