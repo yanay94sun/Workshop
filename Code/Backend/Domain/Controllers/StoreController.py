@@ -4,7 +4,7 @@ from Code.Backend.Domain.DiscountPolicyObjects.DiscountPolicy import DiscountPol
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.PurchasePolicyObjects.PurchasePolicy import PurchasePolicy
-from Code.DAL.Objects.store import PurchasePolicy as PurchasePolicyDB, Official
+from Code.DAL.Objects.store import PurchasePolicy as PurchasePolicyDB, Official, Product
 from Code.DAL.Objects.store import DiscountPolicy as DiscountPolicyDB
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
@@ -105,7 +105,7 @@ class StoreController:
         # add to db
         store_base = StoreBase(store_id=store_id, is_active=True, name=store_name, founder_username=user_id
                                , id_counter=0)
-        # TODO purchasePolicy = PurchasePolicyDB()
+        purchasePolicy = PurchasePolicyDB(store_id=store_id, id_counter=0, purchase_rules=[], complex_purchase_rules=[])
         discount_policy = DiscountPolicyDB(store_id=store_id, id_counter=0, discounts=[])
         founderDb = Official(username=user_id, appointee=None, INVENTORY_ACTION=True,
                              CHANGE_MANAGER_PERMISSION=True,
@@ -118,7 +118,7 @@ class StoreController:
                              DISCOUNT_MANAGEMENT=True,
                              is_owner=True
                              )
-        dal.persist_store(store_base, purchase_policy, discount_policy, [], [founderDb])
+        dal.persist_store(store_base, [], [founderDb], purchasePolicy, discount_policy)
         return Response(value=store_id)
 
     def add_products_to_inventory(self, user_id: str, store_id: str, product_id: str, quantity: int):
@@ -134,7 +134,13 @@ class StoreController:
 
             # check if the product exists. if it is, add new quantity
             product = store.get_product(product_id, 0)
-            store.update_quantities(product_id, quantity)
+            total_quantity = store.update_quantities(product_id, quantity)
+            # add to db
+            productDB = Product(product_id=int(product.get_ID()), name=product.get_name(),
+                                description=product.get_description(),
+                                rating=product.get_rating(), price=product.get_price(),
+                                category=product.get_category(), quantity=total_quantity, store_id=store_id)
+            dal.persist_product(store_id, productDB)
             return Response(value="Added " + str(quantity) + " items of " + product.get_name())
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -151,6 +157,10 @@ class StoreController:
                 return Response(msg="User does not have access to this action")
 
             ID = store.add_new_product(product_name, product_description, price, category)
+            # add to db
+            productDB = Product(product_id=int(ID), name=product_name, description=product_description,
+                                rating=0, price=price,category=category, quantity=0, store_id=store_id)
+            dal.persist_product(store_id, productDB)
             return Response(value=ID)
 
         except ValueError as e:
