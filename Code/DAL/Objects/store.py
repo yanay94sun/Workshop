@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class PurchaseRule(BaseModel):
     id: int
-    store_id: int
+    store_id: str
     product_id: int
     quantity: int
     min_price_to_have: int
@@ -30,7 +30,7 @@ class ComplexPurchaseRule(BaseModel):
 
 class PurchasePolicy(BaseModel):
     policy_id: int
-    store_id: int
+    store_id: str
     id_counter: int
     purchase_rules: List[PurchaseRule] = []
     complex_purchase_rules: List[ComplexPurchaseRule] = []
@@ -41,7 +41,7 @@ class PurchasePolicy(BaseModel):
 
 class Discount(BaseModel):
     id: int
-    store_id: int
+    store_id: str
     discount_on: bool
     end_date: datetime
     type: int
@@ -69,7 +69,7 @@ class ComplexDiscount(BaseModel):
 
 class DiscountPolicy(BaseModel):
     policy_id: int
-    store_id: int
+    store_id: str
     id_counter: int
     discounts: List[Discount] = []
     complex_discounts: List[ComplexDiscount] = []
@@ -86,7 +86,7 @@ class Product(BaseModel):
     price: int
     category: str
     quantity: int
-    store_id: int
+    store_id: str
 
     class Config:
         orm_mode = True

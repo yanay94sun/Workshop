@@ -239,7 +239,7 @@ def get_purchase_policy(db, store_id):
     return purchase_policy_res
 
 
-def delete_store(store_id: int, db: Session = next(get_db())) -> bool:
+def delete_store(store_id: str, db: Session = next(get_db())) -> bool:
     """
     delete a store and all products and baskets related
     :param db:
@@ -249,7 +249,7 @@ def delete_store(store_id: int, db: Session = next(get_db())) -> bool:
     return delete_(models.Store, models.Store.store_id == store_id, db=db)
 
 
-def persist_product(store_id: int, product: Product, db: Session = next(get_db())) -> Product:
+def persist_product(store_id: str, product: Product, db: Session = next(get_db())) -> Product:
     """
     persisting a new product when adding to store's inventory.
     :param db:
@@ -289,7 +289,7 @@ def update_product(product: Product, db: Session = next(get_db())) -> Product:
     return p.first()
 
 
-def persist_official(store_id: int, official: Official, db: Session = next(get_db())) -> Official:
+def persist_official(store_id: str, official: Official, db: Session = next(get_db())) -> Official:
     """
     persisting a new official to store
     :param db:
@@ -304,7 +304,7 @@ def persist_official(store_id: int, official: Official, db: Session = next(get_d
     return new_official
 
 
-def delete_official(store_id: int, official_username: str, db: Session = next(get_db())) -> bool:
+def delete_official(store_id: str, official_username: str, db: Session = next(get_db())) -> bool:
     """
     delete an official from store
     :param db:
@@ -429,7 +429,7 @@ def persist_shopping_basket_item(username: str, basket_item: ShoppingBasketItem,
     return new_basket_item
 
 
-def delete_shopping_basket_item(username: str, store_id: int, db: Session = next(get_db())) -> bool:
+def delete_shopping_basket_item(username: str, store_id: str, db: Session = next(get_db())) -> bool:
     """
     delete a shopping basket
     :param db:
