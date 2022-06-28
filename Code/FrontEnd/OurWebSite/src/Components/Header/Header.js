@@ -99,7 +99,7 @@ function Header({handleLogin, checkLogged }){
             setMessages([...messages, e.data]);
             console.log(messages);
         }
-    }, [])
+    }, [messages])
     // useEffect(() => {
     //   socket.on("receive_message", () => {
     //     setHasNotification(true);
