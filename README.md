@@ -15,7 +15,7 @@
 ##### u1 is admin
 ##### u2 open store s1
 ##### u2 add item "Bamba" to store s withe cost 30 and quantity 30
-##### u2 appoints u3 to store manager with permission to manage inventory
+##### u2 appoints u3, u4, u5 to store manageres with permission to manage inventory
 ![This is an image](https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png)
 
 ####                        Enjoy :)
