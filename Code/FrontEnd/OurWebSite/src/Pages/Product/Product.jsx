@@ -13,6 +13,8 @@ function Product({storesProducts}) {
 	const [catagory, setCatagory] = useState('');
 	const [discount, setDiscount] = useState(0);
 
+	const [msg, setMsg] = useState('');
+
 	const [count, setCount] = useState(0);
 
 	const params = useParams()
@@ -52,6 +54,7 @@ function Product({storesProducts}) {
 				args
 			);
 			console.log(response.data);
+			setMsg("The product had been added to your cart !!\n go to search and keep buying our best product!");
 		} catch (err) {
 			console.log(err);
 		}
@@ -154,6 +157,8 @@ function Product({storesProducts}) {
 
 				</p>
 				<strong>total price: ${totalPrice}</strong>
+				<p></p>
+				{msg === '' ? <strong> </strong> : <strong style={{color: 'red'}}> {msg}</strong>}
 
 			</div>
 		</div>
