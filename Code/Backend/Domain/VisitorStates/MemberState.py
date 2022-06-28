@@ -5,7 +5,7 @@ from Code.Backend.Domain import auth
 from Code.Backend.Domain.ShoppingCart import ShoppingCart
 from Code.Backend.Domain.VisitorStates.VisitorState import State
 
-import Code.DAL.main as dal
+#import Code.DAL.main as dal
 from Code.DAL.Objects.user import UserBase
 
 from passlib.context import CryptContext

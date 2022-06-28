@@ -10,8 +10,8 @@ from Code.DAL.Objects.store import DiscountPolicy as DiscountPolicyDB
 from Code.Backend.Domain.ShoppingBasket import ShoppingBasket
 from Code.Backend.Domain.Store import Store
 from Code.Backend.Domain.StoreOfficials.Permissions import Actions
-import Code.DAL.main as dal
-from Code.DAL.Objects.store import StoreBase
+# import Code.DAL.main as dal
+# from Code.DAL.Objects.store import StoreBase
 
 
 def search_filter(res, filterType, filterValue=None):
@@ -903,34 +903,34 @@ class StoreController:
         except ValueError as e:
             return Response(msg=e.args[0])
 
-    def __get_data_from_database(self):
-        max_id = -1
-        storesDB = dal.get_all_stores()
-        for storeDB in storesDB:
-            founder = storeDB.store.founder_username
-            store_name = storeDB.store.name
-            store_id = storeDB.store.store_id
-            if int(store_id) > max_id:
-                max_id = int(store_id)
-            store = Store(founder, store_name, store_id)
-
-            store_id_counter = storeDB.store.id_counter
-
-            purchase_policy = PurchasePolicy()
-            purchase_policy.create_purchase_policy_from_db(storeDB.purchase_policy.purchase_rules,
-                                                           storeDB.purchase_policy.complex_purchase_rules,
-                                                           storeDB.purchase_policy.id_counter)
-
-            discount_policy = DiscountPolicy()
-            discount_policy.create_discount_policy_from_db(storeDB.discount_policy.discounts,
-                                                           storeDB.discount_policy.complex_discounts
-                                                           , storeDB.discount_policy.id_counter)
-            # TODO store_history = storeDB.purchase_history
-
-            store.create_store_from_db(storeDB.products, discount_policy, purchase_policy
-                                       , storeDB.officials, [], store_id_counter)
-            if storeDB.store.is_active:
-                self.stores[store_id] = store
-            else:
-                self.inactive_stores[store_id] = store
-        self.id_counter = max_id + 1
+    # def __get_data_from_database(self):
+    #     max_id = -1
+    #     storesDB = dal.get_all_stores()
+    #     for storeDB in storesDB:
+    #         founder = storeDB.store.founder_username
+    #         store_name = storeDB.store.name
+    #         store_id = storeDB.store.store_id
+    #         if int(store_id) > max_id:
+    #             max_id = int(store_id)
+    #         store = Store(founder, store_name, store_id)
+    #
+    #         store_id_counter = storeDB.store.id_counter
+    #
+    #         purchase_policy = PurchasePolicy()
+    #         purchase_policy.create_purchase_policy_from_db(storeDB.purchase_policy.purchase_rules,
+    #                                                        storeDB.purchase_policy.complex_purchase_rules,
+    #                                                        storeDB.purchase_policy.id_counter)
+    #
+    #         discount_policy = DiscountPolicy()
+    #         discount_policy.create_discount_policy_from_db(storeDB.discount_policy.discounts,
+    #                                                        storeDB.discount_policy.complex_discounts
+    #                                                        , storeDB.discount_policy.id_counter)
+    #         # TODO store_history = storeDB.purchase_history
+    #
+    #         store.create_store_from_db(storeDB.products, discount_policy, purchase_policy
+    #                                    , storeDB.officials, [], store_id_counter)
+    #         if storeDB.store.is_active:
+    #             self.stores[store_id] = store
+    #         else:
+    #             self.inactive_stores[store_id] = store
+    #     self.id_counter = max_id + 1
