@@ -279,9 +279,10 @@ def update_product(product: Product, db: Session = next(get_db())) -> Product:
     updating all data related to product
     :param product:
     :param db:
-    :return:
+    :return: updated object, None if not exist
     """
-    p = db.query(models.Product).filter(models.Product.product_id == product.product_id)
+    p = db.query(models.Product).filter(models.Product.product_id == product.product_id and
+                                        models.Product.store_id == product.store_id)
     if not p.first():
         return None
     p.update(product.dict(), synchronize_session=False)
@@ -314,6 +315,22 @@ def delete_official(store_id: str, official_username: str, db: Session = next(ge
     """
     return delete_(models.Official,
                    models.Official.store_id == store_id and models.Official.username == official_username, db=db)
+
+
+def update_official(store_id: str, updated_official: Official,  db: Session = next(get_db())) -> Official:
+    """
+    updating an official object
+    :param store_id:
+    :param updated_official:
+    :param db:
+    :return: the updated official in success, none otherwise.
+    """
+    official_query = db.query(models.Official).filter(models.Official.store_id == store_id and
+                                                      models.Official.username == updated_official.username)
+    if not official_query.first():
+        return None
+    official_query.update(updated_official.dict(), synchronize_session=False)
+    return official_query.first()
 
 
 def persist_discount(discount: Discount, db: Session = next(get_db())) -> Discount:
