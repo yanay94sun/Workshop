@@ -48,7 +48,6 @@ class UserController:
         if new_member.error_occurred():
             return new_member
         self.__members[key] = new_member.value
-        dal.pe
         return Response()
 
     def login(self, user_id: str, username: str, password: str):
