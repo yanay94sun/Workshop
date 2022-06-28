@@ -31,7 +31,7 @@ def get_user(username: str, db: Session = next(get_db())):
     )
 
 
-def get_all_users(db: Session = next(get_db())):
+def get_all_users(db: Session = next(get_db())) -> List[User]:
     """
     return all users in the system
     :param db:

@@ -4,6 +4,7 @@ from Code.Backend.Domain.VisitorStates import MemberState
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.Visitor import Visitor
+import Code.DAL.main as dal
 
 
 class UserController:
@@ -17,6 +18,7 @@ class UserController:
         #                                # and clear it from time to time
         self.__online_members : Dict[MemberState, str] = {}  # Member: uid
         self.__id_counter = 0
+        self.get_from_db()
 
     def init(self):
         pass
@@ -143,3 +145,11 @@ class UserController:
         if user_id in self.__users.keys():
             return Response(value=True)
         return Response(value=False)
+
+    def get_from_db(self):
+        users = dal.get_all_users()
+        for user in users:
+            username = user.user.username
+            password = user.user.password
+            notifications = [n.message for n in user.notifications]
+            shopping_cart = {}
