@@ -153,6 +153,14 @@ async def websocket_endpoint(websocket: WebSocket):
         # break
     print('Bye..')
 
+@app.get("/get_user_msgs/{user_id}")
+def pull_user_msgs(user_id):
+    res = service.pull_user_msgs(user_id)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
+    return res.value
+
+
 
 # @app.websocket("/ws")
 # async def websocket_endpoint(websocket: WebSocket):

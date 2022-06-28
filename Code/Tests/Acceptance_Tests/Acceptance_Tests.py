@@ -5,8 +5,6 @@ from typing import List
 from fastapi import WebSocket
 
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
-from Code.Backend.Service.Objects.PaymentService import PaymentService
-from Code.Backend.Service.Objects.SupplySevice import SupplyService
 from Code.Backend.Service.Response import Response
 from Code.Backend.Service.Service import Service
 from Code.Tests.Acceptance_Tests.Initialized_objects import *
@@ -19,8 +17,8 @@ def is_error(response):
 class AcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.service = Service()
-        self.service.initial_system(payment_service=PaymentService(),
-                                    supply_service=SupplyService(), path='Testconfig.ini')
+        self.service.initial_system(payment_service="https://cs-bgu-wsep.herokuapp.com/",
+                                    supply_service="https://cs-bgu-wsep.herokuapp.com/", path='Testconfig.ini')
 
     # def test_contact_payment_service(self):
     #     """
