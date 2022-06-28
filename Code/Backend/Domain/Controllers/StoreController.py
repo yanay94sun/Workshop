@@ -135,12 +135,12 @@ class StoreController:
             # check if the product exists. if it is, add new quantity
             product = store.get_product(product_id, 0)
             total_quantity = store.update_quantities(product_id, quantity)
-            # add to db
+            # update db
             productDB = Product(product_id=int(product.get_ID()), name=product.get_name(),
                                 description=product.get_description(),
                                 rating=product.get_rating(), price=product.get_price(),
                                 category=product.get_category(), quantity=total_quantity, store_id=store_id)
-            dal.persist_product(store_id, productDB)
+            dal.update_product(productDB)
             return Response(value="Added " + str(quantity) + " items of " + product.get_name())
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -159,7 +159,7 @@ class StoreController:
             ID = store.add_new_product(product_name, product_description, price, category)
             # add to db
             productDB = Product(product_id=int(ID), name=product_name, description=product_description,
-                                rating=0, price=price,category=category, quantity=0, store_id=store_id)
+                                rating=0, price=price, category=category, quantity=0, store_id=store_id)
             dal.persist_product(store_id, productDB)
             return Response(value=ID)
 
@@ -184,7 +184,13 @@ class StoreController:
             if product is None:
                 return Response(msg="Attempt to remove more Items then the existing quantity")
             else:
-                store.update_quantities(product_id, -quantity)
+                total_quantities = store.update_quantities(product_id, -quantity)
+                # update db
+                productDB = Product(product_id=int(product.get_ID()), name=product.get_name(),
+                                    description=product.get_description(),
+                                    rating=product.get_rating(), price=product.get_price(),
+                                    category=product.get_category(), quantity=total_quantities, store_id=store_id)
+                dal.update_product(productDB)
                 return Response(value="Removed " + str(quantity) + " items of " + product.get_name())
 
         except ValueError as e:
@@ -206,6 +212,13 @@ class StoreController:
             else:
                 store.edit_product(product_id, name, description, rating
                                    , price, category)
+                # update db
+                # TODO check if not changing value dosent effect database
+                productDB = Product(product_id=int(product.get_ID()), name=product.get_name(),
+                                    description=product.get_description(),
+                                    rating=product.get_rating(), price=product.get_price(),
+                                    category=product.get_category(), store_id=store_id)
+                dal.update_product(productDB)
                 return Response(value="Product was edited")
 
         except ValueError as e:
@@ -222,6 +235,11 @@ class StoreController:
             # check if user is already an owner or store manager
             if not store.add_owner(user_id, new_owner_id):
                 return Response(msg="User is already an Owner of this store")
+
+            # add to db
+            official = Official(username=new_owner_id, appointee=user_id, CLOSE_STORE=False)
+            dal.persist_official(store_id, official)
+
             return Response(value="Made User with id: " + str(new_owner_id) + " an owner")
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -237,6 +255,12 @@ class StoreController:
             # check if user is already a manager or store owner
             if not store.add_manager(user_id, new_manager_id):
                 return Response(msg="User is already a Manager of this store")
+            # add to db
+            official = Official(username=new_manager_id, appointee=user_id, CLOSE_STORE=False, INVENTORY_ACTION=False,
+                                CHANGE_MANAGER_PERMISSION=False, ADD_STORE_MANAGER=False,
+                                ADD_STORE_OWNER=False,GET_STORE_ROLES=False, PURCHASE_MANAGEMENT=False,
+                                DISCOUNT_MANAGEMENT=False)
+            dal.persist_official(store_id, official)
             return Response(value="Made User with id: " + str(new_manager_id) + " a manager")
         except ValueError as e:
             return Response(msg=e.args[0])
@@ -250,6 +274,15 @@ class StoreController:
                 return Response(msg="User does not have access to this action")
 
             store.change_permissions(manager_id, new_permission)
+            # add to db
+            # TODO check about default values and add dal.update official
+            official = Official(username=manager_id, CLOSE_STORE=new_permission[5], INVENTORY_ACTION=new_permission[1],
+                                CHANGE_MANAGER_PERMISSION=new_permission[4], ADD_STORE_MANAGER=new_permission[3],
+                                ADD_STORE_OWNER=new_permission[2], GET_STORE_ROLES=new_permission[6],
+                                PURCHASE_MANAGEMENT=new_permission[8],
+                                DISCOUNT_MANAGEMENT=new_permission[9],
+                                GET_STORE_PURCHASE_HISTORY=new_permission[7])
+            dal.persist_official(store_id, official)
             return Response(value="Permissions successfully changed")
         except ValueError as e:
             return Response(msg=e.args[0])
