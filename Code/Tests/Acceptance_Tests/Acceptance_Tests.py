@@ -493,10 +493,6 @@ class AcceptanceTests(unittest.TestCase):
         msgs2 = msgs2.value
         self.assertTrue(len(msgs2) == 1)
 
-
-
-
-
     # def test_A7_exit(self):
     #     """
     #     II.1.2
@@ -596,8 +592,13 @@ class AcceptanceTests(unittest.TestCase):
 
         """
         g_id = self.enter_as_guest().value
+        # g_id2 = self.enter_as_guest().value
+        store_opener2 = self.login(good_register_info2)
         store_opener = self.login(good_register_info)
         store_id = self.open_store(store_opener, store_name)
+        store_id2 = self.open_store(store_opener2, 'store_name')
+        # check
+        response = self.service.add_new_product_to_inventory()
         # bad assign
         response = self.service.add_store_owner(store_opener, store_id, g_id)
         self.assertTrue(is_error(response))
@@ -608,6 +609,8 @@ class AcceptanceTests(unittest.TestCase):
         # bad assign - reassign
         response = self.service.add_store_owner(store_opener, store_id, good_register_info2["username"])
         self.assertTrue(is_error(response), response.msg)
+       # resopnse = self.service.add_new_product_to_inventory(g_id2, store_id, 'apple', 'description', 30, 'category')
+      #  print(resopnse.msg)
 
     def test_A8_add_store_owner_concurrently(self):
         """
@@ -695,8 +698,6 @@ class AcceptanceTests(unittest.TestCase):
         self.assertTrue(not is_error(response))
         self.assertIsNotNone(response.value)
         self.assertEqual(response.value, 5)
-
-
 
     # # def test_remove_store_owner(self):
     # #     """

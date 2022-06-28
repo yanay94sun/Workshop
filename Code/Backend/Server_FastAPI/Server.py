@@ -29,6 +29,7 @@ from Code.Backend.Service.Objects.PackageInfo import PackageInfo
 from Code.Backend.Service.Objects.PaymentInfo import PaymentInfo
 from Code.Backend.Service.Objects.ProductInfo import ProductInfo
 from Code.Backend.Service.Objects.ProductSearchFilters import ProductSearchFilters
+from Code.Backend.Service.Objects.PurchaseRule import PurchaseRule
 from Code.Backend.Service.Objects.StoreName import Store_name
 from Code.Backend.Service.Objects.TokenData import TokenData
 from Code.Backend.Service.Objects.UserID import UserID
@@ -505,6 +506,17 @@ def get_conditional_discount(user_id: str):
     if res.error_occurred():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.msg)
     return res.value
+
+@app.post("/purchase/simple/product")
+def add_max_discount(purchase: PurchaseRule):
+    prod_for_discount = {purchase.products_to_have_for_purchase:purchase.amount_of_products_to_have}
+    res = service.add_simple_purchase_rule_by_product(purchase.user_id, purchase.store_id,
+                                                      prod_for_discount)
+    if res.error_occurred():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=res.msg)
+    return res.value
+
+
 
 
 

@@ -66,6 +66,7 @@ class Service:
         else:
             state(self)
         response = Response(self.facade.initial_system(admin_id, admin_pwd, payment_service, supply_service))
+        state(self)
         write_to_log(response, "The system initialized successfully")
 
         # return response
@@ -752,7 +753,7 @@ class Service:
         :param new_permission:
         :return:
         """
-        response = Response(self.store_controller.change_manager_permission(
+        response = Response(self.facade.change_manager_permission(
             user_id, store_id, manager_name, new_permission))
         write_to_log(response, "successfully changed manager permissions")
         return response
@@ -955,7 +956,7 @@ class Service:
             return r
         return uid.value
 
-    def __short_login(self, user):
+    def short_login(self, user):
         uid = self.__short_register(user)
         r = self.login(uid, user["username"], user["password"])
         if r.error_occurred():
@@ -963,7 +964,7 @@ class Service:
             return r
         return uid
 
-    def __short_open_store(self, user_id, store_name):
+    def short_open_store(self, user_id, store_name):
         store_id = self.open_store(user_id, store_name)
         if store_id.error_occurred():
             raise Exception(store_id.msg)

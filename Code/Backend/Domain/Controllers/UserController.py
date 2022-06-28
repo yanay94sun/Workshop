@@ -6,7 +6,7 @@ from Code.Backend.Domain.VisitorStates.MemberState import MemberState
 from Code.Backend.Domain.DomainDataObjects.ProductPurchaseRequest import ProductPurchaseRequest
 from Code.Backend.Domain.MFResponse import Response
 from Code.Backend.Domain.Visitor import Visitor
-#import Code.DAL.main as dal
+import Code.DAL.main as dal
 
 
 class UserController:
@@ -20,13 +20,14 @@ class UserController:
         #                                # and clear it from time to time
         self.__online_members: Dict[MemberState, str] = {}  # Member: uid
         self.__id_counter = 0
-        # self.get_from_db()
+        self.get_from_db()
 
     def init(self):
         pass
 
     def create_guest(self):
         new_id = self.__generate_id()
+
         user = Visitor(new_id)
         self.__users[new_id] = user
         return Response(value=new_id)

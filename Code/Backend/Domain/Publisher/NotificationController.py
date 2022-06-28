@@ -18,7 +18,6 @@ class Activities(Enum):
     OFFICIAL_REMOVED = 3
 
 
-
 class NotificationController:
     def __init__(self, user_controller: UserController):
         self.__uc = user_controller
@@ -45,7 +44,6 @@ class NotificationController:
             print(f"sending to {username}")
             self.notify_single(username, msg)
 
-
     async def notify_single_task(self, to_username, content):
         accepted_msg = False
         print("in notify_single")
@@ -63,7 +61,6 @@ class NotificationController:
     def notify_single(self, to_username, content):
         task = self.__event_loop.create_task(self.notify_single_task(to_username, content))
         self.__event_loop.run_until_complete(task)
-
 
     def register_connection(self, uid, ws: WebSocket):
         print("notify single 4")

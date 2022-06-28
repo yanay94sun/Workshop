@@ -133,6 +133,7 @@ class StoreControllerTests(unittest.TestCase):
         # user should not be able to change inventory
         response = self.sc.add_products_to_inventory(manager_id, STORE_ID, PRODUCT_ID, 3)
         self.assertEqual(response.msg, "User does not have access to this action")
+        self.assertEqual(self.sc.get_product_and_quantities(PRODUCT_ID,STORE_ID).value['quantity'],0) # check check
         new_per = {1: True, 2: False, 3: False, 4: False, 5: False, 6: False, 7: False}
         response = self.sc.change_manager_permission(USER_ID, STORE_ID, manager_id, new_per)
         self.assertEqual(response.value, "Permissions successfully changed")
